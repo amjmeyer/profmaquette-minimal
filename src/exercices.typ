@@ -35,7 +35,7 @@
 //     thématique de la fiche (`#thematique[…]` délimite les thématiques).
 //   • maquette : un seul appel qui règle toute la fiche, dont la sélection des
 //     corrigés à afficher (ex. "1-6,9,12", "obligatoires") et les deux couleurs
-//     du paquet (bleu-perso, rouge-perso).
+//     du paquet (lien-externe, lien-interne).
 //
 // Non porté : types de documents, en-tête de la feuille de route, Reponse / Indice…
 //
@@ -60,7 +60,7 @@
 // exportées par `lib.typ` — tout le reste du fichier est interne au paquet :
 //   maquette                        réglages de la fiche + blocs de fin automatiques
 //   exercice / solution             un énoncé / son corrigé
-//   reglages-couleurs               bleu-perso / rouge-perso, sans maquette
+//   reglages-couleurs               lien-externe / lien-interne, sans maquette
 //   reglages-corriges               réglages des corrigés, sans maquette
 //   couleur-exercices-obligatoires  couleur des exercices obligatoires, sans maquette
 //   style-exercices                 style des cadres d'exercice, sans maquette
@@ -103,21 +103,21 @@
 
 // Les deux couleurs du paquet, modifiables par `maquette` ou `reglages-couleurs`
 // (n'importe quelle couleur Typst : blue, rgb("#1E90FF"), luma(30%)…) :
-//   bleu-perso  = lien vers l'extérieur (haltère, QR codes, source) ;
-//   rouge-perso = navigation dans le document (clé, titres des corrigés).
+//   lien-externe = lien vers l'extérieur (haltère, QR codes, source) ;
+//   lien-interne = navigation dans le document (clé, titres des corrigés).
 // Valeurs par défaut :
-//   bleu-perso  : cyan foncé, gris foncé bien contrasté une fois imprimé en noir
-//                 et blanc ;
-//   rouge-perso : Crimson, couleur « CouleurSol=Crimson » de ProfMaquette.
+//   lien-externe : cyan foncé, gris foncé bien contrasté une fois imprimé en
+//                  noir et blanc ;
+//   lien-interne : Crimson, couleur « CouleurSol=Crimson » de ProfMaquette.
 #let couleurs-defaut = (
-  bleu: rgb("#0090C8"),
-  rouge: rgb("#DC143C"),
+  externe: rgb("#0090C8"),
+  interne: rgb("#DC143C"),
 )
-#let etat-couleurs = state("etat-couleurs-perso", couleurs-defaut)
+#let etat-couleurs = state("etat-couleurs-liens", couleurs-defaut)
 
 // Accès aux couleurs courantes (à appeler dans un `context`).
-#let bleu-perso() = etat-couleurs.get().bleu
-#let rouge-perso() = etat-couleurs.get().rouge
+#let couleur-lien-externe() = etat-couleurs.get().externe
+#let couleur-lien-interne() = etat-couleurs.get().interne
 
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -135,7 +135,7 @@
 #let etat-serie = state("etat-serie-exercices", 0)
 
 // Réglages des corrigés (cf. `reglages-corriges`). Par défaut : aucun corrigé.
-// couleur-sol : auto = rouge-perso.
+// couleur-sol : auto = lien-interne.
 #let etat-reglages-corriges = state("etat-reglages-corriges", (
   mode: none,
   vers-solution: false,
@@ -230,7 +230,7 @@
 }
 
 // Couleur des titres de corrigés (à appeler dans un `context`).
-#let couleur-sol(reglages) = if reglages.couleur-sol == auto { rouge-perso() } else { reglages.couleur-sol }
+#let couleur-sol(reglages) = if reglages.couleur-sol == auto { couleur-lien-interne() } else { reglages.couleur-sol }
 
 // Infos de l'exercice courant (le dernier de l'historique). À appeler dans un
 // `context`. Renvoie : numero, id (identifiant unique dans le document, pour les
@@ -333,18 +333,18 @@
 // ProfMaquette, sur le fond de la page pour se détacher du filet.
 #let icone-entrainement(url) = link(url)[
   #boite-neutre(fill: fond(), inset: 3pt, radius: 2pt)[
-    #rotate(45deg, reflow: true, icone("dumbbell", 14pt * echelle(), bleu-perso()))
+    #rotate(45deg, reflow: true, icone("dumbbell", 14pt * echelle(), couleur-lien-externe()))
   ]
 ]
 
 // Clé menant au corrigé (VersSolution), sur le fond de la page.
 #let icone-corrige() = boite-neutre(fill: fond(), inset: 2pt, radius: 2pt)[
-  #icone("key", 12pt * echelle(), rouge-perso())
+  #icone("key", 12pt * echelle(), couleur-lien-interne())
 ]
 
-// Étiquette « Source » : petit texte bleu-perso, posé sur le filet bas.
+// Étiquette « Source » : petit texte de la couleur lien-externe, posé sur le filet bas.
 #let etiquette-source(texte) = boite-neutre(fill: fond(), inset: 2pt, radius: 2pt)[
-  #text(size: 7pt * echelle(), fill: bleu-perso())[#texte]
+  #text(size: 7pt * echelle(), fill: couleur-lien-externe())[#texte]
 ]
 
 // Boîte à titre (exercices, bloc « Automatismes »), dans le style choisi par
@@ -441,16 +441,16 @@
 // Inutiles avec `maquette`, qui les appelle elle-même.
 
 // Couleurs du paquet (cf. section 1) ; auto = inchangée.
-#let reglages-couleurs(bleu-perso: auto, rouge-perso: auto) = etat-couleurs.update(c => (
-  bleu: if bleu-perso == auto { c.bleu } else { bleu-perso },
-  rouge: if rouge-perso == auto { c.rouge } else { rouge-perso },
+#let reglages-couleurs(lien-externe: auto, lien-interne: auto) = etat-couleurs.update(c => (
+  externe: if lien-externe == auto { c.externe } else { lien-externe },
+  interne: if lien-interne == auto { c.interne } else { lien-interne },
 ))
 
 // Réglages des corrigés (équivalent des clés de l'environnement Maquette).
 //   mode          : none (aucun corrigé) | "apres" (CorrigeApres) | "fin" (CorrigeFin)
 //   vers-solution : clé cliquable exercice ↔ corrigé (VersSolution)
 //   couleur-sol   : couleur des titres « Correction » et « Corrigé de l'exercice N »
-//                   (auto = rouge-perso)
+//                   (auto = lien-interne)
 //   titre-corrige : début du titre de chaque corrigé (TitreCorrige ; auto =
 //                   « Corrigé de l'exercice », ou sa traduction)
 //   colonnes      : nombre de colonnes de la Correction en fin de fiche (Colonnes)
@@ -653,7 +653,7 @@
 // Appelés automatiquement par `maquette` ; à appeler à la main sinon, une seule
 // fois, dans cet ordre (comme ProfMaquette : entraînements, puis corrections).
 
-// Bloc « Automatismes » : tous les QR codes d'entraînement, dans une boîte bleu-perso.
+// Bloc « Automatismes » : tous les QR codes d'entraînement, dans une boîte de la couleur lien-externe.
 // Flottant en bas de la dernière page s'il reste de la place, sinon en bas de la
 // suivante (pas de saut de page forcé). S'il occuperait plus des trois quarts
 // d'une page, il ne flotte pas : il suit la fiche et peut se couper entre deux pages.
@@ -683,7 +683,7 @@
     let lignes = calc.ceil(items.len() / colonnes)
     let hauteur-estimee = lignes * (taille-qr.to-absolute() + 30pt) + 50pt
     let flottant = type(page.height) == length and hauteur-estimee < .75 * page.height
-    let bloc = boite-etiquette(bleu-perso(), terme("automatismes"))[
+    let bloc = boite-etiquette(couleur-lien-externe(), terme("automatismes"))[
         #grid(
           columns: (1fr,) * colonnes,
           row-gutter: 18pt,
@@ -699,7 +699,7 @@
             #v(4pt)
             #layout(case => link(it.url, qrcode(
               it.url,
-              options: (fg-color: bleu-perso()),
+              options: (fg-color: couleur-lien-externe()),
               width: calc.min(calc.max(taille-qr.to-absolute(), cote-minimal(it.url)), case.width),
             )))
           ])
@@ -909,10 +909,10 @@
 //                           (1, "3-5"), "obligatoires" ou "facultatifs".
 //                           Les énoncés, eux, sont toujours tous affichés.
 //   vers-solution         : clé cliquable exercice ↔ corrigé (VersSolution)
-//   bleu-perso            : couleur des liens extérieurs (haltère, QR, source)
-//   rouge-perso           : couleur de navigation (clé, corrigés)
+//   lien-externe          : couleur des liens extérieurs (haltère, QR, source)
+//   lien-interne          : couleur de navigation (clé, corrigés)
 //   couleur-sol           : couleur des titres de corrigés (CouleurSol ;
-//                           auto = rouge-perso)
+//                           auto = lien-interne)
 //   titre-corrige         : début du titre de chaque corrigé (TitreCorrige ;
 //                           auto = « Corrigé de l'exercice », ou sa traduction)
 //   colonnes-corriges     : colonnes de la Correction (Colonnes)
@@ -933,8 +933,8 @@
   afficher-corrige: "fin",
   corriges: auto,
   vers-solution: true,
-  bleu-perso: auto,
-  rouge-perso: auto,
+  lien-externe: auto,
+  lien-interne: auto,
   couleur-sol: auto,
   titre-corrige: auto,
   colonnes-corriges: 1,
@@ -950,8 +950,8 @@
   // Réglages invalides : message clair plutôt qu'une erreur de Typst plus loin.
   let est-couleur(c) = type(c) in (color, gradient, tiling)
   for (nom, valeur) in (
-    bleu-perso: bleu-perso,
-    rouge-perso: rouge-perso,
+    lien-externe: lien-externe,
+    lien-interne: lien-interne,
     couleur-sol: couleur-sol,
     couleur-obligatoire: couleur-obligatoire,
     couleur-fdr: couleur-fdr,
@@ -965,8 +965,8 @@
   // Chaque maquette repart des couleurs par défaut (auto) : elle n'hérite pas
   // de celles d'une maquette précédente du même document.
   reglages-couleurs(
-    bleu-perso: if bleu-perso == auto { couleurs-defaut.bleu } else { bleu-perso },
-    rouge-perso: if rouge-perso == auto { couleurs-defaut.rouge } else { rouge-perso },
+    lien-externe: if lien-externe == auto { couleurs-defaut.externe } else { lien-externe },
+    lien-interne: if lien-interne == auto { couleurs-defaut.interne } else { lien-interne },
   )
   let mode = if afficher-corrige == false { none } else if afficher-corrige == true { "fin" } else { afficher-corrige }
   reglages-corriges(

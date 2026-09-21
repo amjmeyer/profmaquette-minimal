@@ -72,9 +72,9 @@ automatiquement, à la fin, le bloc **Automatismes** (QR codes) puis la
 | `afficher-corrige` | `"fin"` | `none` (ou `false`) : aucun corrigé ; `"apres"` : sous chaque énoncé ; `"fin"` (ou `true`) : en fin de fiche |
 | `corriges` | `auto` | corrigés affichés : `auto` (tous), `4`, `"1-6,9,12"`, `(1, "3-5")`, `"obligatoires"`, `"facultatifs"`. Les énoncés sont toujours tous affichés. |
 | `vers-solution` | `true` | clé cliquable sur l'exercice, menant au corrigé (et retour) |
-| `bleu-perso` | `rgb("#0090C8")` | couleur des liens vers l'extérieur : haltère, QR codes, source |
-| `rouge-perso` | `rgb("#DC143C")` | couleur de navigation : clé, titres des corrigés |
-| `couleur-sol` | `auto` | couleur des titres de corrigés (`auto` = `rouge-perso`) |
+| `lien-externe` | `rgb("#0090C8")` | couleur des liens vers l'extérieur : haltère, QR codes, source |
+| `lien-interne` | `rgb("#DC143C")` | couleur de navigation : clé, titres des corrigés |
+| `couleur-sol` | `auto` | couleur des titres de corrigés (`auto` = `lien-interne`) |
 | `titre-corrige` | `auto` | début du titre de chaque corrigé (`auto` = « Corrigé de l'exercice », ou sa traduction) |
 | `colonnes-corriges` | `1` | nombre de colonnes de la Correction |
 | `correction-nouvelle-page` | `true` | la Correction commence sur une nouvelle page ; `false` : elle suit la fiche (indispensable pour une maquette dans `columns(…)` ou dans un cadre) |
@@ -174,7 +174,7 @@ sélection `corriges`. Le corrigé peut venir d'un autre fichier :
 
 Chaque réglage existe aussi séparément, à appeler avant le premier exercice :
 
-- `reglages-couleurs(bleu-perso: …, rouge-perso: …)` ;
+- `reglages-couleurs(lien-externe: …, lien-interne: …)` ;
 - `reglages-corriges(mode: …, vers-solution: …, couleur-sol: …, titre-corrige: …, colonnes: …, nouvelle-page: …)`,
   où `mode` vaut `none`, `"apres"` ou `"fin"` ;
 - `couleur-exercices-obligatoires(couleur)` ;

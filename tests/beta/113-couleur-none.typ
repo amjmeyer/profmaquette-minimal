@@ -1,4 +1,4 @@
 #import "../../src/lib.typ": *
-#maquette(rouge-perso: none)[
+#maquette(lien-interne: none)[
   #exercice[A] #solution[a]
 ]

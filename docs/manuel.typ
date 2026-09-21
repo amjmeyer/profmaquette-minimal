@@ -520,7 +520,7 @@ Quatre réglages de la maquette modifient le bloc « Correction » :
 ]
 #parametre("couleur-sol", ("color", "auto"), `auto`)[
   Couleur des titres « Correction » et « Corrigé de l'exercice N » ; `auto` :
-  la couleur de navigation `rouge-perso` (@couleurs).
+  la couleur de navigation `lien-interne` (@couleurs).
 ]
 
 == Corrigés dans des fichiers séparés
@@ -689,7 +689,7 @@ Chaque QR code porte le numéro de son exercice, et il est lui aussi cliquable.
 - *Quelle taille ?* `taille-qr` (2 cm par défaut) : tous les QR codes ont la même
   taille. Une adresse trop longue pour rester lisible à cette taille donne un
   QR code agrandi automatiquement.
-- *Quelle couleur ?* Celle des liens vers l'extérieur, `bleu-perso` (@couleurs),
+- *Quelle couleur ?* Celle des liens vers l'extérieur, `lien-externe` (@couleurs),
   comme l'haltère et la source.
 
 
@@ -717,19 +717,19 @@ ou, sans crochets autour de toute la fiche, en tête du fichier :
 
 Le paquet utilise deux couleurs, chacune avec un rôle :
 
-- `bleu-perso` pour ce qui mène *hors* du document : haltère, QR codes, source ;
-- `rouge-perso` pour ce qui permet de *naviguer* dans le document : clé, titres
+- `lien-externe` pour ce qui mène *hors* du document : haltère, QR codes, source ;
+- `lien-interne` pour ce qui permet de *naviguer* dans le document : clé, titres
   des corrigés.
 
 Trois autres couleurs complètent les réglages : `couleur-sol` pour les titres des
-corrigés (par défaut `rouge-perso`), `couleur-obligatoire` pour les exercices
+corrigés (par défaut `lien-interne`), `couleur-obligatoire` pour les exercices
 obligatoires (par défaut noir) et `couleur-fdr` pour la feuille de route (par
 défaut noir).
 
 #exemple(```typ
 #maquette(
-  bleu-perso: green.darken(20%),
-  rouge-perso: purple,
+  lien-externe: green.darken(20%),
+  lien-interne: purple,
   couleur-obligatoire: navy,
   couleur-fdr: navy,
   afficher-corrige: "apres",
@@ -782,16 +782,16 @@ compilation avec un message clair.
 #parametre("taille-qr", ("length",), `2cm`)[
   Côté des QR codes, agrandi si l'adresse est trop longue pour rester lisible.
 ]
-#parametre("bleu-perso", ("color", "auto"), `auto`)[
+#parametre("lien-externe", ("color", "auto"), `auto`)[
   Couleur des liens vers l'extérieur ; `auto` : `rgb("#0090C8")`.
 ]
-#parametre("rouge-perso", ("color", "auto"), `auto`)[
+#parametre("lien-interne", ("color", "auto"), `auto`)[
   Couleur de navigation ; `auto` : `rgb("#DC143C")` (Crimson, comme dans
   ProfMaquette).
 ]
 #parametre("couleur-sol", ("color", "auto"), `auto`)[
   Couleur des titres « Correction » et « Corrigé de l'exercice N » ; `auto` :
-  `rouge-perso`.
+  `lien-interne`.
 ]
 #parametre("couleur-obligatoire", ("color", "auto"), `auto`)[
   Couleur des exercices obligatoires ; `auto` : noir.
@@ -881,7 +881,7 @@ fiche retrouve les couleurs par défaut.
 #exemple(```typ
 #maquette(
   afficher-corrige: "apres",
-  rouge-perso: purple,
+  lien-interne: purple,
 )[
   #exercice(titre: "Fiche A")[…]
   #solution[Corrigé A.]
@@ -908,7 +908,7 @@ les appeler soi-même, avant le premier exercice :
 
 - `reglages-corriges(mode: …, vers-solution: …, couleur-sol: …, titre-corrige: …,
   colonnes: …, nouvelle-page: …)`, où `mode` vaut `none`, `"apres"` ou `"fin"` ;
-- `reglages-couleurs(bleu-perso: …, rouge-perso: …)` ;
+- `reglages-couleurs(lien-externe: …, lien-interne: …)` ;
 - `couleur-exercices-obligatoires(couleur)` ;
 - `style-exercices(style)`.
 

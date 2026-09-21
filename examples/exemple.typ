@@ -7,7 +7,7 @@
 //   afficher-corrige: "apres"    → corrigé sous chaque énoncé
 //   corriges: "1,3"              → seulement les corrigés des exercices 1 et 3
 //   corriges: "facultatifs"      → seulement les corrigés des exercices facultatifs
-//   bleu-perso: blue, rouge-perso: green.darken(20%)  → autres couleurs
+//   lien-externe: blue, lien-interne: green.darken(20%)  → autres couleurs
 //   style-exercice: "bandeau"   → autre style de cadre ("etiquette-encadree", "etiquette-pleine"…)
 
 #import "@preview/template-exercices:0.1.0": maquette, exercice, solution, afficher-fdr, thematique
