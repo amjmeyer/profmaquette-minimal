@@ -52,8 +52,8 @@ personal use and may change in future versions.*
 
 Un exemple complet se trouve dans [`examples/exemple.typ`](examples/exemple.typ).
 
-Le manuel, avec un exemple et son rendu pour chaque fonctionnalité, est en cours
-de rédaction : [`docs/manuel.pdf`](docs/manuel.pdf).
+Le manuel détaille chaque fonctionnalité, avec un exemple et son rendu :
+[`docs/manuel.pdf`](docs/manuel.pdf).
 
 ## `maquette` : régler toute la fiche
 
