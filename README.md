@@ -210,6 +210,10 @@ l'exercice 1, avec ses propres entraînements et corrigés.
 | `TitreSolution`, `TitreCorrige` | `titre-solution:`, `titre-corrige:` |
 | `CouleurSol`, `Colonnes` | `couleur-sol:`, `colonnes-corriges:` |
 
+## Historique des versions
+
+Les changements de chaque version sont listés dans [CHANGELOG.md](CHANGELOG.md).
+
 ## Remerciements
 
 Un grand merci à **Christophe Poulain**, auteur du package LaTeX
