@@ -24,14 +24,6 @@ personal use and may change in future versions.*
   <img src="docs/exemple-2.png" width="45%" alt="Corrigés regroupés en fin de fiche">
 </p>
 
-## Prérequis : polices Font Awesome
-
-La clé et l'haltère sont des icônes [Font Awesome](https://fontawesome.com/download),
-dessinées par le paquet [fontawesome](https://typst.app/universe/package/fontawesome) :
-il faut installer sur l'ordinateur les polices « Font Awesome Free » (version
-*desktop*, fichiers `.otf`). Sur la web app Typst, déposer ces fichiers `.otf`
-dans le projet.
-
 ## Démarrage rapide
 
 ```typ
@@ -87,6 +79,7 @@ automatiquement, à la fin, le bloc **Automatismes** (QR codes) puis la
 | `colonnes-corriges` | `1` | nombre de colonnes de la Correction |
 | `correction-nouvelle-page` | `true` | la Correction commence sur une nouvelle page ; `false` : elle suit la fiche (indispensable pour une maquette dans `columns(…)` ou dans un cadre) |
 | `couleur-obligatoire` | `auto` | couleur des exercices obligatoires (`auto` = noir) |
+| `style-exercice` | `"fond-blanc"` | style des cadres d'exercice et du bloc Automatismes : `"fond-blanc"` (titre sans cadre, qui coupe le filet), `"etiquette-encadree"` (titre dans un petit cadre, à cheval sur le filet), `"bandeau"` (titre en haut du cadre, séparé de l'énoncé par un filet), `"etiquette-pleine"` (étiquette remplie de couleur, titre en blanc) |
 | `colonnes-automatismes` | `3` | nombre de QR codes par ligne |
 | `taille-qr` | `2cm` | côté des QR codes (agrandi automatiquement si l'URL est trop longue pour rester lisible) |
 | `couleur-fdr` | `black` | couleur de la feuille de route |
@@ -184,7 +177,8 @@ Chaque réglage existe aussi séparément, à appeler avant le premier exercice 
 - `reglages-couleurs(bleu-perso: …, rouge-perso: …)` ;
 - `reglages-corriges(mode: …, vers-solution: …, couleur-sol: …, titre-corrige: …, colonnes: …, nouvelle-page: …)`,
   où `mode` vaut `none`, `"apres"` ou `"fin"` ;
-- `couleur-exercices-obligatoires(couleur)`.
+- `couleur-exercices-obligatoires(couleur)` ;
+- `style-exercices(style)`, avec les mêmes valeurs que `style-exercice`.
 
 Il faut alors appeler soi-même, en fin de fiche et dans cet ordre,
 `liste-entrainements(colonnes: …, taille-qr: …)` puis `liste-corriges()`.
@@ -225,15 +219,21 @@ reprend la logique (exercices, feuille de route, entraînements, corrigés) et u
 partie du vocabulaire. Les idées sont les siennes, et les limites de cette adaptation sont les miennes. Pour un outil
 complet, utilisez ProfMaquette.
 
-template-exercices utilise les paquets
-[tiaoma](https://typst.app/universe/package/tiaoma) et
-[fontawesome](https://typst.app/universe/package/fontawesome).
+template-exercices utilise le paquet
+[tiaoma](https://typst.app/universe/package/tiaoma) pour les QR codes. Les
+icônes (haltère, clé, coche) sont des dessins de
+[Font Awesome Free](https://fontawesome.com), fournis avec le paquet : il n'y a
+aucune police à installer.
 
 ## Licence
 
 LaTeX Project Public License (LPPL), version 1.3c ou toute version ultérieure —
 voir [LICENSE](LICENSE). C'est la licence de ProfMaquette, dont ce paquet reprend
 les idées.
+
+Les icônes du dossier `src/icones/` sont des dessins de Font Awesome Free, sous
+licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) :
+*Font Awesome Free by @fontawesome — https://fontawesome.com*.
 
 ```
 Copyright 2026 Arthur Meyer

@@ -198,10 +198,10 @@
 Dans la suite du manuel, cette ligne est sous-entendue au début de chaque
 exemple.
 
-#warning(title: "Polices Font Awesome")[
-  La clé et l'haltère sont des icônes Font Awesome : il faut installer sur
-  l'ordinateur les polices « Font Awesome Free » (version _desktop_, fichiers
-  `.otf`). Sur la web app Typst, déposer ces fichiers dans le projet.
+#info(title: "Rien à installer")[
+  Les icônes du paquet (haltère, clé, coche) sont fournies avec lui : aucune
+  police particulière n'est nécessaire, sur l'ordinateur comme sur la web app
+  Typst.
 ]
 
 == Une première fiche
@@ -323,6 +323,38 @@ détaillés à la @entrainements.
 Un exercice ne se coupe jamais entre deux pages : s'il ne tient pas en bas de
 la page, il passe entièrement à la page suivante. Seul un exercice plus haut
 qu'une page entière se coupe, pour ne rien perdre de l'énoncé.
+
+== Le style des cadres
+
+Le réglage `style-exercice` de la maquette choisit l'allure des cadres, pour
+toute la fiche. Il s'applique aussi au bloc « Automatismes ». Quatre styles
+existent :
+
+- `"fond-blanc"` (par défaut) : le titre, sans cadre, coupe le filet haut ;
+- `"etiquette-encadree"` : le titre est dans un petit cadre, à cheval sur le
+  filet ;
+- `"bandeau"` : le titre est en haut du cadre, séparé de l'énoncé par un filet ;
+- `"etiquette-pleine"` : le titre est écrit en blanc dans une étiquette remplie
+  de couleur.
+
+#exemple(dessous: true, ```typ
+#grid(
+  columns: 2,
+  column-gutter: 12pt,
+  row-gutter: 10pt,
+  ..("fond-blanc", "etiquette-encadree",
+     "bandeau", "etiquette-pleine").map(style =>
+    maquette(style-exercice: style)[
+      #exercice(titre: style)[Énoncé.]
+      #exercice(obligatoire: false)[Facultatif.]
+    ]
+  ),
+)
+```)
+
+Chaque maquette repart de l'exercice 1, d'où les numéros identiques. Sans
+`maquette`, le style se règle avec `#style-exercices("bandeau")`, avant le
+premier exercice.
 
 == Paramètres de `exercice`
 
@@ -594,8 +626,8 @@ contenir une autre.]
 
 == Remerciements
 
-#a-ecrire[Christophe Poulain (ProfMaquette), paquets tiaoma,
-fontawesome, gentle-clues (ce manuel).]
+#a-ecrire[Christophe Poulain (ProfMaquette), paquet tiaoma, icônes Font
+Awesome Free (CC BY 4.0), gentle-clues (ce manuel).]
 
 
 // ══════════════════════════════════════════════════════════════════════════════

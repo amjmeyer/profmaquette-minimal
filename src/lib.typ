@@ -26,6 +26,7 @@
   reglages-couleurs,
   reglages-corriges,
   couleur-exercices-obligatoires,
+  style-exercices,
   liste-entrainements,
   liste-corriges,
   reinitialiser-compteur-exercice,
