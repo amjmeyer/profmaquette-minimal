@@ -17,7 +17,7 @@ if command -v typst > /dev/null; then
   TYPST=typst
 else
   TYPST=$(ls -d ~/.var/app/com.vscodium.codium/data/codium/extensions/myriad-dreamin.tinymist-*/out/tinymist | tail -1)
-  # Paquets @preview déjà téléchargés par VSCodium (fontawesome, tiaoma, showybox).
+  # Paquets @preview déjà téléchargés par VSCodium (tiaoma).
   export TYPST_PACKAGE_CACHE_PATH=~/.var/app/com.vscodium.codium/cache/typst/packages
 fi
 

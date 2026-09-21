@@ -13,6 +13,8 @@ Première version, sous licence LPPL 1.3c (celle de ProfMaquette).
   titre les thématiques et y place les coches ; `stop: true` en ajoute à la main.
 - Exercices obligatoires en noir par défaut.
 - Cadres dessinés par le paquet (plus de dépendance à showybox).
+- Icônes (haltère, clé, coche) fournies avec le paquet, en SVG (Font Awesome Free,
+  CC BY 4.0) : plus de polices Font Awesome à installer, plus de dépendance à fontawesome.
 - Robustesse (beta-tests, `tests/lancer.sh`) :
   - un énoncé plus haut qu'une page se coupe au lieu d'être tronqué ;
   - un titre d'exercice trop long passe à la ligne dans son étiquette ;

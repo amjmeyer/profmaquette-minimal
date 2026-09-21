@@ -90,8 +90,10 @@
 //     pour qu'elle converge, les états sont toujours mis à jour HORS `context`
 //     avec des valeurs fixes, et la mise en page ne dépend jamais du résultat
 //     d'une requête (cf. `exercice`).
+//   • Icônes (haltère, clé, coche) : dessins SVG de Font Awesome Free (licence
+//     CC BY 4.0), fournis avec le paquet dans `icones/`. Aucune police à
+//     installer : un paquet Typst ne peut pas fournir de police.
 
-#import "@preview/fontawesome:0.6.2": fa-icon
 #import "@preview/tiaoma:0.3.0": qrcode
 
 
@@ -312,19 +314,31 @@
 // À appeler dans un `context`.
 #let fond() = if type(page.fill) == color { page.fill } else { white }
 
+// Icône du dossier `icones/` (dessin SVG recadré au plus près), dans la couleur
+// `couleur`, à l'échelle d'un texte de taille `taille` : comme un caractère de
+// police Font Awesome, dont 1 em vaut 512 unités du dessin.
+// Un dégradé donne sa couleur du milieu, un motif donne du noir (un SVG coloré
+// n'accepte qu'une couleur unie).
+#let icone(nom, taille, couleur) = {
+  let svg = read("icones/" + nom + ".svg")
+  let hauteur = float(svg.match(regex("viewBox=\"[^\"]* ([\d.]+)\"")).captures.first())
+  let teinte = if type(couleur) == color { couleur } else if type(couleur) == gradient { couleur.sample(50%) } else { black }
+  image(bytes(svg.replace("currentColor", teinte.to-hex())), format: "svg", height: taille * hauteur / 512)
+}
+
 // Les éléments colorés ci-dessous sont à appeler dans un `context` (couleurs).
 
 // Haltère cliquable (ouvre l'entraînement), inclinée à 45° comme dans
 // ProfMaquette, sur le fond de la page pour se détacher du filet.
 #let icone-entrainement(url) = link(url)[
   #boite-neutre(fill: fond(), inset: 3pt, radius: 2pt)[
-    #rotate(45deg, reflow: true, fa-icon("dumbbell", size: 14pt * echelle(), fill: bleu-perso()))
+    #rotate(45deg, reflow: true, icone("dumbbell", 14pt * echelle(), bleu-perso()))
   ]
 ]
 
 // Clé menant au corrigé (VersSolution), sur le fond de la page.
 #let icone-corrige() = boite-neutre(fill: fond(), inset: 2pt, radius: 2pt)[
-  #fa-icon("key", size: 12pt * echelle(), fill: rouge-perso())
+  #icone("key", 12pt * echelle(), rouge-perso())
 ]
 
 // Étiquette « Source » : petit texte bleu-perso, posé sur le filet bas.
@@ -859,7 +873,7 @@
         ))
       }
       for (j, case) in t.bas.enumerate(start: 1) {
-        if case == "coche" { pastille(X(j), y-bas, fa-icon("check", size: 9pt * e, fill: couleur)) }
+        if case == "coche" { pastille(X(j), y-bas, icone("check", 9pt * e, couleur)) }
         else if case != none { disque(X(j), y-bas, case, true) }
       }
       for (j, case) in t.haut.enumerate(start: 1) {

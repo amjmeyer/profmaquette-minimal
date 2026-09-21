@@ -24,14 +24,6 @@ personal use and may change in future versions.*
   <img src="docs/exemple-2.png" width="45%" alt="Corrigés regroupés en fin de fiche">
 </p>
 
-## Prérequis : polices Font Awesome
-
-La clé et l'haltère sont des icônes [Font Awesome](https://fontawesome.com/download),
-dessinées par le paquet [fontawesome](https://typst.app/universe/package/fontawesome) :
-il faut installer sur l'ordinateur les polices « Font Awesome Free » (version
-*desktop*, fichiers `.otf`). Sur la web app Typst, déposer ces fichiers `.otf`
-dans le projet.
-
 ## Démarrage rapide
 
 ```typ
@@ -224,15 +216,21 @@ reprend la logique (exercices, feuille de route, entraînements, corrigés) et u
 les siennes, et les limites de cette adaptation sont les miennes. Pour un outil
 complet, utilisez ProfMaquette.
 
-template-exercices utilise les paquets
-[tiaoma](https://typst.app/universe/package/tiaoma) et
-[fontawesome](https://typst.app/universe/package/fontawesome).
+template-exercices utilise le paquet
+[tiaoma](https://typst.app/universe/package/tiaoma) pour les QR codes. Les
+icônes (haltère, clé, coche) sont des dessins de
+[Font Awesome Free](https://fontawesome.com), fournis avec le paquet : il n'y a
+aucune police à installer.
 
 ## Licence
 
 LaTeX Project Public License (LPPL), version 1.3c ou toute version ultérieure —
 voir [LICENSE](LICENSE). C'est la licence de ProfMaquette, dont ce paquet reprend
 les idées.
+
+Les icônes du dossier `src/icones/` sont des dessins de Font Awesome Free, sous
+licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) :
+*Font Awesome Free by @fontawesome — https://fontawesome.com*.
 
 ```
 Copyright 2026 Arthur Meyer
