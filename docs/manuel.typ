@@ -182,7 +182,13 @@
 ]
 
 #pagebreak()
-#outline(depth: 2)
+// Sommaire : chaque ligne est un lien vers sa section (comme les signets du
+// PDF). Parties en crimson, sous-parties en navy.
+#{
+  show outline.entry.where(level: 1): set text(fill: rgb("#DC143C"), weight: "bold")
+  show outline.entry.where(level: 2): set text(fill: navy)
+  outline(depth: 2)
+}
 
 
 // ══════════════════════════════════════════════════════════════════════════════
