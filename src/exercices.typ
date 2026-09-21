@@ -63,6 +63,7 @@
 //   reglages-couleurs               bleu-perso / rouge-perso, sans maquette
 //   reglages-corriges               réglages des corrigés, sans maquette
 //   couleur-exercices-obligatoires  couleur des exercices obligatoires, sans maquette
+//   style-exercices                 style des cadres d'exercice, sans maquette
 //   liste-entrainements             bloc « Automatismes » (QR codes), sans maquette
 //   liste-corriges                  bloc « Correction », sans maquette
 //   reinitialiser-compteur-exercice repart de l'exercice 1
@@ -146,6 +147,10 @@
 
 // Couleur des exercices obligatoires (étiquette + filet).
 #let etat-couleur-obligatoire = state("etat-couleur-obligatoire", black)
+
+// Style des cadres (exercices et bloc « Automatismes ») : cf. `boite-etiquette`.
+#let styles-exercice = ("fond-blanc", "etiquette-encadree", "bandeau", "etiquette-pleine")
+#let etat-style = state("etat-style-exercice", "fond-blanc")
 
 // Réglages du schéma de la feuille de route (cf. `afficher-fdr`) :
 //   couleur : couleur du schéma (disques pleins, contours, route) ;
@@ -327,45 +332,70 @@
   #text(size: 7pt * echelle(), fill: bleu-perso())[#texte]
 ]
 
-// Boîte à étiquette flottante (exercices, bloc « Automatismes ») : titre en
-// couleur dans un cadre, à cheval sur le filet haut, à 1em du bord gauche. Un
-// titre trop long passe à la ligne sans sortir du cadre.
+// Boîte à titre (exercices, bloc « Automatismes »), dans le style choisi par
+// `maquette(style-exercice: …)` :
+//   "etiquette-encadree" : titre en couleur dans un petit cadre, à cheval sur le
+//                          filet haut, à 1em du bord gauche ;
+//   "fond-blanc"         : titre en couleur sans cadre, sur le fond de la page,
+//                          qui coupe le filet haut (défaut) ;
+//   "bandeau"            : titre dans le cadre, en haut, séparé de l'énoncé par
+//                          un filet ;
+//   "etiquette-pleine"   : titre sur le fond de la page, dans une étiquette
+//                          remplie de la couleur du titre, à cheval sur le filet.
+// Un titre trop long passe à la ligne sans sortir du cadre.
 // La boîte ne se coupe pas entre deux pages, sauf si elle est plus haute qu'une
 // page : elle se coupe alors plutôt que de déborder (et de perdre du texte).
 // `couleur-titre` : couleur du titre (auto = celle du filet).
 #let boite-etiquette(couleur, titre, couleur-titre: auto, body) = layout(taille => {
+  let style = etat-style.get()
   let filet = .05em + couleur
-  let etiquette = bloc-neutre(
-    spacing: 0pt,
-    fill: fond(),
-    stroke: filet,
-    radius: 3pt,
-    inset: (x: .8em, y: .5em),
-    text(fill: if couleur-titre == auto { couleur } else { couleur-titre }, weight: "bold", titre),
-  )
-  let largeur-etiquette = taille.width - 2em
-  // Demi-hauteur de l'étiquette : place réservée au-dessus et au-dessous du filet.
-  let demi = measure(etiquette, width: largeur-etiquette).height / 2
-  let contenu = {
-    v(demi)
+  let teinte = if couleur-titre == auto { couleur } else { couleur-titre }
+  let contenu = if style == "bandeau" {
     bloc-neutre(width: 100%, spacing: 0pt, stroke: filet, radius: 5pt, {
-      v(demi)
-      place(top + left, dx: 1em, dy: -demi, bloc-neutre(width: largeur-etiquette, etiquette))
-      bloc-neutre(width: 100%, spacing: 0pt, inset: (x: 1.2em, top: 1.1em, bottom: 1.2em), body)
+      bloc-neutre(width: 100%, spacing: 0pt, inset: (x: 1em, y: .6em), text(fill: teinte, weight: "bold", titre))
+      bloc-neutre(
+        width: 100%,
+        spacing: 0pt,
+        stroke: (top: filet, x: none, bottom: none),
+        inset: (x: 1.2em, top: .9em, bottom: 1.2em),
+        body,
+      )
     })
+  } else {
+    let etiquette = if style == "fond-blanc" {
+      bloc-neutre(spacing: 0pt, fill: fond(), inset: (x: .4em, y: .5em), text(fill: teinte, weight: "bold", titre))
+    } else if style == "etiquette-pleine" {
+      bloc-neutre(spacing: 0pt, fill: teinte, radius: 3pt, inset: (x: .8em, y: .5em), text(fill: fond(), weight: "bold", titre))
+    } else {
+      bloc-neutre(spacing: 0pt, fill: fond(), stroke: filet, radius: 3pt, inset: (x: .8em, y: .5em), text(fill: teinte, weight: "bold", titre))
+    }
+    let largeur-etiquette = taille.width - 2em
+    // Demi-hauteur de l'étiquette : place réservée au-dessus et au-dessous du filet.
+    let demi = measure(etiquette, width: largeur-etiquette).height / 2
+    {
+      v(demi)
+      bloc-neutre(width: 100%, spacing: 0pt, stroke: filet, radius: 5pt, {
+        v(demi)
+        place(top + left, dx: 1em, dy: -demi, bloc-neutre(width: largeur-etiquette, etiquette))
+        bloc-neutre(width: 100%, spacing: 0pt, inset: (x: 1.2em, top: 1.1em, bottom: 1.2em), body)
+      })
+    }
   }
   let trop-haute = measure(contenu, width: taille.width).height > taille.height
   bloc-neutre(width: 100%, breakable: trop-haute, contenu)
 })
 
 // Boîte d'un exercice. Obligatoire : filet et titre dans la couleur des
-// obligatoires. Facultatif : filet gris très clair, titre gris foncé (lisible).
+// obligatoires. Facultatif : filet gris très clair, titre gris foncé (lisible) ;
+// avec une étiquette pleine, gris moyen, pour que l'étiquette ne ressorte pas
+// plus que celle d'un obligatoire.
 // À appeler dans un `context`.
 #let boite-exercice(numero: none, titre: none, obligatoire: true, body) = {
   let couleur = etat-couleur-obligatoire.get()
+  let gris-titre = if etat-style.get() == "etiquette-pleine" { luma(60%) } else { luma(35%) }
   boite-etiquette(
     if obligatoire { couleur } else { luma(82%) },
-    couleur-titre: if obligatoire { couleur } else { luma(35%) },
+    couleur-titre: if obligatoire { couleur } else { gris-titre },
     [#terme("exercice") #numero#if titre != none [ : #titre]],
     body,
   )
@@ -439,6 +469,17 @@
 
 // Couleur des exercices obligatoires pour toute la fiche (noir par défaut).
 #let couleur-exercices-obligatoires(couleur) = etat-couleur-obligatoire.update(couleur)
+
+// Style des cadres d'exercice et du bloc « Automatismes » pour toute la fiche
+// (cf. `boite-etiquette`) : "fond-blanc" (défaut), "etiquette-encadree",
+// "bandeau" ou "etiquette-pleine".
+#let style-exercices(style) = {
+  assert(
+    style in styles-exercice,
+    message: "style-exercice doit valoir " + styles-exercice.map(s => "\"" + s + "\"").join(", ", last: " ou ") + ", pas " + repr(style) + ".",
+  )
+  etat-style.update(style)
+}
 
 // ─── Exercices et corrigés ───────────────────────────────────────────────────
 
@@ -862,6 +903,8 @@
 //                           (false : elle suit la fiche ; indispensable pour une
 //                           maquette placée dans `columns(…)` ou dans un cadre)
 //   couleur-obligatoire   : couleur des exercices obligatoires (auto = noir)
+//   style-exercice        : style des cadres : "fond-blanc" (défaut),
+//                           "etiquette-encadree", "bandeau" ou "etiquette-pleine"
 //   colonnes-automatismes : QR codes par ligne dans « Automatismes »
 //   taille-qr             : côté des QR codes
 //   couleur-fdr           : couleur du schéma `afficher-fdr` (noir par défaut)
@@ -880,6 +923,7 @@
   colonnes-corriges: 1,
   correction-nouvelle-page: true,
   couleur-obligatoire: auto,
+  style-exercice: "fond-blanc",
   colonnes-automatismes: 3,
   taille-qr: 2cm,
   couleur-fdr: black,
@@ -912,6 +956,7 @@
     nouvelle-page: correction-nouvelle-page,
   )
   if couleur-obligatoire != auto { couleur-exercices-obligatoires(couleur-obligatoire) }
+  style-exercices(style-exercice)
   etat-selection.update((corriges: parser-plage(corriges)))
   etat-fdr.update((couleur: couleur-fdr))
   etat-langue.update(langue)

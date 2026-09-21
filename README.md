@@ -84,6 +84,7 @@ automatiquement, à la fin, le bloc **Automatismes** (QR codes) puis la
 | `colonnes-corriges` | `1` | nombre de colonnes de la Correction |
 | `correction-nouvelle-page` | `true` | la Correction commence sur une nouvelle page ; `false` : elle suit la fiche (indispensable pour une maquette dans `columns(…)` ou dans un cadre) |
 | `couleur-obligatoire` | `auto` | couleur des exercices obligatoires (`auto` = noir) |
+| `style-exercice` | `"fond-blanc"` | style des cadres d'exercice et du bloc Automatismes : `"fond-blanc"` (titre sans cadre, qui coupe le filet), `"etiquette-encadree"` (titre dans un petit cadre, à cheval sur le filet), `"bandeau"` (titre en haut du cadre, séparé de l'énoncé par un filet), `"etiquette-pleine"` (étiquette remplie de couleur, titre en blanc) |
 | `colonnes-automatismes` | `3` | nombre de QR codes par ligne |
 | `taille-qr` | `2cm` | côté des QR codes (agrandi automatiquement si l'URL est trop longue pour rester lisible) |
 | `couleur-fdr` | `black` | couleur de la feuille de route |
@@ -181,7 +182,8 @@ Chaque réglage existe aussi séparément, à appeler avant le premier exercice 
 - `reglages-couleurs(bleu-perso: …, rouge-perso: …)` ;
 - `reglages-corriges(mode: …, vers-solution: …, couleur-sol: …, titre-corrige: …, colonnes: …, nouvelle-page: …)`,
   où `mode` vaut `none`, `"apres"` ou `"fin"` ;
-- `couleur-exercices-obligatoires(couleur)`.
+- `couleur-exercices-obligatoires(couleur)` ;
+- `style-exercices(style)`, avec les mêmes valeurs que `style-exercice`.
 
 Il faut alors appeler soi-même, en fin de fiche et dans cet ordre,
 `liste-entrainements(colonnes: …, taille-qr: …)` puis `liste-corriges()`.

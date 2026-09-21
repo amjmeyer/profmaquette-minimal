@@ -39,3 +39,5 @@ Première version, sous licence LPPL 1.3c (celle de ProfMaquette).
 - `maquette(correction-nouvelle-page: false)` : maquette utilisable dans `columns(…)` ou un cadre.
 - Chaque `maquette` repart de l'exercice 1 (plusieurs fiches dans un même document).
 - Couleurs `bleu-perso` et `rouge-perso` modifiables.
+- `maquette(style-exercice: …)` : quatre styles de cadre, `"fond-blanc"` (défaut),
+  `"etiquette-encadree"`, `"bandeau"` et `"etiquette-pleine"` ; `style-exercices(…)` sans maquette.
