@@ -28,7 +28,7 @@ Première version, sous licence LPPL 1.3c (celle de ProfMaquette).
   - bloc Automatismes trop haut pour flotter : il suit la fiche et se coupe entre
     deux pages ;
   - QR code agrandi si l'URL est trop longue pour rester lisible ;
-  - message clair pour une maquette dans une autre maquette.
+  - message clair pour une maquette dans une autre maquette ;
   - messages clairs pour les réglages invalides (couleur, nombre de colonnes,
     taille des QR codes) ; `corriges: ()` n'affiche aucun corrigé ;
   - une source longue passe à la ligne ;
@@ -39,3 +39,4 @@ Première version, sous licence LPPL 1.3c (celle de ProfMaquette).
 - `maquette(correction-nouvelle-page: false)` : maquette utilisable dans `columns(…)` ou un cadre.
 - Chaque `maquette` repart de l'exercice 1 (plusieurs fiches dans un même document).
 - Couleurs `bleu-perso` et `rouge-perso` modifiables.
+- Manuel `docs/manuel.pdf` (en cours de rédaction), qui reprend cet historique à la fin.

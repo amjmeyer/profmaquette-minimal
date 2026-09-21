@@ -1,5 +1,7 @@
 # PDF produits en testant les exemples
 *.pdf
+# … sauf le manuel, lié depuis le README
+!docs/manuel.pdf
 # Sorties des beta-tests
 tests/sortie/
 # Aide-mémoire personnel (pas sur GitHub)

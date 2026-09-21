@@ -6,16 +6,16 @@ exercices numérotés, obligatoires ou facultatifs, feuille de route, entraînem
 en ligne par QR code, et corrigés que l'on affiche — ou non — d'un seul réglage.
 
 > [!NOTE]
-> template-exercices reprend seulement une petite partie des idées de ProfMaquette, dont il
-> s'inspire directement. Ses fonctionnalités sont **beaucoup plus limitées** que
+> template-exercices reprend seulement une petite partie des idées de
+> ProfMaquette, dont il s'inspire directement. Ses fonctionnalités sont **beaucoup plus limitées** que
 > celles de l'original, qui reste la référence. Ce paquet a d'abord été écrit pour
 > mon **usage personnel**. Il est partagé tel quel et **pourra évoluer**, y compris
 > de façon incompatible entre deux versions `0.x`.
 
 *Build exercise sheets (in French) inspired by Christophe Poulain's LaTeX package
 ProfMaquette: numbered exercises, optional ones in gray, a road map of the
-exercises, online training via QR codes, and solutions shown after each exercise, at the end, or not at all — all
-from a single setting, including which solutions to show (`"1-6,9,12"`).
+exercises, online training via QR codes, and solutions shown after each
+exercise, at the end, or not at all — all from a single setting, including which solutions to show (`"1-6,9,12"`).
 It covers only a small part of ProfMaquette's features. It was first written for
 personal use and may change in future versions.*
 
@@ -60,6 +60,9 @@ dans le projet.
 
 Un exemple complet se trouve dans [`examples/exemple.typ`](examples/exemple.typ).
 
+Le manuel, avec un exemple et son rendu pour chaque fonctionnalité, est en cours
+de rédaction : [`docs/manuel.pdf`](docs/manuel.pdf).
+
 ## `maquette` : régler toute la fiche
 
 `maquette` englobe la fiche et regroupe tous les réglages. Elle ajoute
@@ -74,7 +77,7 @@ automatiquement, à la fin, le bloc **Automatismes** (QR codes) puis la
 
 | Paramètre | Défaut | Rôle |
 |---|---|---|
-| `afficher-corrige` | `"fin"` | `none` : aucun corrigé ; `"apres"` : sous chaque énoncé ; `"fin"` : en fin de fiche |
+| `afficher-corrige` | `"fin"` | `none` (ou `false`) : aucun corrigé ; `"apres"` : sous chaque énoncé ; `"fin"` (ou `true`) : en fin de fiche |
 | `corriges` | `auto` | corrigés affichés : `auto` (tous), `4`, `"1-6,9,12"`, `(1, "3-5")`, `"obligatoires"`, `"facultatifs"`. Les énoncés sont toujours tous affichés. |
 | `vers-solution` | `true` | clé cliquable sur l'exercice, menant au corrigé (et retour) |
 | `bleu-perso` | `rgb("#0090C8")` | couleur des liens vers l'extérieur : haltère, QR codes, source |
@@ -154,8 +157,8 @@ jusqu'au prochain `reinitialiser-compteur-exercice()`).
 #thematique(alignement: center)[I - Identités remarquables]
 ```
 
-Titre en gras, 14 pt (plus grand si le texte dépasse 11 pt), jamais numéroté, aligné à gauche par défaut
-(`alignement: center` ou `right` sinon). Ce n'est pas un titre Typst
+Titre en gras, 14 pt (plus grand si le texte dépasse 11 pt), jamais numéroté,
+aligné à gauche par défaut (`alignement: center` ou `right` sinon). Ce n'est pas un titre Typst
 (`heading`) : il ne dépend pas des réglages de titres du document (numérotation,
 `show heading`…) et n'apparaît pas dans la table des matières. Les titres
 ordinaires (`=`, `==`…) n'ont, eux, aucun effet sur la feuille de route.
@@ -212,14 +215,14 @@ l'exercice 1, avec ses propres entraînements et corrigés.
 
 ## Historique des versions
 
-Les changements de chaque version sont listés dans [CHANGELOG.md](CHANGELOG.md). nouvelle modif pour m'eddntraîner.
+Les changements de chaque version sont listés dans [CHANGELOG.md](CHANGELOG.md).
 
 ## Remerciements
 
 Un grand merci à **Christophe Poulain**, auteur du package LaTeX
 [ProfMaquette](https://ctan.org/pkg/profmaquette). template-exercices en
-reprend la logique (exercices, feuille de route, entraînements, corrigés) et une partie du vocabulaire. Les idées sont
-les siennes, et les limites de cette adaptation sont les miennes. Pour un outil
+reprend la logique (exercices, feuille de route, entraînements, corrigés) et une
+partie du vocabulaire. Les idées sont les siennes, et les limites de cette adaptation sont les miennes. Pour un outil
 complet, utilisez ProfMaquette.
 
 template-exercices utilise les paquets
