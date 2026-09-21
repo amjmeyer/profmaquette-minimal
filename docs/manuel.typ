@@ -1,11 +1,4 @@
 // Manuel du paquet template-exercices.
-//
-// Compilation (depuis la racine du paquet) : ./tester.sh, ou
-//   typst compile --root . docs/manuel.typ docs/manuel.pdf
-//
-// Le manuel importe le paquet par son fichier source (`../src/lib.typ`) : il
-// documente donc toujours le code actuel, même avant publication. Il n'importe
-// rien d'autre que gentle-clues (encadrés Info, Astuce, Attention).
 
 #import "../src/lib.typ" as paquet
 #import "@preview/gentle-clues:1.3.1": info, tip, warning
@@ -17,7 +10,7 @@
 // OUTILS DU MANUEL
 // ══════════════════════════════════════════════════════════════════════════════
 
-// Un exemple : le code (à gauche) et son rendu (à droite), ou l'un sous l'autre
+// Dès qu'il y aura une illustration, je ferai en sorte d'avoir le rendu à côté
 // avec `dessous: true` pour les exemples larges. Le code est écrit une seule
 // fois : le rendu ne peut pas se désynchroniser de ce qu'on montre.
 //
@@ -162,11 +155,12 @@
 ]
 
 #block(inset: (x: 1.5cm))[
-  #manifeste.name sert à composer des fiches d'exercices avec Typst. On écrit
-  les énoncés et leurs corrigés à la suite, et le paquet se charge du reste :
+  #manifeste.name sert à composer des fiches d'exercices avec Typst : on écrit les énoncés et leurs corrigés au même endroit dans l'éditeur de texte, et le paquet (à l'aide des options) se charge de tout le reste. En résumé :
 
-  - les exercices sont encadrés et numérotés automatiquement ;
-  - chaque exercice est *obligatoire* ou *facultatif* (en gris) ;
+  - les exercices sont numérotés automatiquement via l'ordre d'apparition dans le code ;
+
+  - on peut choisir si un exercice est *obligatoire* ou *facultatif* ;
+
   - une *feuille de route* montre à l'élève le parcours de la fiche : les
     exercices obligatoires, les facultatifs et les étapes à faire valider ;
   - un *entraînement en ligne* s'ouvre d'un clic sur l'exercice, et son QR code
