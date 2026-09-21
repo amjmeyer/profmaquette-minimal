@@ -3,6 +3,7 @@
 #
 #   ./tester.sh           → examples/*.pdf
 #   ./tester.sh --images  → en plus, docs/exemple-*.png (captures pour le README)
+#   Dans les deux cas, compile aussi le manuel : docs/manuel.pdf
 #
 # Principe : on crée un dossier temporaire « preview/template-exercices/<version> » qui pointe vers
 # ce dossier, et on le donne au compilateur (--package-path). Ainsi
@@ -17,7 +18,7 @@ if command -v typst > /dev/null; then
   TYPST=typst
 else
   TYPST=$(ls -d ~/.var/app/com.vscodium.codium/data/codium/extensions/myriad-dreamin.tinymist-*/out/tinymist | tail -1)
-  # Paquets @preview déjà téléchargés par VSCodium (tiaoma).
+  # Paquets @preview déjà téléchargés par VSCodium (tiaoma ; gentle-clues pour le manuel).
   export TYPST_PACKAGE_CACHE_PATH=~/.var/app/com.vscodium.codium/cache/typst/packages
 fi
 
@@ -33,4 +34,6 @@ for f in examples/*.typ; do
     "$TYPST" compile --root . --package-path "$LOCAL" --ppi 80 "$f" "docs/$(basename "${f%.typ}")-{p}.png"
   fi
 done
+echo "Compilation du manuel"
+"$TYPST" compile --root . docs/manuel.typ docs/manuel.pdf
 echo "OK"
