@@ -212,7 +212,7 @@ l'exercice 1, avec ses propres entraînements et corrigés.
 
 ## Historique des versions
 
-Les changements de chaque version sont listés dans [CHANGELOG.md](CHANGELOG.md).
+Les changements de chaque version sont listés dans [CHANGELOG.md](CHANGELOG.md). nouvelle modif pour m'eddntraîner.
 
 ## Remerciements
 
