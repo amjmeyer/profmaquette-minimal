@@ -36,7 +36,11 @@ Première version, sous licence LPPL 1.3c (celle de ProfMaquette).
   - une source longue passe à la ligne ;
   - la feuille de route reste de gauche à droite dans un texte écrit de droite à gauche ;
   - les blocs Automatismes et Correction ne s'affichent qu'une fois par fiche,
-    même appelés à la main dans une maquette.
+    même appelés à la main dans une maquette ;
+  - une maquette ne reprend plus les couleurs (`bleu-perso`, `rouge-perso`,
+    `couleur-obligatoire`) d'une maquette précédente du même document ;
+  - sans maquette, après `reinitialiser-compteur-exercice()`, la Correction ne
+    réaffiche plus les corrigés de la fiche précédente.
 - `maquette(langue: …)` : mots du paquet en français, anglais, allemand, espagnol, italien.
 - `maquette(correction-nouvelle-page: false)` : maquette utilisable dans `columns(…)` ou un cadre.
 - Chaque `maquette` repart de l'exercice 1 (plusieurs fiches dans un même document).

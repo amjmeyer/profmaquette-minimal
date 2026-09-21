@@ -188,7 +188,7 @@ même document, placer les maquettes l'une après l'autre.
 
 `reinitialiser-compteur-exercice()` repart de l'exercice 1 (plusieurs fiches dans
 un même document). Avec `maquette`, c'est inutile : chaque maquette repart de
-l'exercice 1, avec ses propres entraînements et corrigés.
+l'exercice 1, avec ses propres entraînements, corrigés et couleurs.
 
 ## Correspondance avec ProfMaquette
 

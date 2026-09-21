@@ -109,10 +109,11 @@
 //   bleu-perso  : cyan foncé, gris foncé bien contrasté une fois imprimé en noir
 //                 et blanc ;
 //   rouge-perso : Crimson, couleur « CouleurSol=Crimson » de ProfMaquette.
-#let etat-couleurs = state("etat-couleurs-perso", (
+#let couleurs-defaut = (
   bleu: rgb("#0090C8"),
   rouge: rgb("#DC143C"),
-))
+)
+#let etat-couleurs = state("etat-couleurs-perso", couleurs-defaut)
 
 // Accès aux couleurs courantes (à appeler dans un `context`).
 #let bleu-perso() = etat-couleurs.get().bleu
@@ -643,6 +644,7 @@
 #let reinitialiser-compteur-exercice() = {
   etat-historique.update(())
   etat-serie.update(n => n + 1)
+  etat-solutions.update(()) // corrigés de la fiche précédente déjà affichés
   etat-blocs-fin.update((entrainements: false, corriges: false))
   [#metadata(none) #repere-borne]
 }
@@ -893,7 +895,8 @@
 
 // Englobe toute la fiche et la règle en un seul endroit (environnement Maquette).
 // Chaque maquette est indépendante : elle repart de l'exercice 1, sans les
-// entraînements ni les corrigés d'une maquette précédente du même document.
+// entraînements, ni les corrigés, ni les couleurs d'une maquette précédente du
+// même document.
 // Ajoute à la fin les blocs « Automatismes » puis « Correction » : ne plus
 // appeler `liste-entrainements` ni `liste-corriges` à la main.
 //
@@ -959,7 +962,12 @@
     )
   }
   assert(type(taille-qr) == length, message: "maquette : taille-qr doit être une longueur (2cm, 15mm…).")
-  reglages-couleurs(bleu-perso: bleu-perso, rouge-perso: rouge-perso)
+  // Chaque maquette repart des couleurs par défaut (auto) : elle n'hérite pas
+  // de celles d'une maquette précédente du même document.
+  reglages-couleurs(
+    bleu-perso: if bleu-perso == auto { couleurs-defaut.bleu } else { bleu-perso },
+    rouge-perso: if rouge-perso == auto { couleurs-defaut.rouge } else { rouge-perso },
+  )
   let mode = if afficher-corrige == false { none } else if afficher-corrige == true { "fin" } else { afficher-corrige }
   reglages-corriges(
     mode: mode,
@@ -969,7 +977,7 @@
     colonnes: colonnes-corriges,
     nouvelle-page: correction-nouvelle-page,
   )
-  if couleur-obligatoire != auto { couleur-exercices-obligatoires(couleur-obligatoire) }
+  couleur-exercices-obligatoires(if couleur-obligatoire == auto { black } else { couleur-obligatoire })
   style-exercices(style-exercice)
   etat-selection.update((corriges: parser-plage(corriges)))
   etat-fdr.update((couleur: couleur-fdr))
