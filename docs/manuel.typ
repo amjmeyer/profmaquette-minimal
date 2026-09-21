@@ -17,7 +17,11 @@
 // Chaque exemple a sa propre `maquette` (numérotation, corrigés et feuille de
 // route indépendants). Les sauts de page sont neutralisés : ils sont interdits
 // dans un cadre (le bloc « Correction » en demande un).
-#let exemple(dessous: false, code) = {
+//
+// `hauteur` : ne montre que le haut du rendu (ex. seulement la feuille de route).
+// Après chaque exemple, les couleurs du paquet reprennent leurs valeurs par
+// défaut : une maquette transmet ses couleurs aux suivantes (cf. partie 7.3).
+#let exemple(dessous: false, hauteur: none, code) = {
   let source = block(
     width: 100%,
     fill: luma(96%),
@@ -25,11 +29,19 @@
     inset: 8pt,
     text(size: 8.5pt, raw(code.text, lang: "typ", block: true)),
   )
-  let rendu = block(width: 100%, stroke: .5pt + luma(75%), radius: 4pt, inset: 10pt, {
+  let contenu = {
     show pagebreak: none
     set text(size: 9pt)
     eval(code.text, mode: "markup", scope: dictionary(paquet))
-  })
+    paquet.reglages-couleurs(bleu-perso: rgb("#0090C8"), rouge-perso: rgb("#DC143C"))
+    paquet.couleur-exercices-obligatoires(black)
+  }
+  // Rendu partiel : l'exemple est mis en page dans une grande zone (le paquet
+  // mesure la place disponible), puis seul son haut est montré.
+  if hauteur != none {
+    contenu = box(width: 100%, height: hauteur, clip: true, block(width: 100%, height: 25cm, contenu))
+  }
+  let rendu = block(width: 100%, stroke: .5pt + luma(75%), radius: 4pt, inset: 10pt, contenu)
   block(breakable: false, above: 1.2em, below: 1.2em, if dessous {
     stack(spacing: 6pt, source, rendu)
   } else {
@@ -53,15 +65,6 @@
     linebreak()
     description
   },
-)
-
-// Paragraphe encore à rédiger (à supprimer au fur et à mesure).
-#let a-ecrire(texte) = block(
-  width: 100%,
-  inset: 8pt,
-  radius: 4pt,
-  stroke: (paint: luma(70%), dash: "dashed"),
-  text(fill: luma(45%), style: "italic")[À écrire — #texte],
 )
 
 // ─── Historique des versions, lu dans CHANGELOG.md ───────────────────────────
@@ -129,6 +132,19 @@
 #set text(lang: "fr", size: 10.5pt)
 #set par(justify: true)
 #set heading(numbering: "1.1", supplement: [partie])
+// Couleurs des titres, dans le texte comme dans le sommaire : parties en
+// crimson, sous-parties en navy.
+#let couleur-partie = rgb("#DC143C")
+#let couleur-sous-partie = navy
+#show heading.where(level: 1): set text(fill: couleur-partie)
+#show heading.where(level: 2): set text(fill: couleur-sous-partie)
+// Renvois (« partie 7 », « partie 7.1 ») dans la couleur de la partie visée.
+#show ref: it => {
+  let cible = it.element
+  if cible != none and cible.func() == heading {
+    text(fill: if cible.level == 1 { couleur-partie } else { couleur-sous-partie }, it)
+  } else { it }
+}
 #show heading.where(level: 1): it => {
   pagebreak(weak: true)
   v(1em)
@@ -183,10 +199,10 @@
 
 #pagebreak()
 // Sommaire : chaque ligne est un lien vers sa section (comme les signets du
-// PDF). Parties en crimson, sous-parties en navy.
+// PDF), dans les couleurs des titres.
 #{
-  show outline.entry.where(level: 1): set text(fill: rgb("#DC143C"), weight: "bold")
-  show outline.entry.where(level: 2): set text(fill: navy)
+  show outline.entry.where(level: 1): set text(fill: couleur-partie, weight: "bold")
+  show outline.entry.where(level: 2): set text(fill: couleur-sous-partie)
   outline(depth: 2)
 }
 
@@ -252,7 +268,7 @@ lien vers son corrigé ; le titre du corrigé ramène à l'exercice.
 )
 
 Les autres fonctions (`reglages-couleurs`, `liste-corriges`…) servent seulement
-à se passer de `maquette` (@avance).
+à se passer de `maquette` (@sans-maquette).
 
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -500,15 +516,15 @@ Quatre réglages de la maquette modifient le bloc « Correction » :
 ]
 #parametre("correction-nouvelle-page", ("bool",), `true`)[
   `false` : le bloc suit la fiche, sans saut de page. Indispensable pour une
-  maquette placée dans `columns(…)` ou dans un cadre (@avance).
+  maquette placée dans `columns(…)` ou dans un cadre (@colonnes).
 ]
 #parametre("titre-corrige", ("content", "auto"), `auto`)[
   Début du titre de chaque corrigé ; `auto` : « Corrigé de l'exercice », ou sa
-  traduction (@avance).
+  traduction (@langue).
 ]
 #parametre("couleur-sol", ("color", "auto"), `auto`)[
   Couleur des titres « Correction » et « Corrigé de l'exercice N » ; `auto` :
-  la couleur de navigation `rouge-perso` (@maquette).
+  la couleur de navigation `rouge-perso` (@couleurs).
 ]
 
 == Corrigés dans des fichiers séparés
@@ -537,30 +553,109 @@ et la fiche l'importe :
 
 = La feuille de route <fdr>
 
-== Afficher le schéma
+La feuille de route montre à l'élève le parcours de la fiche. Elle reprend la
+feuille de route de ProfMaquette (clé `FdR`, commande `\AfficheFdR`).
 
-#a-ecrire[`#afficher-fdr` (sans parenthèses) ; route du bas = obligatoires
-(disques noirs), ligne du haut = facultatifs (disques blancs), disques
-cliquables. Exemple : trois exercices dont un facultatif.]
+== Afficher le schéma <fdr-schema>
 
-== Thématiques et coches
+`#afficher-fdr` dessine le schéma de tous les exercices de la maquette. On le
+place en général avant le premier exercice, centré avec
+`#align(center, afficher-fdr)`.
 
-#a-ecrire[`#thematique[…]` : titre en gras 14 pt (plus grand au-delà d'un texte
-de 11 pt), non numéroté, aligné avec `alignement`, qui ferme la thématique
-précédente et place une coche. Exemple : deux thématiques.]
+- Les exercices obligatoires forment la *route du bas* : des disques pleins,
+  numérotés, reliés par un trait épais qui se termine par une flèche.
+- Les exercices facultatifs sont sur la *ligne du haut*, en disques blancs.
+- Chaque disque est un lien vers son exercice.
+
+#exemple(```typ
+#maquette[
+  #align(center, afficher-fdr)
+  #exercice[Énoncé 1.]
+  #exercice(obligatoire: false)[
+    Énoncé 2.
+  ]
+  #exercice[Énoncé 3.]
+]
+```)
+
+#warning(title: "Sans parenthèses")[
+  `afficher-fdr` est un contenu, pas une fonction : on écrit `#afficher-fdr`, et
+  non `#afficher-fdr()`.
+]
+
+Le schéma ne montre que les exercices de la maquette qui le contient. Sa
+couleur se règle avec `maquette(couleur-fdr: …)` (@couleurs). Si la route est
+plus large que la page, elle passe à la ligne entre deux thématiques.
+
+== Thématiques et coches <fdr-thematiques>
+
+Une fiche se découpe souvent en thématiques : « Factoriser », « Résoudre »…
+`#thematique[…]` écrit le titre d'une thématique, et *ferme la thématique
+précédente* : sur la feuille de route, une coche suit son dernier exercice. Une
+coche finale termine toujours la route.
+
+L'élève fait les exercices de la route jusqu'à la coche, puis demande la
+validation. L'enseignant peut alors lui proposer les exercices facultatifs de
+la thématique, sur la ligne du haut, avant qu'il poursuive la route.
+
+#exemple(```typ
+#maquette[
+  #align(center, afficher-fdr)
+  #thematique[Factoriser]
+  #exercice[Énoncé 1.]
+  #exercice(obligatoire: false)[
+    Énoncé 2.
+  ]
+  #thematique[Résoudre]
+  #exercice[Énoncé 3.]
+]
+```)
+
+Le titre est en gras, en 14 pt (plus grand si le texte de la fiche dépasse
+11 pt), et n'est jamais numéroté. Il est aligné à gauche, sauf avec
+`#thematique(alignement: center)[…]` ou `alignement: right`. Une thématique
+placée avant le premier exercice ne place pas de coche.
 
 #info(title: "Pourquoi pas les titres Typst ?")[
   `thematique` n'est pas un `heading` : les réglages de titres du document
-  (numérotation, `show heading`) ne la modifient pas, et les titres ordinaires
-  n'ont aucun effet sur la feuille de route.
+  (numérotation, `show heading`) ne la modifient pas, elle n'apparaît pas dans
+  une table des matières, et les titres ordinaires (`=`, `==`…) n'ont aucun
+  effet sur la feuille de route.
 ]
 
-== Comment se calculent les coches
+== Comment se calculent les coches <fdr-coches>
 
-#a-ecrire[découpage en tronçons, une coche par tronçon, obligatoires en bas,
-facultatifs en haut, lignes complétées par des vides ; `stop: true` pour une
-coche à la main ; passage à la ligne entre deux tronçons si la route est trop
-large. Illustrer avec l'exemple de la documentation de ProfMaquette.]
+Les coches découpent la route en *tronçons*. Dans chaque tronçon :
+
++ les exercices obligatoires vont sur la route du bas, dans l'ordre de la fiche ;
++ les exercices facultatifs vont sur la ligne du haut, dans l'ordre de la fiche ;
++ la plus courte des deux lignes est complétée par des cases vides ;
++ la ligne du haut redescend sur la route à la coche du tronçon.
+
+Voici l'exemple de la documentation de ProfMaquette : quatorze exercices, en
+deux thématiques. Seul le schéma est montré.
+
+#exemple(dessous: true, hauteur: 1.6cm, ```typ
+#let obl = exercice[…]
+#let fac = exercice(obligatoire: false)[…]
+#maquette[
+  #align(center, afficher-fdr)
+  #thematique[Première thématique]
+  #obl #obl #fac #fac #obl #obl #fac #obl   // exercices 1 à 8
+  #thematique[Seconde thématique]
+  #obl #obl #fac #obl #fac #fac             // exercices 9 à 14
+]
+```)
+
+La route du bas contient 1, 2, 5, 6, 8, une coche, puis 9, 10, 12 et la coche
+finale. La ligne du haut contient 3, 4 et 7 au-dessus du premier tronçon, 11, 13
+et 14 au-dessus du second.
+
+#tip(title: "Une coche à la main")[
+  `exercice(stop: true)` ajoute une coche juste après cet exercice, sans
+  thématique. C'est rarement utile, mais cela reproduit la clé `Stop` de
+  ProfMaquette.
+]
 
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -569,10 +664,37 @@ large. Illustrer avec l'exemple de la documentation de ProfMaquette.]
 
 = Les entraînements en ligne <entrainements>
 
-#a-ecrire[bloc Automatismes : flottant en bas de la dernière page, ou à la suite
-de la fiche s'il est trop haut ; `colonnes-automatismes`, `taille-qr` (agrandi
-automatiquement si l'adresse est trop longue) ; QR codes et haltère dans la
-couleur `bleu-perso`.]
+Un exercice avec `entrainement: "https://…"` porte une haltère cliquable sur son
+filet droit (@exercices). Toutes les adresses de la fiche sont aussi regroupées
+en QR codes dans le bloc « Automatismes », ajouté automatiquement par la
+maquette : l'élève qui travaille sur papier y accède avec son téléphone.
+
+#exemple(```typ
+#maquette(
+  colonnes-automatismes: 2,
+  taille-qr: 1.5cm,
+)[
+  #exercice(entrainement: "https://typst.app")[
+    Tables de multiplication.
+  ]
+  #exercice[Sans entraînement.]
+  #exercice(entrainement: "https://ctan.org")[
+    Fractions.
+  ]
+]
+```)
+
+Chaque QR code porte le numéro de son exercice, et il est lui aussi cliquable.
+
+- *Où ?* Le bloc se place en bas de la dernière page s'il reste de la place,
+  sinon en bas de la page suivante. S'il occupe plus des trois quarts d'une
+  page, il suit simplement la fiche et peut se couper entre deux pages.
+- *Combien par ligne ?* `colonnes-automatismes` (3 par défaut).
+- *Quelle taille ?* `taille-qr` (2 cm par défaut) : tous les QR codes ont la même
+  taille. Une adresse trop longue pour rester lisible à cette taille donne un
+  QR code agrandi automatiquement.
+- *Quelle couleur ?* Celle des liens vers l'extérieur, `bleu-perso` (@couleurs),
+  comme l'haltère et la source.
 
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -581,15 +703,110 @@ couleur `bleu-perso`.]
 
 = Les réglages de la maquette <maquette>
 
-== Couleurs
+Tous les réglages de la fiche se donnent à `maquette`, en un seul endroit :
 
-#a-ecrire[`bleu-perso` (liens extérieurs), `rouge-perso` (navigation),
-`couleur-sol`, `couleur-obligatoire`, `couleur-fdr`. Exemple : mêmes exercices
-avec d'autres couleurs.]
+```typ
+#maquette(afficher-corrige: "fin", corriges: "1-6,9,12")[
+  … la fiche …
+]
+```
 
-== Tous les paramètres
+ou, sans crochets autour de toute la fiche, en tête du fichier :
 
-#a-ecrire[une fiche `#parametre` par paramètre de `maquette`.]
+```typ
+#show: maquette.with(afficher-corrige: "fin", corriges: "1-6,9,12")
+```
+
+== Couleurs <couleurs>
+
+Le paquet utilise deux couleurs, chacune avec un rôle :
+
+- `bleu-perso` pour ce qui mène *hors* du document : haltère, QR codes, source ;
+- `rouge-perso` pour ce qui permet de *naviguer* dans le document : clé, titres
+  des corrigés.
+
+Trois autres couleurs complètent les réglages : `couleur-sol` pour les titres des
+corrigés (par défaut `rouge-perso`), `couleur-obligatoire` pour les exercices
+obligatoires (par défaut noir) et `couleur-fdr` pour la feuille de route (par
+défaut noir).
+
+#exemple(```typ
+#maquette(
+  bleu-perso: green.darken(20%),
+  rouge-perso: purple,
+  couleur-obligatoire: navy,
+  couleur-fdr: navy,
+  afficher-corrige: "apres",
+)[
+  #align(center, afficher-fdr)
+  #exercice(
+    entrainement: "https://typst.app",
+    source: "p. 12",
+  )[Énoncé.]
+  #solution[Corrigé.]
+]
+```)
+
+Toute couleur Typst convient : `blue`, `rgb("#1E90FF")`, `luma(40%)`,
+`green.darken(20%)`… Une valeur qui n'est pas une couleur arrête la
+compilation avec un message clair.
+
+== Tous les paramètres <parametres-maquette>
+
+#parametre("afficher-corrige", ("str", "none", "bool"), `"fin"`)[
+  Où afficher les corrigés : `"fin"` (bloc Correction en fin de fiche),
+  `"apres"` (sous chaque énoncé) ou `none` (aucun) ; `true` vaut `"fin"`,
+  `false` vaut `none` (@corriges).
+]
+#parametre("corriges", ("auto", "int", "str", "array"), `auto`)[
+  Corrigés affichés : `auto` (tous), `4`, `"1-6,9,12"`, `(1, "3-5")`,
+  `"obligatoires"`, `"facultatifs"` ou `()` (aucun).
+]
+#parametre("vers-solution", ("bool",), `true`)[
+  Clé cliquable sur l'exercice, qui mène au corrigé (et retour).
+]
+#parametre("titre-corrige", ("content", "auto"), `auto`)[
+  Début du titre de chaque corrigé ; `auto` : « Corrigé de l'exercice », ou sa
+  traduction (@langue).
+]
+#parametre("colonnes-corriges", ("int",), `1`)[
+  Nombre de colonnes du bloc Correction.
+]
+#parametre("correction-nouvelle-page", ("bool",), `true`)[
+  Le bloc Correction commence sur une nouvelle page ; `false` : il suit la
+  fiche (@colonnes).
+]
+#parametre("style-exercice", ("str",), `"fond-blanc"`)[
+  Style des cadres : `"fond-blanc"`, `"etiquette-encadree"`, `"bandeau"` ou
+  `"etiquette-pleine"` (@exercices).
+]
+#parametre("colonnes-automatismes", ("int",), `3`)[
+  Nombre de QR codes par ligne dans le bloc Automatismes (@entrainements).
+]
+#parametre("taille-qr", ("length",), `2cm`)[
+  Côté des QR codes, agrandi si l'adresse est trop longue pour rester lisible.
+]
+#parametre("bleu-perso", ("color", "auto"), `auto`)[
+  Couleur des liens vers l'extérieur ; `auto` : `rgb("#0090C8")`.
+]
+#parametre("rouge-perso", ("color", "auto"), `auto`)[
+  Couleur de navigation ; `auto` : `rgb("#DC143C")` (Crimson, comme dans
+  ProfMaquette).
+]
+#parametre("couleur-sol", ("color", "auto"), `auto`)[
+  Couleur des titres « Correction » et « Corrigé de l'exercice N » ; `auto` :
+  `rouge-perso`.
+]
+#parametre("couleur-obligatoire", ("color", "auto"), `auto`)[
+  Couleur des exercices obligatoires ; `auto` : noir.
+]
+#parametre("couleur-fdr", ("color",), `black`)[
+  Couleur de la feuille de route.
+]
+#parametre("langue", ("str", "auto"), `auto`)[
+  Langue des mots du paquet : `"fr"`, `"en"`, `"de"`, `"es"` ou `"it"`
+  (@langue).
+]
 
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -598,26 +815,123 @@ avec d'autres couleurs.]
 
 = Usages avancés <avance>
 
-== Langue
+== Langue <langue>
 
-#a-ecrire[`langue` : mots du paquet en français, anglais, allemand, espagnol ou
-italien ; piège de `lang: "en"`, langue par défaut de Typst.]
+Les mots écrits par le paquet existent en cinq langues. Avec `langue: auto`, le
+paquet suit la langue du document (`#set text(lang: …)`).
 
-== Maquette dans des colonnes ou un cadre
+#table(
+  columns: 6,
+  stroke: none,
+  inset: (x: 5pt, y: 4pt),
+  table.hline(stroke: .6pt),
+  table.header[][`"fr"`][`"en"`][`"de"`][`"es"`][`"it"`],
+  table.hline(stroke: .4pt),
+  [Exercice], [Exercice], [Exercise], [Aufgabe], [Ejercicio], [Esercizio],
+  [Correction], [Correction], [Solutions], [Lösungen], [Soluciones], [Soluzioni],
+  [Automatismes], [Automatismes], [Practice], [Übungen], [Práctica], [Allenamento],
+  [QR code], [Exo], [Ex.], [Aufg.], [Ej.], [Es.],
+  table.hline(stroke: .6pt),
+)
 
-#a-ecrire[`correction-nouvelle-page: false`, sinon erreur « pagebreaks are not
-allowed inside of containers ».]
+#exemple(```typ
+#set text(lang: "de")
+#maquette(afficher-corrige: "apres")[
+  #exercice(titre: "Brüche")[
+    Berechne $1/2 + 1/3$.
+  ]
+  #solution[$5/6$]
+]
+```)
 
-== Plusieurs fiches dans un même document
+#warning(title: "Pour l'anglais, écrire langue: \"en\"")[
+  L'anglais est la langue par défaut de Typst : un document sans
+  `#set text(lang: …)` est donc « en anglais » sans le savoir. Pour ne pas
+  traduire ces documents par surprise, `langue: auto` donne alors le français.
+  Pour une fiche en anglais, il faut écrire `maquette(langue: "en")`.
+]
 
-#a-ecrire[chaque `maquette` repart de l'exercice 1 ; une maquette ne peut pas en
-contenir une autre.]
+Une langue inconnue du paquet donne le français.
 
-== Sans `maquette`
+== Maquette dans des colonnes ou un cadre <colonnes>
 
-#a-ecrire[`reglages-couleurs`, `reglages-corriges`,
-`couleur-exercices-obligatoires`, puis `liste-entrainements` et
-`liste-corriges` en fin de fiche ; `reinitialiser-compteur-exercice`.]
+Par défaut, le bloc Correction commence sur une nouvelle page. Or Typst
+interdit les sauts de page dans un conteneur : une maquette placée dans
+`#columns(…)`, dans un `#block` ou dans une case de tableau provoque l'erreur
+« pagebreaks are not allowed inside of containers ». Il suffit alors de
+demander que la Correction suive la fiche :
+
+#exemple(```typ
+#columns(2)[
+  #maquette(
+    afficher-corrige: "fin",
+    correction-nouvelle-page: false,
+  )[
+    #exercice[Énoncé 1.]
+    #solution[Corrigé 1.]
+    #exercice[Énoncé 2.]
+    #solution[Corrigé 2.]
+  ]
+]
+```)
+
+== Plusieurs fiches dans un même document <plusieurs-fiches>
+
+Il suffit de placer les maquettes l'une après l'autre. Chaque maquette repart
+de l'exercice 1, avec sa propre feuille de route, ses propres QR codes et ses
+propres corrigés.
+
+#exemple(```typ
+#maquette(afficher-corrige: "apres")[
+  #exercice(titre: "Fiche A")[…]
+  #solution[Corrigé A.]
+]
+#maquette(afficher-corrige: "apres")[
+  #exercice(titre: "Fiche B")[…]
+  #solution[Corrigé B.]
+]
+```)
+
+#warning(title: "Les couleurs passent d'une maquette à la suivante")[
+  Les réglages `bleu-perso`, `rouge-perso` et `couleur-obligatoire` d'une
+  maquette restent valables dans les maquettes suivantes du même document, tant
+  qu'elles ne les redonnent pas. Pour des fiches de couleurs différentes,
+  donner ces réglages à chaque maquette.
+]
+
+Une maquette ne peut pas en contenir une autre : la compilation s'arrête alors
+avec un message clair.
+
+== Sans `maquette` <sans-maquette>
+
+`maquette` appelle elle-même les fonctions ci-dessous. On peut s'en passer et
+les appeler soi-même, avant le premier exercice :
+
+- `reglages-corriges(mode: …, vers-solution: …, couleur-sol: …, titre-corrige: …,
+  colonnes: …, nouvelle-page: …)`, où `mode` vaut `none`, `"apres"` ou `"fin"` ;
+- `reglages-couleurs(bleu-perso: …, rouge-perso: …)` ;
+- `couleur-exercices-obligatoires(couleur)` ;
+- `style-exercices(style)`.
+
+Il faut alors ajouter soi-même les blocs de fin, une seule fois et dans cet
+ordre :
+
+```typ
+#reglages-corriges(mode: "fin")
+#exercice(entrainement: "https://typst.app")[Énoncé.]
+#solution[Corrigé.]
+#liste-entrainements(colonnes: 3, taille-qr: 2cm)
+#liste-corriges()
+```
+
+#warning(title: "Sans réglage, aucun corrigé")[
+  Sans `maquette` ni `reglages-corriges`, aucun corrigé n'est affiché : c'est
+  `maquette` qui choisit `afficher-corrige: "fin"` par défaut.
+]
+
+`reinitialiser-compteur-exercice()` repart de l'exercice 1, pour commencer une
+nouvelle fiche dans le même document. Avec `maquette`, c'est inutile
+(@plusieurs-fiches).
 
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -628,12 +942,48 @@ contenir une autre.]
 
 == Correspondance avec ProfMaquette
 
-#a-ecrire[tableau des clés ProfMaquette et de leur équivalent.]
+Pour qui connaît ProfMaquette, voici l'équivalent de ses clés et commandes.
+
+#table(
+  columns: (1fr, 1fr),
+  stroke: none,
+  inset: (x: 6pt, y: 4pt),
+  table.hline(stroke: .6pt),
+  table.header[*ProfMaquette*][*#manifeste.name*],
+  table.hline(stroke: .4pt),
+  [environnement `Maquette`], [`maquette`],
+  [clé `FdR`, `\AfficheFdR`], [`afficher-fdr`],
+  [`Route`], [`obligatoire: true` (défaut)],
+  [`Stop`], [`#thematique[…]` (ou `stop: true`)],
+  [`AEntretenir`, zone Entrainement], [`entrainement:`, bloc Automatismes],
+  [`Source`], [`source:`],
+  [environnement `Solution`], [`solution`],
+  [`CorrigeApres` / `CorrigeFin`], [`afficher-corrige: "apres"` / `"fin"`],
+  [`VersSolution`], [`vers-solution: true`],
+  [`PasCorrige`], [`pas-corrige: true`],
+  [`TitreSolution`, `TitreCorrige`], [`titre-solution:`, `titre-corrige:`],
+  [`CouleurSol`, `Colonnes`], [`couleur-sol:`, `colonnes-corriges:`],
+  table.hline(stroke: .6pt),
+)
+
+Les types de documents de ProfMaquette, l'en-tête de la feuille de route et les
+environnements `Reponse` ou `Indice` n'ont pas d'équivalent.
 
 == Remerciements
 
-#a-ecrire[Christophe Poulain (ProfMaquette), paquet tiaoma, icônes Font
-Awesome Free (CC BY 4.0), gentle-clues (ce manuel).]
+Un grand merci à *Christophe Poulain*, auteur du package LaTeX
+#link("https://ctan.org/pkg/profmaquette")[ProfMaquette] : #manifeste.name en
+reprend la logique (exercices, feuille de route, entraînements, corrigés) et une
+partie du vocabulaire. Les idées sont les siennes, et les limites de cette
+adaptation sont les miennes. Pour un outil complet, utilisez ProfMaquette.
+
+#manifeste.name utilise le paquet
+#link("https://typst.app/universe/package/tiaoma")[tiaoma] pour les QR codes. Les
+icônes (haltère, clé, coche) sont des dessins de
+#link("https://fontawesome.com")[Font Awesome Free], sous licence CC BY 4.0. Ce
+manuel utilise aussi le paquet
+#link("https://typst.app/universe/package/gentle-clues")[gentle-clues] pour ses
+encadrés.
 
 
 // ══════════════════════════════════════════════════════════════════════════════

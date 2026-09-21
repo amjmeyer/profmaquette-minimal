@@ -43,4 +43,5 @@ Première version, sous licence LPPL 1.3c (celle de ProfMaquette).
 - Couleurs `bleu-perso` et `rouge-perso` modifiables.
 - `maquette(style-exercice: …)` : quatre styles de cadre, `"fond-blanc"` (défaut),
   `"etiquette-encadree"`, `"bandeau"` et `"etiquette-pleine"` ; `style-exercices(…)` sans maquette.
-- Manuel `docs/manuel.pdf` (en cours de rédaction), qui reprend cet historique à la fin.
+- Manuel `docs/manuel.pdf`, avec un exemple et son rendu pour chaque fonctionnalité ; il
+  reprend cet historique à la fin.
