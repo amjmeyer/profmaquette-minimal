@@ -45,7 +45,7 @@
 //
 //   #import "@preview/template-exercices:0.1.0": maquette, exercice, solution, afficher-fdr
 //
-//   #maquette(afficher-corrige: "fin", corriges: "1-6,9,12")[
+//   #maquette(localisation-correction: "fin", liste-corriges: "1-6,9,12")[
 //     #afficher-fdr
 //     #exercice(titre: "Factoriser", entrainement: "https://…", source: "Calculs 30.1")[
 //       Énoncé…
@@ -59,7 +59,7 @@
 // Fonctions publiques (détaillées dans la section « API publique »), les seules
 // exportées par `lib.typ` — tout le reste du fichier est interne au paquet,
 // y compris reglages-couleurs, reglages-corriges, couleur-exercices-obligatoires,
-// style-exercices, liste-entrainements et liste-corriges : `maquette` seule les
+// style-exercices, liste-entrainements et bloc-corriges : `maquette` seule les
 // appelle, via ses propres paramètres :
 //   maquette                        réglages de la fiche + blocs de fin automatiques
 //   exercice / solution             un énoncé / son corrigé
@@ -121,7 +121,7 @@
 // ══════════════════════════════════════════════════════════════════════════════
 
 // Historique des exercices rencontrés : un dictionnaire par exercice
-// (obligatoire, pas-corrige, titre-solution, titre, entrainement). Sa longueur donne le numéro de
+// (obligatoire, pas-corrige, titre-complement, titre, entrainement). Sa longueur donne le numéro de
 // l'exercice courant.
 #let etat-historique = state("etat-historique-exercices", ())
 
@@ -131,13 +131,10 @@
 #let etat-serie = state("etat-serie-exercices", 0)
 
 // Réglages des corrigés (cf. `reglages-corriges`). Par défaut : aucun corrigé.
-// couleur-sol : auto = lien-interne.
 #let etat-reglages-corriges = state("etat-reglages-corriges", (
   mode: none,
   vers-solution: false,
-  couleur-sol: auto,
-  titre-corrige: auto,
-  colonnes: 1,
+  titre-corriges: auto,
   nouvelle-page: true,
 ))
 
@@ -165,14 +162,14 @@
 #let repere-thematique = <template-exercices-fdr-thematique>
 
 // Corrigés en mode "fin" (numero, id, titre, body), restitués par
-// `liste-corriges`. Les entraînements, eux, sont lus dans `etat-historique`.
+// `bloc-corriges`. Les entraînements, eux, sont lus dans `etat-historique`.
 #let etat-solutions = state("etat-solutions", ())
 
 // Nombre de maquettes ouvertes à cet endroit du document (1 dans une maquette).
 #let etat-profondeur = state("etat-profondeur-maquette", 0)
 
 // Blocs de fin déjà affichés pour la fiche en cours : un second appel (par
-// exemple `liste-corriges()` écrit à la main dans une maquette, qui l'appelle
+// exemple `bloc-corriges()` écrit à la main dans une maquette, qui l'appelle
 // déjà) n'affiche rien.
 #let etat-blocs-fin = state("etat-blocs-fin", (entrainements: false, corriges: false))
 
@@ -224,12 +221,9 @@
   else { numero in sel }
 }
 
-// Couleur des titres de corrigés (à appeler dans un `context`).
-#let couleur-sol(reglages) = if reglages.couleur-sol == auto { couleur-lien-interne() } else { reglages.couleur-sol }
-
 // Infos de l'exercice courant (le dernier de l'historique). À appeler dans un
 // `context`. Renvoie : numero, id (identifiant unique dans le document, pour les
-// liens), corrige (son corrigé doit-il apparaître ?), titre-solution.
+// liens), corrige (son corrigé doit-il apparaître ?), titre-complement.
 #let infos-exercice() = {
   let hist = etat-historique.get()
   let numero = hist.len()
@@ -238,7 +232,7 @@
     numero: numero,
     id: str(etat-serie.get()) + "-" + str(numero),
     corrige: not ex.pas-corrige and est-selectionne(numero, ex.obligatoire, etat-selection.get().corriges),
-    titre-solution: ex.titre-solution,
+    titre-complement: ex.titre-complement,
   )
 }
 
@@ -254,11 +248,11 @@
 // Langue inconnue : français.
 #let etat-langue = state("etat-langue-exercices", auto)
 #let termes = (
-  fr: (exercice: "Exercice", correction: "Correction", automatismes: "Automatismes", exo: "Exo", titre-corrige: "Corrigé de l'exercice"),
-  en: (exercice: "Exercise", correction: "Solutions", automatismes: "Practice", exo: "Ex.", titre-corrige: "Solution to exercise"),
-  de: (exercice: "Aufgabe", correction: "Lösungen", automatismes: "Übungen", exo: "Aufg.", titre-corrige: "Lösung zu Aufgabe"),
-  es: (exercice: "Ejercicio", correction: "Soluciones", automatismes: "Práctica", exo: "Ej.", titre-corrige: "Solución del ejercicio"),
-  it: (exercice: "Esercizio", correction: "Soluzioni", automatismes: "Allenamento", exo: "Es.", titre-corrige: "Soluzione dell'esercizio"),
+  fr: (exercice: "Exercice", correction: "Correction", automatismes: "Automatismes", exo: "Exo", titre-corriges: "Corrigé de l'exercice"),
+  en: (exercice: "Exercise", correction: "Solutions", automatismes: "Practice", exo: "Ex.", titre-corriges: "Solution to exercise"),
+  de: (exercice: "Aufgabe", correction: "Lösungen", automatismes: "Übungen", exo: "Aufg.", titre-corriges: "Lösung zu Aufgabe"),
+  es: (exercice: "Ejercicio", correction: "Soluciones", automatismes: "Práctica", exo: "Ej.", titre-corriges: "Solución del ejercicio"),
+  it: (exercice: "Esercizio", correction: "Soluzioni", automatismes: "Allenamento", exo: "Es.", titre-corriges: "Soluzione dell'esercizio"),
 )
 // À appeler dans un `context`.
 #let terme(cle) = {
@@ -415,8 +409,8 @@
 // titre (en couleur, le texte restant en noir) ramène à l'exercice.
 #let rendu-corrige(item, reglages, rendre: c => c) = bloc-neutre(width: 100%, above: 1.4em, below: 1em)[
   #metadata("corrige-" + item.id)
-  #let titre = text(weight: "bold", fill: couleur-sol(reglages))[
-    #if reglages.titre-corrige == auto { terme("titre-corrige") } else { reglages.titre-corrige } #item.numero#if item.titre != none [ : #item.titre]
+  #let titre = text(weight: "bold", fill: couleur-lien-interne())[
+    #if reglages.titre-corriges == auto { terme("titre-corriges") } else { reglages.titre-corriges } #item.numero#if item.titre != none [ : #item.titre]
   ]
   // Titre dans son propre bloc : le corrigé commence à la ligne suivante, et le
   // titre n'est jamais laissé seul en bas de page (sticky).
@@ -443,37 +437,26 @@
 ))
 
 // Réglages des corrigés (équivalent des clés de l'environnement Maquette).
-//   mode          : none (aucun corrigé) | "apres" (CorrigeApres) | "fin" (CorrigeFin)
-//   vers-solution : clé cliquable exercice ↔ corrigé (VersSolution)
-//   couleur-sol   : couleur des titres « Correction » et « Corrigé de l'exercice N »
-//                   (auto = lien-interne)
-//   titre-corrige : début du titre de chaque corrigé (TitreCorrige ; auto =
-//                   « Corrigé de l'exercice », ou sa traduction)
-//   colonnes      : nombre de colonnes de la Correction en fin de fiche (Colonnes)
-//   nouvelle-page : la Correction commence sur une nouvelle page (false : elle
-//                   suit la fiche, indispensable dans `columns(…)` ou un cadre)
+//   mode           : none (aucun corrigé) | "apres" (CorrigeApres) | "fin" (CorrigeFin)
+//   vers-solution  : clé cliquable exercice ↔ corrigé (VersSolution)
+//   titre-corriges : début du titre de chaque corrigé (TitreCorrige ; auto =
+//                    « Corrigé de l'exercice », ou sa traduction)
+//   nouvelle-page  : la Correction commence sur une nouvelle page (false : elle
+//                    suit la fiche, indispensable dans `columns(…)` ou un cadre)
 #let reglages-corriges(
   mode: "fin",
   vers-solution: true,
-  couleur-sol: auto,
-  titre-corrige: auto,
-  colonnes: 1,
+  titre-corriges: auto,
   nouvelle-page: true,
 ) = {
   assert(
     mode in (none, "apres", "fin"),
     message: "reglages-corriges : mode doit valoir none, \"apres\" ou \"fin\".",
   )
-  assert(
-    type(colonnes) == int and colonnes >= 1,
-    message: "Correction : le nombre de colonnes doit être un entier supérieur ou égal à 1.",
-  )
   etat-reglages-corriges.update((
     mode: mode,
     vers-solution: vers-solution,
-    couleur-sol: couleur-sol,
-    titre-corrige: titre-corrige,
-    colonnes: colonnes,
+    titre-corriges: titre-corriges,
     nouvelle-page: nouvelle-page,
   ))
 }
@@ -495,26 +478,26 @@
 // ─── Exercices et corrigés ───────────────────────────────────────────────────
 
 // Un exercice, numéroté automatiquement.
-//   titre          : titre affiché après « Exercice N : » (none : pas de titre)
-//   entrainement   : URL d'un entraînement en ligne → haltère sur le filet droit
-//                    et QR code dans le bloc « Automatismes » (clé AEntretenir)
-//   source         : texte libre sur le filet bas, ex. les exercices à faire dans
-//                    la ressource du QR code (clé Source)
-//   obligatoire    : true = couleur des obligatoires (clés Route / Stop) ;
-//                    false = gris (exercice facultatif)
-//   pas-corrige    : true = jamais de corrigé, même si un `#solution` suit
-//                    (clé PasCorrige)
-//   titre-solution : complément du titre du corrigé (clé TitreSolution)
-//   stop           : true = coche de validation après cet exercice sur la feuille
-//                    de route (clé Stop). Rarement utile : `thematique` place
-//                    déjà une coche (cf. `afficher-fdr`).
+//   titre            : titre affiché après « Exercice N : » (none : pas de titre)
+//   entrainement     : URL d'un entraînement en ligne → haltère sur le filet droit
+//                      et QR code dans le bloc « Automatismes » (clé AEntretenir)
+//   source           : texte libre sur le filet bas, ex. les exercices à faire dans
+//                      la ressource du QR code (clé Source)
+//   obligatoire      : true = couleur des obligatoires (clés Route / Stop) ;
+//                      false = gris (exercice facultatif)
+//   pas-corrige      : true = jamais de corrigé, même si un `#solution` suit
+//                      (clé PasCorrige)
+//   titre-complement : complément du titre du corrigé (clé TitreSolution)
+//   stop             : true = coche de validation après cet exercice sur la feuille
+//                      de route (clé Stop). Rarement utile : `thematique` place
+//                      déjà une coche (cf. `afficher-fdr`).
 #let exercice(
   titre: none,
   entrainement: none,
   source: none,
   obligatoire: true,
   pas-corrige: false,
-  titre-solution: none,
+  titre-complement: none,
   stop: false,
   body,
 ) = {
@@ -522,7 +505,7 @@
   etat-historique.update(h => h + ((
     obligatoire: obligatoire,
     pas-corrige: pas-corrige,
-    titre-solution: titre-solution,
+    titre-complement: titre-complement,
     titre: titre,
     entrainement: entrainement,
   ),))
@@ -606,7 +589,7 @@
 
 // Corrigé de l'exercice qui précède (environnement Solution). Ignoré si le mode
 // est none, si l'exercice porte `pas-corrige: true`, ou s'il est hors de la
-// sélection `corriges`. Le contenu peut venir d'un fichier séparé :
+// sélection `liste-corriges`. Le contenu peut venir d'un fichier séparé :
 //   #import "CH_01_EXO_01.typ" as exo01
 //   #solution(exo01.corrige)
 #let solution(body) = protege(rendre => context {
@@ -614,7 +597,7 @@
   if reglages.mode == none or etat-historique.get().len() == 0 { return }
   let infos = infos-exercice()
   if not infos.corrige { return }
-  let item = (numero: infos.numero, id: infos.id, titre: infos.titre-solution, body: body)
+  let item = (numero: infos.numero, id: infos.id, titre: infos.titre-complement, body: body)
   if reglages.mode == "apres" {
     rendu-corrige(item, reglages, rendre: rendre)
   } else {
@@ -699,12 +682,12 @@
 
 // Bloc « Correction » : tous les corrigés (mode "fin"), sur une nouvelle page
 // sauf réglage `nouvelle-page: false`.
-#let liste-corriges() = protege(rendre => context {
+#let bloc-corriges() = protege(rendre => context {
   let reglages = etat-reglages-corriges.get()
   let items = etat-solutions.get()
   if reglages.mode != "fin" or items.len() == 0 or etat-blocs-fin.get().corriges { return }
   if reglages.nouvelle-page { pagebreak(weak: true) }
-  let couleur = couleur-sol(reglages)
+  let couleur = couleur-lien-interne()
   bloc-neutre(
     width: 100%,
     stroke: (top: none, x: none, bottom: 1.5pt + couleur),
@@ -713,7 +696,7 @@
   )[
     #text(size: 16pt * echelle(), weight: "bold", fill: couleur, terme("correction"))
   ]
-  columns(reglages.colonnes, gutter: 1.5em, items.map(it => rendu-corrige(it, reglages, rendre: rendre)).join())
+  items.map(it => rendu-corrige(it, reglages, rendre: rendre)).join()
   etat-blocs-fin.update(b => b + (corriges: true))
 })
 
@@ -885,24 +868,21 @@
 // entraînements, ni les corrigés, ni les couleurs d'une maquette précédente du
 // même document.
 // Ajoute à la fin les blocs « Automatismes » puis « Correction » : ne plus
-// appeler `liste-entrainements` ni `liste-corriges` à la main.
+// appeler `liste-entrainements` ni `bloc-corriges` à la main.
 //
-//   #maquette(afficher-corrige: "fin", corriges: "1-6,9,12")[ … ]
+//   #maquette(localisation-correction: "fin", liste-corriges: "1-6,9,12")[ … ]
 //   ou, en tête de fiche : #show: maquette.with(…)
 //
-//   afficher-corrige      : none/false (sujet seul) | "apres" (sous chaque énoncé)
+//   localisation-correction : none/false (sujet seul) | "apres" (sous chaque énoncé)
 //                           | "fin"/true (en fin de fiche)
-//   corriges              : corrigés affichés : auto (tous), 4, "1-6,9,12",
+//   liste-corriges        : corrigés affichés : auto (tous), 4, "1-6,9,12",
 //                           (1, "3-5"), "obligatoires" ou "facultatifs".
 //                           Les énoncés, eux, sont toujours tous affichés.
 //   vers-solution         : clé cliquable exercice ↔ corrigé (VersSolution)
 //   lien-externe          : couleur des liens extérieurs (haltère, QR, source)
-//   lien-interne          : couleur de navigation (clé, corrigés)
-//   couleur-sol           : couleur des titres de corrigés (CouleurSol ;
-//                           auto = lien-interne)
-//   titre-corrige         : début du titre de chaque corrigé (TitreCorrige ;
+//   lien-interne          : couleur de navigation (clé, titres des corrigés)
+//   titre-corriges        : début du titre de chaque corrigé (TitreCorrige ;
 //                           auto = « Corrigé de l'exercice », ou sa traduction)
-//   colonnes-corriges     : colonnes de la Correction (Colonnes)
 //   correction-nouvelle-page : la Correction commence sur une nouvelle page
 //                           (false : elle suit la fiche ; indispensable pour une
 //                           maquette placée dans `columns(…)` ou dans un cadre)
@@ -917,14 +897,12 @@
 //                           de Typst) qui donne le français : écrire "en" pour
 //                           l'anglais
 #let maquette(
-  afficher-corrige: "fin",
-  corriges: auto,
+  localisation-correction: "fin",
+  liste-corriges: auto,
   vers-solution: true,
   lien-externe: auto,
   lien-interne: auto,
-  couleur-sol: auto,
-  titre-corrige: auto,
-  colonnes-corriges: 1,
+  titre-corriges: auto,
   correction-nouvelle-page: true,
   couleur-obligatoire: auto,
   style-exercice: "fond-blanc",
@@ -939,7 +917,6 @@
   for (nom, valeur) in (
     lien-externe: lien-externe,
     lien-interne: lien-interne,
-    couleur-sol: couleur-sol,
     couleur-obligatoire: couleur-obligatoire,
     couleur-fdr: couleur-fdr,
   ) {
@@ -955,18 +932,16 @@
     lien-externe: if lien-externe == auto { couleurs-defaut.externe } else { lien-externe },
     lien-interne: if lien-interne == auto { couleurs-defaut.interne } else { lien-interne },
   )
-  let mode = if afficher-corrige == false { none } else if afficher-corrige == true { "fin" } else { afficher-corrige }
+  let mode = if localisation-correction == false { none } else if localisation-correction == true { "fin" } else { localisation-correction }
   reglages-corriges(
     mode: mode,
     vers-solution: vers-solution,
-    couleur-sol: couleur-sol,
-    titre-corrige: titre-corrige,
-    colonnes: colonnes-corriges,
+    titre-corriges: titre-corriges,
     nouvelle-page: correction-nouvelle-page,
   )
   couleur-exercices-obligatoires(if couleur-obligatoire == auto { black } else { couleur-obligatoire })
   style-exercices(style-exercice)
-  etat-selection.update((corriges: parser-plage(corriges)))
+  etat-selection.update((corriges: parser-plage(liste-corriges)))
   etat-fdr.update((couleur: couleur-fdr))
   etat-langue.update(langue)
   etat-historique.update(())
@@ -982,6 +957,6 @@
   body
   [#metadata(none) #repere-borne]
   liste-entrainements(colonnes: colonnes-automatismes, taille-qr: taille-qr)
-  liste-corriges()
+  bloc-corriges()
   etat-profondeur.update(n => n - 1)
 }

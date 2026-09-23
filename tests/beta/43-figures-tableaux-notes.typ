@@ -1,5 +1,5 @@
 #import "../../src/lib.typ": *
-#maquette(afficher-corrige: "apres")[
+#maquette(localisation-correction: "apres")[
   #exercice(titre: "Figure")[
     #figure(rect(width: 3cm, height: 1cm), caption: [Une figure])
     #table(columns: 3, [a], [b], [c], [1], [2], [3])

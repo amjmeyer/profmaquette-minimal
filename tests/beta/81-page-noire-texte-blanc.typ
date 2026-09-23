@@ -1,7 +1,7 @@
 #import "../../src/lib.typ": *
 #set page(fill: black)
 #set text(fill: white)
-#maquette(afficher-corrige: "fin", couleur-obligatoire: white, couleur-fdr: white)[
+#maquette(localisation-correction: "fin", couleur-obligatoire: white, couleur-fdr: white)[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[

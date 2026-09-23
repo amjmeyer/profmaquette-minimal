@@ -1,7 +1,7 @@
 #import "../../src/lib.typ": *
 #set page(paper: "a5", flipped: true, margin: 0pt)
 #set text(size: 20pt)
-#maquette(afficher-corrige: "fin")[
+#maquette(localisation-correction: "fin")[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[

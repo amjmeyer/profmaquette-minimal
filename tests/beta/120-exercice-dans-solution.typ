@@ -1,5 +1,5 @@
 #import "../../src/lib.typ": *
-#maquette(afficher-corrige: "apres")[
+#maquette(localisation-correction: "apres")[
   #exercice[A]
   #solution[#exercice[Dans le corrigé]]
   #exercice[B]

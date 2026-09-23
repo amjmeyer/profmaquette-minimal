@@ -1,7 +1,7 @@
 #import "../../src/lib.typ": *
 #set text(lang: "en")
 // lang "en" seul donne le français (défaut de Typst) : langue: "en" force l'anglais.
-#maquette(afficher-corrige: "fin", langue: "en")[
+#maquette(localisation-correction: "fin", langue: "en")[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[

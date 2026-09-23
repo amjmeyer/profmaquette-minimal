@@ -11,7 +11,7 @@
 
 #align(center, text(size: 16pt, weight: "bold")[Fiche 1 : second degré])
 
-#maquette(afficher-corrige: "fin")[
+#maquette(localisation-correction: "fin")[
   #align(center, afficher-fdr)
 
   #thematique[Factoriser]
@@ -40,7 +40,7 @@
 
 #align(center, text(size: 16pt, weight: "bold")[Fiche 2 : suites])
 
-#maquette(afficher-corrige: "apres")[
+#maquette(localisation-correction: "apres")[
   #align(center, afficher-fdr)
 
   #exercice(titre: "Premiers termes", entrainement: "https://typst.app/docs")[

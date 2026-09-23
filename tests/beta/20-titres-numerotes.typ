@@ -4,7 +4,7 @@
 = Chapitre
 == Section
 === Sous-section avant la fiche
-#maquette(afficher-corrige: "fin")[
+#maquette(localisation-correction: "fin")[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[

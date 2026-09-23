@@ -1,6 +1,6 @@
 #import "../../src/lib.typ": *
 #set block(spacing: 3em, inset: 6pt, stroke: 0.5pt + red)
-#maquette(afficher-corrige: "fin")[
+#maquette(localisation-correction: "fin")[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[

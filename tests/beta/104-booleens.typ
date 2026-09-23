@@ -1,7 +1,7 @@
 #import "../../src/lib.typ": *
-#maquette(afficher-corrige: true)[
+#maquette(localisation-correction: true)[
   #exercice[A] #solution[a]
 ]
-#maquette(afficher-corrige: false)[
+#maquette(localisation-correction: false)[
   #exercice[B] #solution[b]
 ]

@@ -1,6 +1,6 @@
 #import "../../src/lib.typ": *
 // Erreur attendue : saut de page interdit dans columns() (voir test 45).
-#columns(2)[#maquette(afficher-corrige: "fin")[
+#columns(2)[#maquette(localisation-correction: "fin")[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[

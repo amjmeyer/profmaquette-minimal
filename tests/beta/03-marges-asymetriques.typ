@@ -1,6 +1,6 @@
 #import "../../src/lib.typ": *
 #set page(margin: (left: 4cm, right: 0.5cm))
-#maquette(afficher-corrige: "fin")[
+#maquette(localisation-correction: "fin")[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[

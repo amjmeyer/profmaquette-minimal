@@ -1,6 +1,6 @@
 #import "../../src/lib.typ": *
 // Avec correction-nouvelle-page: false, la maquette fonctionne dans columns().
-#columns(3)[#maquette(afficher-corrige: "fin", correction-nouvelle-page: false)[
+#columns(3)[#maquette(localisation-correction: "fin", correction-nouvelle-page: false)[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[

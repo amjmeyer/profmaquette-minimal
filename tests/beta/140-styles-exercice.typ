@@ -3,7 +3,7 @@
 #import "../../src/lib.typ": *
 #set page(height: auto)
 #for style in ("etiquette-encadree", "fond-blanc", "bandeau", "etiquette-pleine") [
-  #maquette(style-exercice: style, afficher-corrige: "apres", couleur-obligatoire: navy)[
+  #maquette(style-exercice: style, localisation-correction: "apres", couleur-obligatoire: navy)[
     #thematique[Style #raw(style)]
     #exercice(titre: "Tout", entrainement: "https://a.b", source: "Manuel p. 12")[A] #solution[a]
     #exercice(obligatoire: false, entrainement: "https://c.d")[B] #solution[b]

@@ -1,7 +1,7 @@
 #import "../../src/lib.typ": *
 #set text(fill: maroon)
 #set par(justify: true, first-line-indent: 2em)
-#maquette(afficher-corrige: "fin")[
+#maquette(localisation-correction: "fin")[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[

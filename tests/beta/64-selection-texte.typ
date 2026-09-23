@@ -1,4 +1,4 @@
 #import "../../src/lib.typ": *
-#maquette(corriges: "tous")[
+#maquette(liste-corriges: "tous")[
   #exercice[A] #solution[a]
 ]

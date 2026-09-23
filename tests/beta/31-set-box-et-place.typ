@@ -1,7 +1,7 @@
 #import "../../src/lib.typ": *
 #set box(stroke: 1pt + green, inset: 3pt)
 #set place(clearance: 3cm)
-#maquette(afficher-corrige: "fin")[
+#maquette(localisation-correction: "fin")[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[

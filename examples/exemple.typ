@@ -3,10 +3,10 @@
 // de fiche.
 //
 // Pour essayer d'autres réglages, modifiez seulement les paramètres de `maquette` :
-//   afficher-corrige: none       → fiche élève, sans corrigé
-//   afficher-corrige: "apres"    → corrigé sous chaque énoncé
-//   corriges: "1,3"              → seulement les corrigés des exercices 1 et 3
-//   corriges: "facultatifs"      → seulement les corrigés des exercices facultatifs
+//   localisation-correction: none    → fiche élève, sans corrigé
+//   localisation-correction: "apres" → corrigé sous chaque énoncé
+//   liste-corriges: "1,3"            → seulement les corrigés des exercices 1 et 3
+//   liste-corriges: "facultatifs"    → seulement les corrigés des exercices facultatifs
 //   lien-externe: blue, lien-interne: green.darken(20%)  → autres couleurs
 //   style-exercice: "bandeau"   → autre style de cadre ("etiquette-encadree", "etiquette-pleine"…)
 
@@ -20,8 +20,8 @@
 #v(1em)
 
 #maquette(
-  afficher-corrige: "fin",
-  corriges: auto,
+  localisation-correction: "fin",
+  liste-corriges: auto,
   vers-solution: true,
   colonnes-automatismes: 4,
 )[
@@ -55,7 +55,7 @@
 
   #thematique[Forme canonique]
 
-  #exercice(titre: "Forme canonique", titre-solution: "méthode")[
+  #exercice(titre: "Forme canonique", titre-complement: "méthode")[
     Écrire $f(x) = x^2 + 6x + 5$ sous forme canonique.
   ]
   #solution[
