@@ -57,16 +57,12 @@
 //   ]
 //
 // Fonctions publiques (détaillées dans la section « API publique »), les seules
-// exportées par `lib.typ` — tout le reste du fichier est interne au paquet :
+// exportées par `lib.typ` — tout le reste du fichier est interne au paquet,
+// y compris reglages-couleurs, reglages-corriges, couleur-exercices-obligatoires,
+// style-exercices, liste-entrainements et liste-corriges : `maquette` seule les
+// appelle, via ses propres paramètres :
 //   maquette                        réglages de la fiche + blocs de fin automatiques
 //   exercice / solution             un énoncé / son corrigé
-//   reglages-couleurs               lien-externe / lien-interne, sans maquette
-//   reglages-corriges               réglages des corrigés, sans maquette
-//   couleur-exercices-obligatoires  couleur des exercices obligatoires, sans maquette
-//   style-exercices                 style des cadres d'exercice, sans maquette
-//   liste-entrainements             bloc « Automatismes » (QR codes), sans maquette
-//   liste-corriges                  bloc « Correction », sans maquette
-//   reinitialiser-compteur-exercice repart de l'exercice 1
 //   thematique                      titre d'une thématique (coche sur la feuille de route)
 //   afficher-fdr                    schéma de la feuille de route (contenu, sans parenthèses)
 //
@@ -129,9 +125,9 @@
 // l'exercice courant.
 #let etat-historique = state("etat-historique-exercices", ())
 
-// Numéro de la série d'exercices en cours, augmenté par chaque `maquette` et
-// chaque `reinitialiser-compteur-exercice`. Il distingue les « exercice 1 » de
-// deux fiches d'un même document dans les liens exercice ↔ corrigé.
+// Numéro de la série d'exercices en cours, augmenté par chaque `maquette`. Il
+// distingue les « exercice 1 » de deux fiches d'un même document dans les
+// liens exercice ↔ corrigé.
 #let etat-serie = state("etat-serie-exercices", 0)
 
 // Réglages des corrigés (cf. `reglages-corriges`). Par défaut : aucun corrigé.
@@ -162,9 +158,8 @@
 // Étiquettes des repères posés dans le document pour `afficher-fdr` :
 //   - un par exercice (numero, obligatoire, stop) ;
 //   - un par `thematique`, qui termine le tronçon en cours ;
-//   - une borne au début et à la fin de chaque maquette, et à chaque
-//     `reinitialiser-compteur-exercice` : le schéma ne montre que les exercices
-//     compris entre les deux bornes qui l'entourent.
+//   - une borne au début et à la fin de chaque maquette : le schéma ne montre
+//     que les exercices compris entre les deux bornes qui l'entourent.
 #let repere-exercice = <template-exercices-fdr-exercice>
 #let repere-borne = <template-exercices-fdr-borne>
 #let repere-thematique = <template-exercices-fdr-thematique>
@@ -434,11 +429,12 @@
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 5. API PUBLIQUE
+// 5. API PUBLIQUE ET FONCTIONS INTERNES
 // ══════════════════════════════════════════════════════════════════════════════
 
-// ─── Réglages (à appeler avant le premier exercice) ──────────────────────────
-// Inutiles avec `maquette`, qui les appelle elle-même.
+// ─── Réglages, internes ───────────────────────────────────────────────────────
+// Non exportées par `lib.typ` : seule `maquette` les appelle, via ses propres
+// paramètres.
 
 // Couleurs du paquet (cf. section 1) ; auto = inchangée.
 #let reglages-couleurs(lien-externe: auto, lien-interne: auto) = etat-couleurs.update(c => (
@@ -640,18 +636,9 @@
   )))
 }
 
-// Repart de l'exercice 1 (plusieurs fiches indépendantes dans un même document).
-#let reinitialiser-compteur-exercice() = {
-  etat-historique.update(())
-  etat-serie.update(n => n + 1)
-  etat-solutions.update(()) // corrigés de la fiche précédente déjà affichés
-  etat-blocs-fin.update((entrainements: false, corriges: false))
-  [#metadata(none) #repere-borne]
-}
-
-// ─── Blocs de fin de fiche ───────────────────────────────────────────────────
-// Appelés automatiquement par `maquette` ; à appeler à la main sinon, une seule
-// fois, dans cet ordre (comme ProfMaquette : entraînements, puis corrections).
+// ─── Blocs de fin de fiche, internes ──────────────────────────────────────────
+// Non exportées par `lib.typ` : `maquette` les appelle elle-même, automatiquement,
+// dans cet ordre (comme ProfMaquette : entraînements, puis corrections).
 
 // Bloc « Automatismes » : tous les QR codes d'entraînement, dans une boîte de la couleur lien-externe.
 // Flottant en bas de la dernière page s'il reste de la place, sinon en bas de la

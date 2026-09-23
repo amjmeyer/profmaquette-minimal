@@ -1,7 +1,7 @@
 // Manuel du paquet template-exercices.
 
 #import "../src/lib.typ" as paquet
-#import "@preview/gentle-clues:1.3.1": info, tip, warning
+#import "@preview/gentle-clues:1.3.1": info, tip, warning, code, idea
 
 #let manifeste = toml("../typst.toml").package
 
@@ -19,18 +19,14 @@
 // dans un cadre (le bloc « Correction » en demande un).
 //
 // `hauteur` : ne montre que le haut du rendu (ex. seulement la feuille de route).
-#let exemple(dessous: false, hauteur: none, code) = {
-  let source = block(
-    width: 100%,
-    fill: luma(96%),
-    radius: 4pt,
-    inset: 8pt,
-    text(size: 8.5pt, raw(code.text, lang: "typ", block: true)),
-  )
+#let exemple(dessous: false, hauteur: none, texte-code) = {
+  let source = code(width: 100%)[
+    #text(size: 8.5pt, raw(texte-code.text, lang: "typ", block: true))
+  ]
   let contenu = {
     show pagebreak: none
     set text(size: 9pt)
-    eval(code.text, mode: "markup", scope: dictionary(paquet))
+    eval(texte-code.text, mode: "markup", scope: dictionary(paquet))
   }
   // Rendu partiel : l'exemple est mis en page dans une grande zone (le paquet
   // mesure la place disponible), puis seul son haut est montré.
@@ -60,6 +56,54 @@
     text(size: 8.5pt, fill: luma(40%))[défaut : #defaut]
     linebreak()
     description
+  },
+)
+
+// Fiche paramètre "carte" (façon docs de gentle-clues) : nom, badges de type et
+// valeur par défaut en en-tête, description, puis un exemple.
+//   #parametre-carte("titre", ("content", "none"), `none`)[…]
+#let couleurs-types = (
+  content: (fond: rgb("#dbeafe"), texte: rgb("#1d4ed8")),
+  "none": (fond: rgb("#fee2e2"), texte: rgb("#b91c1c")),
+  bool: (fond: rgb("#ffedd5"), texte: rgb("#c2410c")),
+  str: (fond: rgb("#dcfce7"), texte: rgb("#15803d")),
+)
+#let type-badge(t) = {
+  let c = couleurs-types.at(t, default: (fond: luma(90%), texte: luma(30%)))
+  box(fill: c.fond, inset: (x: 5pt, y: 2pt), radius: 3pt, text(size: 8pt, fill: c.texte, raw(t)))
+}
+// Signature d'une fonction en bloc de code, avec chaque `none` coloré comme le
+// badge de type correspondant (pas de coloration syntaxique normale : la
+// notation `type | type` n'est pas du Typst valide, donc pas mise en couleur
+// par le surligneur habituel).
+#let signature(texte) = {
+  show raw.where(block: true): it => for (i, ligne) in it.text.split("\n").enumerate() {
+    if i > 0 { linebreak() }
+    for (j, morceau) in ligne.split("none").enumerate() {
+      if j > 0 { text(fill: couleurs-types.at("none").texte, raw("none")) }
+      raw(morceau)
+    }
+  }
+  raw(block: true, lang: "typ", texte)
+}
+#let parametre-carte(nom, types, defaut, description) = block(
+  width: 100%,
+  fill: luma(96%),
+  radius: 4pt,
+  inset: 12pt,
+  above: 12pt,
+  below: 0pt,
+  breakable: false,
+  {
+    text(size: 12pt, weight: "bold", raw(nom))
+    h(8pt)
+    // Le "none" n'est pas montré ici : il apparaît déjà dans la signature
+    // (en couleur) et dans le "Défaut" ci-dessous.
+    for t in types.filter(t => t != "none") { type-badge(t); h(3pt) }
+    v(6pt, weak: true)
+    description
+    v(4pt, weak: true)
+    text(size: 8.5pt, fill: luma(40%))[Défaut : #defaut]
   },
 )
 
@@ -187,7 +231,7 @@
 #v(1fr)
 #info(title: "Un portage partiel de ProfMaquette")[
   #manifeste.name s'inspire directement du package LaTeX
-  #link("https://ctan.org/pkg/profmaquette")[ProfMaquette] de *Christophe
+  https://ctan.org/pkg/profmaquette de *Christophe
   Poulain*, dont il ne reprend qu'une petite partie. Il a d'abord été écrit pour
   un usage personnel et pourra évoluer, y compris de façon incompatible entre
   deux versions `0.x`.
@@ -209,45 +253,61 @@
 
 = Démarrer
 
-== Importer le paquet
+== Importer le paquet et imports 
 
 #raw(block: true, lang: "typ", "#import \"@preview/" + manifeste.name + ":" + manifeste.version + "\": *")
 
 Dans la suite du manuel, cette ligne est sous-entendue au début de chaque
 exemple.
 
-#info(title: "Rien à installer")[
-  Les icônes du paquet (haltère, clé, coche) sont fournies avec lui : aucune
-  police particulière n'est nécessaire, sur l'ordinateur comme sur la web app
-  Typst.
+#info(title: "Paquets importés")[
+  Les icônes du paquet (haltère, clé, coche) sont fournies avec lui.
+  Aucune autre icône n'est incluse, et elles proviennent toutes de  la web app
+  Typst. Les paquets importés par Typst sont les suivants : 
+  - tiaoma (pour la gestion des QR-Code)
 ]
 
-== Une première fiche
+== Fonctionnement d'une "maquette"
 
-Toute la fiche se place dans une `maquette`. Elle règle la fiche en un seul
-endroit, et ajoute à la fin les blocs de fin : les entraînements en ligne, puis
-les corrigés. Chaque exercice est suivi de son corrigé, écrit avec `solution`.
+#idea(title: "Le principe")[
+  Toute la fiche se place dans une `maquette`. Les réglages de cette maquette déterminent entièrement le fonctionnement de la maquette tout le long du document. Nous détaillerons tous les réglages possibles le moment venu, mais voyons des exemples.
+]
 
 #exemple(```typ
 #maquette[
   #exercice(titre: "Factoriser")[
     Factoriser $x^2 - 9$.
   ]
-  #solution[$(x - 3)(x + 3)$]
+  #solution[$(x - 3)(x + 3)$] 
 ]
 ```)
 
-Par défaut, les corrigés sont regroupés dans un bloc « Correction », en fin de
-fiche et sur une nouvelle page. La clé sur le filet droit de l'exercice est un
-lien vers son corrigé ; le titre du corrigé ramène à l'exercice.
+Expliquons quand même le rendu qu'on obtient à droite. Par défaut, les corrigés sont regroupés dans un bloc « Correction » qui se situe en fin de
+fiche et sur une nouvelle page. La clé de couleur rouge sert d'indicateur pour signifier que l'exercice est corrigé au sein même de la fiche. 
+
+#info(title: "Comment lire un exemple dans cette documentation ?")[
+  Tout le long de la documentation, un exemple illustrant le propos aura toujours la même structure : le code à gauche (dans un encadré "Code") et le rendu à droite. Pour des questions de place, on a "collé" la nouvelle page de Correction à celle des exercices.
+]
 
 #tip(title: "Sans crochets autour de la fiche")[
   `#show: maquette.with(…)` en tête de fichier a le même effet que
   `#maquette(…)[…]` autour de toute la fiche.
 ]
 
+
+#exemple(```typ
+#show: maquette.with()
+  #exercice(titre: "Factoriser")[
+    Factoriser $x^2 - 9$.
+  ]
+  #solution[$(x - 3)(x + 3)$] 
+```)
+
 == Les fonctions du paquet
 
+Tout passe par `maquette` : c'est elle qui règle la fiche entière, d'un seul
+coup, via ses paramètres (@parametres-maquette). \
+Le paquet n'expose que ces cinq fonctions.
 #table(
   columns: (auto, 1fr),
   stroke: none,
@@ -263,9 +323,6 @@ lien vers son corrigé ; le titre du corrigé ramène à l'exercice.
   table.hline(stroke: .6pt),
 )
 
-Les autres fonctions (`reglages-couleurs`, `liste-corriges`…) servent seulement
-à se passer de `maquette` (@sans-maquette).
-
 
 // ══════════════════════════════════════════════════════════════════════════════
 // 2. EXERCICES
@@ -273,16 +330,58 @@ Les autres fonctions (`reglages-couleurs`, `liste-corriges`…) servent seulemen
 
 = Les exercices <exercices>
 
-Un exercice s'écrit `#exercice[…]`, l'énoncé entre crochets. Il est encadré et
+Un exercice s'écrit `#exercice(…)[…]`, l'énoncé étant entre crochets et les paramètres entre parenthèses. \
+L'énoncé est encadré et
 numéroté automatiquement, à partir de 1 dans chaque maquette. L'énoncé peut
 contenir n'importe quel contenu Typst : formules, listes, figures, tableaux.
 
-== Obligatoires et facultatifs
+== Paramètres des exercices
 
-Un exercice est obligatoire par défaut. Avec `obligatoire: false`, il devient
-facultatif : son cadre et son titre passent en gris. Sur la feuille de route,
-les exercices facultatifs sont placés sur une ligne à part (@fdr).
+On note ci-dessous, après "paramètre:" les types que peuvent valoir le paramètre.   
+#signature("exercice(
+  entrainement: str | none,
+  obligatoire: bool,
+  pas-corrige: bool,
+  source: content | none,
+  stop: bool,
+  style-exercices: cas particulier, 
+  titre: content | none,
+  titre-solution: content | none,
+  body,
+) -> content")
 
+
+ 
+  
+#parametre-carte("entrainement", ("str", "none"), `none`)[
+  Ce paramètre permet de mettre l'adresse d'un lien en ligne et génère automatiquement un QR-Code à la fin de la page d'exercices (non modifiable). Egalement, cela ajoute une haltère sur le filet droit de l'exercice. \
+  Cette haltère est cliquable depuis le pdf, et amène sur ledit site.  Pour en savoir plus, se rendre à la @entrainements.
+]
+#exemple(```typ
+#show: maquette.with()
+#exercice(entrainement: "https://typst.app")[
+  Réciter la table de 7.
+]
+
+#exercice[
+  Réciter la table de 9.
+]
+
+#exercice(entrainement: "https://typst.app")[
+  Réciter la table de 5.
+]
+```)
+
+#idea(title: "Potentiels usages en classe")[
+  J'utilise cette fonctionnalité pour travailler les automatismes, principalement avec Mathalea en glissant un liant Capytale vers l'activité. On peut l'utiliser pour sans doute mille et unes autres choses (et, le cas échéant, on peut modifier le titre "Automatismes" en autre chose  : voir la  @entrainements). Pour l'elève/étudiant qui a sa feuille en version papier, cette haltère lui signifie qu'il y a des automatismes associés à cet exercice et il peut scanner le QR-Code en fin de feuille afin d'accéder au site. Si la feuille est donnée également en ligne, cliquer sur l'haltère suffit. Cette haltère a donc un double intérêt !]
+
+
+#parametre-carte("obligatoire", ("bool",), `true`)[
+  Le valeur du paramètre modifie la couleur de l'entourage de l'exercice. Par défaut (`true`), la couleur du cadre est noire. Si on le met sur `false`, la couleur du cadre devient grise. \
+  Egalement, faire devenir un exercice non obligatoire change sa position dans la  feuille de route. Voir @fdr. \
+  La couleur des exercices obligatoires se règle pour toute la fiche avec
+  `maquette(couleur-obligatoire: …)`. Pour plus de détails, voir @parametres-maquette
+]
 #exemple(```typ
 #maquette[
   #exercice[Calculer $2 + 3$.]
@@ -292,8 +391,114 @@ les exercices facultatifs sont placés sur une ligne à part (@fdr).
 ]
 ```)
 
-La couleur des exercices obligatoires (noir par défaut) se règle pour toute la
-fiche avec `maquette(couleur-obligatoire: …)`.
+#idea(title: "Potentiels usages en classe")[
+  J'utilise cette fonctionnalité pour qu'en un coup d'oeil, l'élève puisse voir si l'exercice est à faire ou non.]
+
+#parametre-carte("pas-corrige", ("bool",), `false`)[
+  Ce paramètre, s'il est réglé sur `false`, permet de ne pas afficher le corrigé alors même qu'il est écrit dans un  `solution` qui le suit. Pour en savoir plus, voir la @corriges.
+]
+#exemple(```typ
+#maquette[
+  #exercice(pas-corrige: true)[Calculer $5 times 6$.]
+  #solution[Ce corrigé ne sera jamais affiché.]
+
+  #exercice[
+    Résoudre les équations de Navier-Stokes
+  ]
+  #solution[
+    Facile ! (from OpenAI)
+  ]
+]
+```)
+
+#warning(title: "Rajoute utile par rapport à ProfMaquette")[
+  La gestion précentée ici des corrigés est locale, par exercice. Ayant expérimenté beaucoup, j'ai trouvé cela plutôt désagréable lorsque nos fiches sont longues (j'expliquerai le fonctionnement que j'avais plus loin dans le document). En conséquence, j'ai rajouté un paramètre global (dans les paramètres de `#maquette`) qui permet de gérer directement l'affichage des corrigés. Voir @maquette.
+]
+
+#idea(title: "Potentiels usages en classe")[
+  L'idée est la suivante : on imprime sa fiche d'exercices (son DS, son interro, ce qu'on veut) en ayant écrit les corrigés (ou pas !) mais sans les afficher (car si tous les exerices apparaîssent comme non corrigés, la section Correction de fin de page disparaît). Une fois qu'on avance dans le chapitre, on peut décider de faire apparaître des corrigés au compte goutte, puis de mettre à jour sa fiche d'exercices sur PRONOTE  
+]
+
+#parametre-carte("source", ("content", "none"), `none`)[
+  Petit texte posé sur le filet bas de l'exercice, à droite, de la même couleur que celui de l'haltère.  
+]
+#exemple(```typ
+#show: maquette.with()
+  #exercice(source: "Manuel p. 42, n° 3")[
+    Calculer $1/2 + 1/3$.
+  ]
+```)
+
+#idea(title: "Potentiels usages en classe")[
+  On peut très bien utiliser ce `source` pour sourcer la provenance d'un exercice (un type DNB, un type BAC, un examen...). Mon usage est différent : lorsque je mets un automatisme, j'utilise `source` pour préciser aux élèves les calculs que j'attends d'eux. 
+]
+
+#parametre-carte("stop", ("bool",), `false`)[
+  `true` : ajoute une coche supplémentaire après cet exercice, sur la feuille de route.  Voir @fdr pour les détails.
+]
+ 
+
+#exemple(```typ
+#show: maquette.with()
+#align(center,afficher-fdr) 
+  #exercice(
+    obligatoire: false,
+    stop: true
+  )[ 
+  ]
+  #exercice[ 
+  ]
+```)
+
+
+#warning(title: "Rajoute utile par rapport à ProfMaquette")[
+  La gestion des `stop` peut se faire manuellement, comme dans l'exemple ci-dessus. C'est le fonctionnement de ProfMaquette. Si vous ajoutez un `#thematique[...]` (dans le but de thématiser pat thème les exercices que vous donnez dans votre fiche), alors le `stop` s'appliquera à l'endroit voulu. 
+]
+
+#exemple(```typ
+#show: maquette.with()
+#align(center,afficher-fdr) 
+
+#thematique[Calcul mental]
+  #exercice[Calculer $9 times 7$.]
+
+#thematique[Anneaux d'entiers]
+
+  #exercice[Calculer $cal(O)_(Q[sqrt(2)])$] 
+```)
+
+
+#parametre-carte("style-exercices", ("bool",), `false`)[
+  Ce paramètre permet de régler l'affichage des cadres d'exercices. Il peut se faire localement, mais il est préférable de gérer cela au niveau des  paramètres de la maquette directement. \
+  Les différentes possibilités sont les suivantes : 
+  - 
+]
+ 
+ 
+
+#warning(title: "Rajoute utile par rapport à ProfMaquette")[
+  La gestion des `stop` peut se faire manuellement, comme dans l'exemple ci-dessus. C'est le fonctionnement de ProfMaquette. Si vous ajoutez un `#thematique[...]` (dans le but de thématiser pat thème les exercices que vous donnez dans votre fiche), alors le `stop` s'appliquera à l'endroit voulu. 
+]
+
+#parametre-carte("titre", ("content", "none"), `none`)[
+  Affiché après « Exercice N : », dans l'étiquette du cadre.
+]
+#exemple(```typ
+#maquette[
+  #exercice(titre: "Addition de fractions")[Calculer $1/2 + 3/5$]
+]
+```)
+
+#parametre-carte("titre-solution", ("content", "none"), `none`)[
+  Complément du titre du corrigé correspondant : « Corrigé de l'exercice 3 :
+  méthode ».
+]
+#exemple(```typ
+#maquette[
+  #exercice(titre-solution: "méthode")[Calculer $2^10$.]
+  #solution[$1024$]
+]
+```)
 
 == Titre et source
 
@@ -348,12 +553,7 @@ Le réglage `style-exercice` de la maquette choisit l'allure des cadres, pour
 toute la fiche. Il s'applique aussi au bloc « Automatismes ». Quatre styles
 existent :
 
-- `"fond-blanc"` (par défaut) : le titre, sans cadre, coupe le filet haut ;
-- `"etiquette-encadree"` : le titre est dans un petit cadre, à cheval sur le
-  filet ;
-- `"bandeau"` : le titre est en haut du cadre, séparé de l'énoncé par un filet ;
-- `"etiquette-pleine"` : le titre est écrit en blanc dans une étiquette remplie
-  de couleur.
+
 
 #exemple(dessous: true, ```typ
 #grid(
@@ -370,37 +570,7 @@ existent :
 )
 ```)
 
-Chaque maquette repart de l'exercice 1, d'où les numéros identiques. Sans
-`maquette`, le style se règle avec `#style-exercices("bandeau")`, avant le
-premier exercice.
-
-== Paramètres de `exercice`
-
-#parametre("titre", ("content", "none"), `none`)[
-  Affiché après « Exercice N : ».
-]
-#parametre("obligatoire", ("bool",), `true`)[
-  `false` : exercice facultatif, en gris, sur la ligne du haut de la feuille de
-  route.
-]
-#parametre("source", ("content", "none"), `none`)[
-  Petit texte sur le filet bas, à droite.
-]
-#parametre("entrainement", ("str", "none"), `none`)[
-  Adresse d'un entraînement en ligne : haltère cliquable sur le filet droit, QR
-  code dans le bloc Automatismes.
-]
-#parametre("pas-corrige", ("bool",), `false`)[
-  `true` : aucun corrigé pour cet exercice, même si un `solution` le suit
-  (@corriges).
-]
-#parametre("titre-solution", ("content", "none"), `none`)[
-  Complément du titre du corrigé : « Corrigé de l'exercice 3 : méthode ».
-]
-#parametre("stop", ("bool",), `false`)[
-  `true` : coche supplémentaire après cet exercice, sur la feuille de route.
-  Rarement utile : `thematique` place déjà les coches (@fdr).
-]
+Chaque maquette repart de l'exercice 1, d'où les numéros identiques.
 
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -893,44 +1063,13 @@ fiche retrouve les couleurs par défaut.
 ```)
 
 #tip(title: "Les réglages vont dans la maquette")[
-  Une maquette part toujours de ses propres réglages : un
-  `#reglages-couleurs(…)` écrit avant elle n'a pas d'effet. Il faut donner les
-  couleurs à la maquette elle-même.
+  Une maquette part toujours de ses propres réglages, indépendamment de ce qui
+  l'entoure : ses couleurs se donnent avec ses propres paramètres
+  (`#maquette(lien-interne: …)`), jamais à part.
 ]
 
 Une maquette ne peut pas en contenir une autre : la compilation s'arrête alors
 avec un message clair.
-
-== Sans `maquette` <sans-maquette>
-
-`maquette` appelle elle-même les fonctions ci-dessous. On peut s'en passer et
-les appeler soi-même, avant le premier exercice :
-
-- `reglages-corriges(mode: …, vers-solution: …, couleur-sol: …, titre-corrige: …,
-  colonnes: …, nouvelle-page: …)`, où `mode` vaut `none`, `"apres"` ou `"fin"` ;
-- `reglages-couleurs(lien-externe: …, lien-interne: …)` ;
-- `couleur-exercices-obligatoires(couleur)` ;
-- `style-exercices(style)`.
-
-Il faut alors ajouter soi-même les blocs de fin, une seule fois et dans cet
-ordre :
-
-```typ
-#reglages-corriges(mode: "fin")
-#exercice(entrainement: "https://typst.app")[Énoncé.]
-#solution[Corrigé.]
-#liste-entrainements(colonnes: 3, taille-qr: 2cm)
-#liste-corriges()
-```
-
-#warning(title: "Sans réglage, aucun corrigé")[
-  Sans `maquette` ni `reglages-corriges`, aucun corrigé n'est affiché : c'est
-  `maquette` qui choisit `afficher-corrige: "fin"` par défaut.
-]
-
-`reinitialiser-compteur-exercice()` repart de l'exercice 1, pour commencer une
-nouvelle fiche dans le même document. Avec `maquette`, c'est inutile
-(@plusieurs-fiches).
 
 
 // ══════════════════════════════════════════════════════════════════════════════
