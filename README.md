@@ -30,24 +30,26 @@ use, and may change in future versions.*
 ```typ
 #import "@preview/profmaquette-minimal:0.1.0": maquette, exercice, solution, afficher-fdr, thematique
 
-#maquette(localisation-correction: "fin")[
-  #afficher-fdr
+#show: maquette.with(
+  localisation-correction: "fin",
+)
 
-  #thematique[Factoriser]
-  #exercice(titre: "Identités remarquables", entrainement: "https://exemple.fr")[
-    Factoriser $x^2 - 9$.
-  ]
-  #solution[
-    $x^2 - 9 = (x - 3)(x + 3)$.
-  ]
+#afficher-fdr
 
-  #thematique[Résoudre]
-  #exercice(titre: "Pour aller plus loin", obligatoire: false)[
-    Résoudre $x^2 - 9 = 0$.
-  ]
-  #solution[
-    Les solutions sont $-3$ et $3$.
-  ]
+#thematique[Factoriser]
+#exercice(titre: "Identités remarquables", entrainement: "https://exemple.fr")[
+  Factoriser $x^2 - 9$.
+]
+#solution[
+  $x^2 - 9 = (x - 3)(x + 3)$.
+]
+
+#thematique[Résoudre]
+#exercice(titre: "Pour aller plus loin", obligatoire: false)[
+  Résoudre $x^2 - 9 = 0$.
+]
+#solution[
+  Les solutions sont $-3$ et $3$.
 ]
 ```
 
