@@ -325,7 +325,110 @@ Le paquet n'expose que ces cinq fonctions.
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 2. EXERCICES
+// 2. MODE MAQUETTE
+// ══════════════════════════════════════════════════════════════════════════════
+
+= Mode maquette <mode-maquette>
+
+Jusqu'ici, le titre de la fiche a été écrit à la main, au-dessus de `maquette`
+(comme dans l'exemple de la partie précédente). Le paquet peut aussi le
+construire lui-même, dans un cartouche à trois zones (gauche / centre / droite
+— par exemple un numéro de chapitre, son titre et le niveau de la classe) :
+
+#signature("maquette(
+  …
+  mode-maquette: str,
+  titre-maquette: dictionary,
+  style-maquette: str,
+  couleur-titre: color | auto,
+  …
+) -> content")
+
+#parametre-carte("titre-maquette", ("dictionary",), `(:)`)[
+  Cartouche de titre de la fiche : un dictionnaire avec les clés facultatives
+  `gauche`, `centre` et `droite`. Rien n'est affiché si aucune des trois n'est
+  donnée — sauf en mode "interro" (ci-dessous), où la zone Nom / Prénom /
+  Classe reste affichée.
+]
+#exemple(```typ
+#show: maquette.with(
+  titre-maquette: (
+    gauche: "CH 02",
+    centre: "Suites numériques",
+    droite: "1 C",
+  ),
+)
+#exercice(titre: "Premiers termes")[
+  Calculer $u_1$ et $u_2$.
+]
+```)
+
+#parametre-carte("mode-maquette", ("str",), `"exercices"`)[
+  "exercices" (défaut) : fiche d'exercices classique, sans zone à remplir. \
+  "interro" : ajoute, à droite du cartouche de titre et à sa hauteur, une zone
+  Nom / Prénom / Classe à compléter à la main, comme les évaluations de
+  ProfMaquette (clé IE).
+]
+#exemple(dessous: true, ```typ
+#show: maquette.with(
+  mode-maquette: "interro",
+  titre-maquette: (
+    gauche: "CH 02",
+    centre: "Suites numériques",
+    droite: "1 C",
+  ),
+)
+#exercice(titre: "Premiers termes")[
+  Calculer $u_1$ et $u_2$.
+]
+```)
+
+Sans `titre-maquette`, le mode "interro" affiche quand même la zone Nom /
+Prénom / Classe, en pleine largeur :
+
+#exemple(dessous: true, ```typ
+#show: maquette.with(mode-maquette: "interro")
+#exercice(titre: "Premiers termes")[
+  Calculer $u_1$ et $u_2$.
+]
+```)
+
+#parametre-carte("style-maquette", ("str",), `"onglet"`)[
+  Présentation du cartouche de titre. "onglet" est le seul style pour
+  l'instant (donc la valeur par défaut) : un numéro sur un onglet coloré
+  (coins arrondis en haut seulement), posé sans espace sur un cadre
+  entièrement arrondi contenant le titre et le niveau. Il est inspiré du thème
+  « pretty » du paquet Typst bookly (fonction `pretty-part` de son code
+  source).
+]
+
+#parametre-carte("couleur-titre", ("color", "auto"), `auto`)[
+  Couleur d'accent du cartouche de titre (onglet et contour du cadre). `auto` :
+  noir.
+]
+#exemple(```typ
+#show: maquette.with(
+  titre-maquette: (
+    gauche: "CH 02",
+    centre: "Suites numériques",
+    droite: "1 C",
+  ),
+  couleur-titre: rgb("#1B3A6B"),
+)
+#exercice(titre: "Premiers termes")[
+  Calculer $u_1$ et $u_2$.
+]
+```)
+
+#tip(title: "Une clé du cartouche peut manquer")[
+  `gauche`, `centre` et `droite` sont toutes facultatives : par exemple
+  `titre-maquette: (centre: "Suites numériques")` n'affiche que le titre,
+  centré dans le cadre.
+]
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// 3. EXERCICES
 // ══════════════════════════════════════════════════════════════════════════════
 
 = Les exercices <exercices>
@@ -549,7 +652,7 @@ Chaque maquette repart de l'exercice 1, d'où les numéros identiques.
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 3. CORRIGÉS
+// 4. CORRIGÉS
 // ══════════════════════════════════════════════════════════════════════════════
 
 = Les corrigés <corriges>
@@ -722,7 +825,7 @@ En voici la liste, dans l'ordre alphabétique.
  
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 4. FEUILLE DE ROUTE
+// 5. FEUILLE DE ROUTE
 // ══════════════════════════════════════════════════════════════════════════════
 
 = La feuille de route <fdr>
@@ -834,7 +937,7 @@ deux thématiques. Seul le schéma est montré.
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 5. ENTRAÎNEMENTS
+// 6. ENTRAÎNEMENTS
 // ══════════════════════════════════════════════════════════════════════════════
 
 = Les entraînements en ligne <entrainements>
@@ -919,7 +1022,7 @@ QR code porte le numéro de son exercice, et il est lui aussi cliquable.
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 6. RÉGLAGES DE LA MAQUETTE
+// 7. RÉGLAGES DE LA MAQUETTE
 // ══════════════════════════════════════════════════════════════════════════════
 
 = Réglage des couleurs de la maquette <maquette>
@@ -1020,7 +1123,7 @@ Toute couleur Typst convient : `blue`, `rgb("#1E90FF")`, `luma(40%)`,
 compilation avec un message clair.
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 7. USAGES AVANCÉS
+// 8. USAGES AVANCÉS
 // ══════════════════════════════════════════════════════════════════════════════
 
 = Usages avancés <avance>
@@ -1085,7 +1188,7 @@ fiche retrouve les couleurs par défaut.
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 8. ANNEXES
+// 9. ANNEXES
 // ══════════════════════════════════════════════════════════════════════════════
 
 = Annexes
@@ -1156,7 +1259,7 @@ encadrés.
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 9. HISTORIQUE DES VERSIONS
+// 10. HISTORIQUE DES VERSIONS
 // ══════════════════════════════════════════════════════════════════════════════
 
 = Historique des versions

@@ -256,11 +256,11 @@
 // Langue inconnue : français.
 #let etat-langue = state("etat-langue-exercices", auto)
 #let termes = (
-  fr: (exercice: "Exercice", correction: "Correction", automatismes: "Automatismes", exo: "Exo", titre-corriges: "Corrigé de l'exercice"),
-  en: (exercice: "Exercise", correction: "Solutions", automatismes: "Practice", exo: "Ex.", titre-corriges: "Solution to exercise"),
-  de: (exercice: "Aufgabe", correction: "Lösungen", automatismes: "Übungen", exo: "Aufg.", titre-corriges: "Lösung zu Aufgabe"),
-  es: (exercice: "Ejercicio", correction: "Soluciones", automatismes: "Práctica", exo: "Ej.", titre-corriges: "Solución del ejercicio"),
-  it: (exercice: "Esercizio", correction: "Soluzioni", automatismes: "Allenamento", exo: "Es.", titre-corriges: "Soluzione dell'esercizio"),
+  fr: (exercice: "Exercice", correction: "Correction", automatismes: "Automatismes", exo: "Exo", titre-corriges: "Corrigé de l'exercice", nom: "Nom", prenom: "Prénom", classe: "Classe"),
+  en: (exercice: "Exercise", correction: "Solutions", automatismes: "Practice", exo: "Ex.", titre-corriges: "Solution to exercise", nom: "Last name", prenom: "First name", classe: "Class"),
+  de: (exercice: "Aufgabe", correction: "Lösungen", automatismes: "Übungen", exo: "Aufg.", titre-corriges: "Lösung zu Aufgabe", nom: "Name", prenom: "Vorname", classe: "Klasse"),
+  es: (exercice: "Ejercicio", correction: "Soluciones", automatismes: "Práctica", exo: "Ej.", titre-corriges: "Solución del ejercicio", nom: "Apellido", prenom: "Nombre", classe: "Clase"),
+  it: (exercice: "Esercizio", correction: "Soluzioni", automatismes: "Allenamento", exo: "Es.", titre-corriges: "Soluzione dell'esercizio", nom: "Cognome", prenom: "Nome", classe: "Classe"),
 )
 // À appeler dans un `context`.
 #let terme(cle) = {
@@ -511,6 +511,123 @@
     message: "style-exercice doit valoir " + styles-exercice.map(s => "\"" + s + "\"").join(", ", last: " ou ") + ", pas " + repr(style) + ".",
   )
   etat-style.update(style)
+}
+
+// Valeurs valides de `maquette(mode-maquette: …)` : "exercices" (fiche d'exercices,
+// défaut, pas de zone à remplir) ou "interro" (ajoute une zone Nom / Prénom /
+// Classe à compléter à la main, à droite du cartouche de titre, comme les
+// évaluations de ProfMaquette, clé IE).
+#let modes-maquette = ("exercices", "interro")
+
+// Valeurs valides de `maquette(style-maquette: …)` : présentation du cartouche
+// de titre (cf. `cartouche-titre`) :
+//   "onglet" : numéro sur un onglet coloré (coins arrondis en haut seulement),
+//              posé sans espace sur un cadre entièrement arrondi contenant le
+//              titre et le niveau (thème « pretty » du paquet bookly, cf.
+//              `pretty-part` dans son code source ; seul style pour l'instant,
+//              donc défaut).
+// Utilise `maquette(couleur-titre: …)` comme couleur d'accent (noir par défaut).
+#let styles-maquette = ("onglet",)
+
+// Un style de cartouche : fonction (gauche, centre, droite, couleur, hauteur) →
+// contenu. `hauteur` est `auto` (hauteur naturelle) ou une longueur à laquelle
+// le cartouche doit s'étirer (mode "interro", pour égaler la zone Nom / Prénom /
+// Classe posée à sa droite).
+#let dessins-maquette = (
+  // Inspiré de `pretty-part` (thème « pretty » du paquet bookly) : onglet coloré
+  // (coins arrondis en haut) empilé sans espace sur un cadre entièrement arrondi.
+  onglet: (gauche, centre, droite, couleur, hauteur) => layout(taille => {
+    let onglet = if gauche != none {
+      bloc-neutre(fill: couleur, inset: (x: .9em, y: .45em), radius: (top: 8pt), text(fill: white, weight: "bold", size: 12pt * echelle(), gauche))
+    } else { none }
+    let hauteur-onglet = if onglet != none { measure(onglet).height } else { 0pt }
+    let corps = grid(
+      columns: (1fr, auto),
+      column-gutter: .8em,
+      align: (center + horizon, right + horizon),
+      text(weight: "bold", size: 17pt * echelle(), if centre != none { centre } else { " " }),
+      if droite != none { text(size: 10pt * echelle(), fill: couleur, weight: "bold", droite) } else { [] },
+    )
+    let hauteur-cadre = if hauteur == auto {
+      measure(corps, width: taille.width - 2.4em).height + 1.8em
+    } else { hauteur - hauteur-onglet }
+    stack(
+      dir: ttb,
+      spacing: 0pt,
+      if onglet != none { pad(left: 1.2em, onglet) } else { [] },
+      bloc-neutre(width: 100%, height: hauteur-cadre, stroke: 1.5pt + couleur, radius: 10pt, inset: (x: 1.2em, y: .9em), align(horizon, corps)),
+    )
+  }),
+)
+
+// Zone à compléter à la main (Nom, Prénom, Classe), pleine largeur : affichée
+// sous le cartouche de titre en mode "interro" sans `titre-maquette`. À
+// appeler dans un `context`.
+#let zone-nom-prenom-classe-pleine-largeur() = {
+  let ligne(libelle) = boite-neutre(width: 100%, {
+    text(weight: "bold", libelle)
+    h(.4em)
+    box(width: 1fr, repeat[.])
+  })
+  bloc-neutre(width: 100%, above: .8em, below: 0pt, grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 1.5em,
+    ligne(terme("nom") + " :"), ligne(terme("prenom") + " :"), ligne(terme("classe") + " :"),
+  ))
+}
+
+// Même zone, sans cadre, posée à droite du cartouche de titre en mode "interro"
+// (Nom / Prénom / Classe empilés). `hauteur` : cf. `dessins-maquette`. À
+// appeler dans un `context`.
+#let zone-nom-prenom-classe-empilee(hauteur) = {
+  let ligne(libelle) = boite-neutre(width: 100%, {
+    text(weight: "bold", size: 10pt * echelle(), libelle)
+    h(.4em)
+    box(width: 1fr, repeat[.])
+  })
+  bloc-neutre(
+    width: 100%,
+    height: hauteur,
+    inset: (x: .2em, y: .3em),
+    align(horizon, stack(spacing: .9em, ligne(terme("nom") + " :"), ligne(terme("prenom") + " :"), ligne(terme("classe") + " :"))),
+  )
+}
+
+// Cartouche de titre de la fiche (clé `maquette(titre-maquette: …)`), un
+// dictionnaire avec les clés gauche / centre / droite, toutes facultatives (ex.
+// chapitre, titre du chapitre, niveau de la classe). Rien n'est dessiné si les
+// trois sont absentes — sauf en mode "interro", où la zone Nom / Prénom /
+// Classe reste affichée (pleine largeur si `titre-maquette` est vide, sinon à
+// droite du cartouche, à la même hauteur que lui). Styles : cf. `styles-maquette`.
+// `couleur` : couleur d'accent du cartouche (`maquette(couleur-titre: …)`).
+// À appeler dans un `context`.
+#let cartouche-titre(mode, titre, style, couleur) = {
+  let gauche = titre.at("gauche", default: none)
+  let centre = titre.at("centre", default: none)
+  let droite = titre.at("droite", default: none)
+  let vide = gauche == none and centre == none and droite == none
+  let dessiner = dessins-maquette.at(style)
+  if vide and mode != "interro" { return }
+  if vide {
+    zone-nom-prenom-classe-pleine-largeur()
+  } else if mode == "interro" {
+    layout(taille => {
+      let largeur-col = (taille.width - 1.5em) / 2
+      let h = calc.max(
+        measure(dessiner(gauche, centre, droite, couleur, auto), width: largeur-col).height,
+        measure(zone-nom-prenom-classe-empilee(auto), width: largeur-col).height,
+      )
+      grid(
+        columns: (1fr, 1fr),
+        column-gutter: 1.5em,
+        dessiner(gauche, centre, droite, couleur, h),
+        zone-nom-prenom-classe-empilee(h),
+      )
+    })
+  } else {
+    dessiner(gauche, centre, droite, couleur, auto)
+  }
+  v(1.2em)
 }
 
 // ─── Exercices et corrigés ───────────────────────────────────────────────────
@@ -950,6 +1067,17 @@
 //                           "it" ; auto = celle du document, sauf l'anglais (défaut
 //                           de Typst) qui donne le français : écrire "en" pour
 //                           l'anglais
+//   mode-maquette         : "exercices" (défaut) ou "interro" (ajoute une zone
+//                           Nom / Prénom / Classe sous le cartouche de titre)
+//   titre-maquette        : cartouche de titre, dictionnaire avec les clés
+//                           gauche / centre / droite, toutes facultatives (ex.
+//                           chapitre, titre du chapitre, niveau de la classe) ;
+//                           rien n'est affiché si aucune des trois n'est donnée
+//                           (mode "exercices", défaut)
+//   style-maquette        : présentation du cartouche de titre : "onglet" (seul
+//                           style pour l'instant, donc défaut)
+//   couleur-titre         : couleur d'accent du cartouche de titre (noir par
+//                           défaut)
 #let maquette(
   localisation-correction: "fin",
   liste-corriges: auto,
@@ -966,6 +1094,10 @@
   titre-automatismes: auto,
   couleur-fdr: black,
   langue: auto,
+  mode-maquette: "exercices",
+  titre-maquette: (:),
+  style-maquette: "onglet",
+  couleur-titre: auto,
   body,
 ) = {
   // Réglages invalides : message clair plutôt qu'une erreur de Typst plus loin.
@@ -975,6 +1107,7 @@
     lien-interne: lien-interne,
     couleur-route: couleur-route,
     couleur-fdr: couleur-fdr,
+    couleur-titre: couleur-titre,
   ) {
     assert(
       valeur == auto or est-couleur(valeur),
@@ -982,6 +1115,20 @@
     )
   }
   assert(type(taille-qr) == length, message: "maquette : taille-qr doit être une longueur (2cm, 15mm…).")
+  assert(
+    mode-maquette in modes-maquette,
+    message: "maquette : mode-maquette doit valoir " + modes-maquette.map(m => "\"" + m + "\"").join(", ", last: " ou ") + ", pas " + repr(mode-maquette) + ".",
+  )
+  assert(
+    style-maquette in styles-maquette,
+    message: "maquette : style-maquette doit valoir " + styles-maquette.map(s => "\"" + s + "\"").join(", ", last: " ou ") + ", pas " + repr(style-maquette) + ".",
+  )
+  for cle in titre-maquette.keys() {
+    assert(
+      cle in ("gauche", "centre", "droite"),
+      message: "maquette : titre-maquette n'accepte que les clés gauche, centre et droite, pas " + repr(cle) + ".",
+    )
+  }
   // Chaque maquette repart des couleurs par défaut (auto) : elle n'hérite pas
   // de celles d'une maquette précédente du même document.
   reglages-couleurs(
@@ -1011,6 +1158,7 @@
     etat-profondeur.get() == 1,
     message: "maquette : une maquette ne peut pas en contenir une autre. Pour plusieurs fiches dans un même document, placer les maquettes l'une après l'autre.",
   )
+  context cartouche-titre(mode-maquette, titre-maquette, style-maquette, if couleur-titre == auto { black } else { couleur-titre })
   [#metadata(none) #repere-borne]
   body
   [#metadata(none) #repere-borne]
