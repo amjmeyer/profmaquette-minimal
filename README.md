@@ -59,6 +59,34 @@ Un exemple complet se trouve dans [`examples/exemple.typ`](examples/exemple.typ)
 Pour tous les réglages (`maquette`, `exercice`, feuille de route, cartouche de
 titre, styles de cadre, langues…), voir le **[manuel (PDF)](https://cdn.jsdelivr.net/gh/amjmeyer/profmaquette-minimal@main/docs/manuel.pdf)**.
 
+## Mode maquette
+
+`maquette` peut construire elle-même le titre de la fiche, dans un cartouche à
+trois zones (`gauche` / `centre` / `droite` — par exemple un numéro de
+chapitre, son titre et le niveau de la classe), via `titre-maquette` :
+
+```typ
+#show: maquette.with(
+  titre-maquette: (gauche: "CH 02", centre: "Suites numériques", droite: "1 C"),
+)
+```
+
+`mode-maquette: "interro"` ajoute, à droite du cartouche et à sa hauteur, une
+zone Nom / Prénom / Classe à compléter à la main (comme les évaluations de
+ProfMaquette) :
+
+```typ
+#show: maquette.with(
+  mode-maquette: "interro",
+  titre-maquette: (gauche: "CH 02", centre: "Suites numériques", droite: "1 C"),
+)
+```
+
+`style-maquette` choisit la présentation du cartouche (`"onglet"` pour
+l'instant, seul style disponible et donc valeur par défaut), et `couleur-titre`
+sa couleur d'accent (noir par défaut). Détails et rendus dans la section
+« Mode maquette » du **[manuel (PDF)](https://cdn.jsdelivr.net/gh/amjmeyer/profmaquette-minimal@main/docs/manuel.pdf)**.
+
 ## Historique des versions
 
 Les changements de chaque version sont listés dans [CHANGELOG.md](CHANGELOG.md).
