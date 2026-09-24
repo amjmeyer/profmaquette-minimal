@@ -526,7 +526,8 @@
 //              titre et le niveau (thème « pretty » du paquet bookly, cf.
 //              `pretty-part` dans son code source ; seul style pour l'instant,
 //              donc défaut).
-// Utilise `maquette(couleur-titre: …)` comme couleur d'accent (noir par défaut).
+// Utilise `maquette(couleur-titre: …)` comme couleur d'accent (noir par
+// défaut) ; le niveau (droite), lui, reste toujours noir.
 #let styles-maquette = ("onglet",)
 
 // Un style de cartouche : fonction (gauche, centre, droite, couleur, hauteur) →
@@ -546,7 +547,7 @@
       column-gutter: .8em,
       align: (center + horizon, right + horizon),
       text(weight: "bold", size: 17pt * echelle(), if centre != none { centre } else { " " }),
-      if droite != none { text(size: 10pt * echelle(), fill: couleur, weight: "bold", droite) } else { [] },
+      if droite != none { text(size: 10pt * echelle(), weight: "bold", droite) } else { [] },
     )
     let hauteur-cadre = if hauteur == auto {
       measure(corps, width: taille.width - 2.4em).height + 1.8em
@@ -1076,8 +1077,9 @@
 //                           (mode "exercices", défaut)
 //   style-maquette        : présentation du cartouche de titre : "onglet" (seul
 //                           style pour l'instant, donc défaut)
-//   couleur-titre         : couleur d'accent du cartouche de titre (noir par
-//                           défaut)
+//   couleur-titre         : couleur d'accent du cartouche de titre (onglet et
+//                           contour du cadre ; le niveau, à droite, reste
+//                           noir), noir par défaut
 #let maquette(
   localisation-correction: "fin",
   liste-corriges: auto,

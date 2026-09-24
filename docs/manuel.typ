@@ -403,8 +403,8 @@ Prénom / Classe, en pleine largeur :
 ]
 
 #parametre-carte("couleur-titre", ("color", "auto"), `auto`)[
-  Couleur d'accent du cartouche de titre (onglet et contour du cadre). `auto` :
-  noir.
+  Couleur d'accent du cartouche de titre (onglet et contour du cadre) ; le
+  niveau, à droite, reste toujours noir. `auto` : noir.
 ]
 #exemple(```typ
 #show: maquette.with(
