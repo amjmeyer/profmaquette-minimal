@@ -5,7 +5,7 @@ Fiches d'exercices à la manière du package LaTeX
 exercices numérotés, obligatoires ou facultatifs, feuille de route, entraînement
 en ligne par QR code, et corrigés que l'on affiche — ou non — d'un seul réglage.
 
-📖 **[Manuel complet (PDF)](docs/manuel.pdf)** : tous les réglages, un exemple et
+📖 **[Manuel complet (PDF)](https://cdn.jsdelivr.net/gh/amjmeyer/profmaquette-minimal@main/docs/manuel.pdf)** : tous les réglages, un exemple et
 son rendu pour chacun.
 
 > [!NOTE]
@@ -16,7 +16,7 @@ son rendu pour chacun.
 > de façon incompatible entre deux versions `0.x`.
 
 *Build exercise sheets (in French) inspired by Christophe Poulain's LaTeX package
-ProfMaquette. See the [full manual (PDF)](docs/manuel.pdf) for details. It covers
+ProfMaquette. See the [full manual (PDF)](https://cdn.jsdelivr.net/gh/amjmeyer/profmaquette-minimal@main/docs/manuel.pdf) for details. It covers
 only a small part of ProfMaquette's features, was first written for personal
 use, and may change in future versions.*
 
@@ -55,7 +55,7 @@ use, and may change in future versions.*
 
 Un exemple complet se trouve dans [`examples/exemple.typ`](examples/exemple.typ).
 Pour tous les réglages (`maquette`, `exercice`, feuille de route, styles de
-cadre, langues…), voir le **[manuel (PDF)](docs/manuel.pdf)**.
+cadre, langues…), voir le **[manuel (PDF)](https://cdn.jsdelivr.net/gh/amjmeyer/profmaquette-minimal@main/docs/manuel.pdf)**.
 
 ## Historique des versions
 
