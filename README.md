@@ -2,7 +2,7 @@
 
 Fiches d'exercices à la manière du package LaTeX
 [ProfMaquette](https://ctan.org/pkg/profmaquette) de **Christophe Poulain** :
-exercices numérotés, obligatoires ou facultatifs, feuille de route, entraînement
+exercices numérotés, sur la route ou non, feuille de route, entraînement
 en ligne par QR code, et corrigés que l'on affiche — ou non — d'un seul réglage.
 
 📖 **[Manuel complet (PDF)](https://cdn.jsdelivr.net/gh/amjmeyer/profmaquette-minimal@main/docs/manuel.pdf)** : tous les réglages, un exemple et
@@ -45,7 +45,7 @@ use, and may change in future versions.*
 ]
 
 #thematique[Résoudre]
-#exercice(titre: "Pour aller plus loin", obligatoire: false)[
+#exercice(titre: "Pour aller plus loin", route: false)[
   Résoudre $x^2 - 9 = 0$.
 ]
 #solution[

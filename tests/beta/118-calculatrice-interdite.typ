@@ -2,7 +2,7 @@
 #maquette[
   #exercice[Calculatrice autorisée (défaut).]
   #exercice(calculatrice: false)[Calculatrice interdite.]
-  #exercice(calculatrice: false, obligatoire: false)[Facultatif, calculatrice interdite.]
+  #exercice(calculatrice: false, route: false)[Facultatif, calculatrice interdite.]
   #exercice(calculatrice: false, titre: "Un titre")[Avec un titre en plus.]
 ]
 #maquette(style-exercice: "etiquette-pleine")[

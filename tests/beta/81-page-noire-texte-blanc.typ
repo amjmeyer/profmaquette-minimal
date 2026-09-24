@@ -1,7 +1,7 @@
 #import "../../src/lib.typ": *
 #set page(fill: black)
 #set text(fill: white)
-#maquette(localisation-correction: "fin", couleur-obligatoire: white, couleur-fdr: white)[
+#maquette(localisation-correction: "fin", couleur-route: white, couleur-fdr: white)[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
   #exercice(titre: "Un titre", entrainement: "https://typst.app", source: "Calculs 1.1")[
@@ -10,7 +10,7 @@
     + question
   ]
   #solution[Corrigé 1.]
-  #exercice(titre: "Facultatif", obligatoire: false)[Énoncé 2.]
+  #exercice(titre: "Facultatif", route: false)[Énoncé 2.]
   #solution[Corrigé 2.]
   #thematique[Deuxième thématique]
   #exercice(entrainement: "https://typst.app/docs")[Énoncé 3, sans titre.]

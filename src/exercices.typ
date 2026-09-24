@@ -20,8 +20,8 @@
 // Portage minimaliste, en Typst, de quelques fonctionnalités du package LaTeX
 // ProfMaquette (Christophe Poulain) :
 //
-//   • Exercices encadrés, numérotés automatiquement, obligatoires (couleur) ou
-//     facultatifs (gris) — équivalent des clés Route / Stop.
+//   • Exercices encadrés, numérotés automatiquement, sur la route (couleur) ou
+//     non (gris) — équivalent des clés Route / Stop.
 //   • Entraînement en ligne (clé AEntretenir) : une haltère cliquable sur le filet
 //     droit de l'exercice ; les QR codes sont regroupés en fin de fiche, dans un
 //     bloc « Automatismes ».
@@ -30,11 +30,12 @@
 //     sous l'énoncé (CorrigeApres), en fin de fiche (CorrigeFin) ou pas du tout,
 //     avec une clé cliquable exercice ↔ corrigé (VersSolution).
 //   • Feuille de route (clé FdR, commande \AfficheFdR) : `#afficher-fdr` dessine
-//     le schéma des exercices de la maquette — obligatoires sur la route du bas,
-//     facultatifs sur la ligne du haut, coche de validation à la fin de chaque
-//     thématique de la fiche (`#thematique[…]` délimite les thématiques).
+//     le schéma des exercices de la maquette — ceux sur la route (route: true)
+//     sur la ligne du bas, les autres sur la ligne du haut, coche de validation
+//     à la fin de chaque thématique de la fiche (`#thematique[…]` délimite les
+//     thématiques).
 //   • maquette : un seul appel qui règle toute la fiche, dont la sélection des
-//     corrigés à afficher (ex. "1-6,9,12", "obligatoires") et les deux couleurs
+//     corrigés à afficher (ex. "1-6,9,12", "route") et les deux couleurs
 //     du paquet (lien-externe, lien-interne).
 //
 // Non porté : types de documents, en-tête de la feuille de route, Reponse / Indice…
@@ -53,12 +54,12 @@
 //     #solution[
 //       Corrigé…
 //     ]
-//     #exercice(titre: "Pour aller plus loin", obligatoire: false)[ … ]
+//     #exercice(titre: "Pour aller plus loin", route: false)[ … ]
 //   ]
 //
 // Fonctions publiques (détaillées dans la section « API publique »), les seules
 // exportées par `lib.typ` — tout le reste du fichier est interne au paquet,
-// y compris reglages-couleurs, reglages-corriges, couleur-exercices-obligatoires,
+// y compris reglages-couleurs, reglages-corriges, couleur-exercices-route,
 // style-exercices, liste-entrainements et bloc-corriges : `maquette` seule les
 // appelle, via ses propres paramètres :
 //   maquette                        réglages de la fiche + blocs de fin automatiques
@@ -121,7 +122,7 @@
 // ══════════════════════════════════════════════════════════════════════════════
 
 // Historique des exercices rencontrés : un dictionnaire par exercice
-// (obligatoire, pas-corrige, titre-complement, titre, entrainement). Sa longueur donne le numéro de
+// (route, pas-corrige, titre-complement, titre, entrainement). Sa longueur donne le numéro de
 // l'exercice courant.
 #let etat-historique = state("etat-historique-exercices", ())
 
@@ -142,8 +143,8 @@
 // Corrigés à afficher (auto = tous), sous la forme rendue par `parser-plage`.
 #let etat-selection = state("etat-selection", (corriges: auto))
 
-// Couleur des exercices obligatoires (étiquette + filet).
-#let etat-couleur-obligatoire = state("etat-couleur-obligatoire", black)
+// Couleur des exercices sur la route (étiquette + filet).
+#let etat-couleur-route = state("etat-couleur-route", black)
 
 // Style des cadres (exercices et bloc « Automatismes ») : cf. `boite-etiquette`.
 #let styles-exercice = ("fond-blanc", "etiquette-encadree", "bandeau", "etiquette-pleine")
@@ -154,7 +155,7 @@
 #let etat-fdr = state("etat-fdr", (couleur: black))
 
 // Étiquettes des repères posés dans le document pour `afficher-fdr` :
-//   - un par exercice (numero, obligatoire, stop) ;
+//   - un par exercice (numero, route, stop) ;
 //   - un par `thematique`, qui termine le tronçon en cours ;
 //   - une borne au début et à la fin de chaque maquette : le schéma ne montre
 //     que les exercices compris entre les deux bornes qui l'entourent.
@@ -187,10 +188,10 @@
 
 // Convertit une sélection de corrigés en tableau trié d'entiers, en `auto` (tous)
 // ou en mot-clé. Formes acceptées :
-//   auto · 4 · "1-6,9,12" · (1, 2, "5-8") · "obligatoires" · "facultatifs"
+//   auto · 4 · "1-6,9,12" · (1, 2, "5-8") · "route" · "pas-route"
 #let parser-plage(sel) = {
   if sel == auto { return auto }
-  if type(sel) == str and sel.trim() in ("obligatoires", "facultatifs") { return sel.trim() }
+  if type(sel) == str and sel.trim() in ("route", "pas-route") { return sel.trim() }
   if type(sel) == int { return (sel,) }
   if sel == () { return () } // aucun corrigé
   if type(sel) == array { sel = sel.map(str).join(",") }
@@ -202,7 +203,7 @@
   let entier(t) = {
     assert(
       t.trim().match(regex("^\\d+$")) != none,
-      message: "Sélection de corrigés invalide : « " + sel + " ». Formes acceptées : auto, 4, \"1-6,9,12\", \"obligatoires\", \"facultatifs\".",
+      message: "Sélection de corrigés invalide : « " + sel + " ». Formes acceptées : auto, 4, \"1-6,9,12\", \"route\", \"pas-route\".",
     )
     int(t.trim())
   }
@@ -221,10 +222,10 @@
 }
 
 // L'exercice n° `numero` fait-il partie de la sélection `sel` ?
-#let est-selectionne(numero, obligatoire, sel) = {
+#let est-selectionne(numero, route, sel) = {
   if sel == auto { true }
-  else if sel == "obligatoires" { obligatoire }
-  else if sel == "facultatifs" { not obligatoire }
+  else if sel == "route" { route }
+  else if sel == "pas-route" { not route }
   else { numero in sel }
 }
 
@@ -238,7 +239,7 @@
   (
     numero: numero,
     id: str(etat-serie.get()) + "-" + str(numero),
-    corrige: not ex.pas-corrige and est-selectionne(numero, ex.obligatoire, etat-selection.get().corriges),
+    corrige: not ex.pas-corrige and est-selectionne(numero, ex.route, etat-selection.get().corriges),
     titre-complement: ex.titre-complement,
   )
 }
@@ -415,21 +416,21 @@
   bloc-neutre(width: 100%, breakable: trop-haute, contenu)
 })
 
-// Boîte d'un exercice. Obligatoire : filet et titre dans la couleur des
-// obligatoires. Facultatif : filet gris très clair, titre gris foncé (lisible) ;
-// avec une étiquette pleine, gris moyen, pour que l'étiquette ne ressorte pas
-// plus que celle d'un obligatoire.
+// Boîte d'un exercice. Sur la route : filet et titre dans `couleur-route`.
+// Hors route : filet gris très clair, titre gris foncé (lisible) ; avec une
+// étiquette pleine, gris moyen, pour que l'étiquette ne ressorte pas plus que
+// celle d'un exercice sur la route.
 // À appeler dans un `context`.
-#let boite-exercice(numero: none, titre: none, obligatoire: true, calculatrice: true, body) = {
-  let couleur = etat-couleur-obligatoire.get()
+#let boite-exercice(numero: none, titre: none, route: true, calculatrice: true, body) = {
+  let couleur = etat-couleur-route.get()
   let etiquette-pleine = etat-style.get() == "etiquette-pleine"
   let gris-titre = if etiquette-pleine { luma(60%) } else { luma(35%) }
-  let couleur-titre = if obligatoire { couleur } else { gris-titre }
+  let couleur-titre = if route { couleur } else { gris-titre }
   // Sur une étiquette pleine, le titre est écrit sur le fond de la page (pas
   // dans `couleur-titre`, qui colore alors le fond de l'étiquette elle-même).
   let couleur-icone = if etiquette-pleine { fond() } else { couleur-titre }
   boite-etiquette(
-    if obligatoire { couleur } else { luma(82%) },
+    if route { couleur } else { luma(82%) },
     couleur-titre: couleur-titre,
     [#terme("exercice") #numero#if titre != none [ : #titre]#if not calculatrice [#h(4pt)#"-"#h(4pt)#icone-calculatrice-barree(couleur-icone)]],
     body,
@@ -498,8 +499,8 @@
   ))
 }
 
-// Couleur des exercices obligatoires pour toute la fiche (noir par défaut).
-#let couleur-exercices-obligatoires(couleur) = etat-couleur-obligatoire.update(couleur)
+// Couleur des exercices sur la route pour toute la fiche (noir par défaut).
+#let couleur-exercices-route(couleur) = etat-couleur-route.update(couleur)
 
 // Style des cadres d'exercice et du bloc « Automatismes » pour toute la fiche
 // (cf. `boite-etiquette`) : "fond-blanc" (défaut), "etiquette-encadree",
@@ -520,8 +521,9 @@
 //                      et QR code dans le bloc « Automatismes » (clé AEntretenir)
 //   source           : texte libre sur le filet bas, ex. les exercices à faire dans
 //                      la ressource du QR code (clé Source)
-//   obligatoire      : true = couleur des obligatoires (clés Route / Stop) ;
-//                      false = gris (exercice facultatif)
+//   route            : true (défaut) = couleur des exercices sur la route
+//                      (clés Route / Stop), ligne du bas de la feuille de
+//                      route ; false = gris, ligne du haut
 //   pas-corrige      : true = jamais de corrigé, même si un `#solution` suit
 //                      (clé PasCorrige)
 //   titre-complement : complément du titre du corrigé (clé TitreSolution)
@@ -535,7 +537,7 @@
   titre: none,
   entrainement: none,
   source: none,
-  obligatoire: true,
+  route: true,
   pas-corrige: false,
   titre-complement: none,
   stop: false,
@@ -544,7 +546,7 @@
 ) = {
   // Mise à jour hors `context`, avec des valeurs fixes (cf. Notes techniques).
   etat-historique.update(h => h + ((
-    obligatoire: obligatoire,
+    route: route,
     pas-corrige: pas-corrige,
     titre-complement: titre-complement,
     titre: titre,
@@ -554,7 +556,7 @@
     #context {
       let infos = infos-exercice()
       let numero = infos.numero
-      let boite = boite-exercice(numero: numero, titre: titre, obligatoire: obligatoire, calculatrice: calculatrice, rendre(body))
+      let boite = boite-exercice(numero: numero, titre: titre, route: route, calculatrice: calculatrice, rendre(body))
 
       // Clé vers le corrigé : seulement si un corrigé est réellement affiché.
       // Le choix de la mise en page (boîte mesurée ou non) dépend de `cle-possible`
@@ -564,7 +566,7 @@
       let cible = query(metadata.where(value: "corrige-" + infos.id))
       let avec-cle = cle-possible and cible.len() > 0
       [#metadata("exercice-" + infos.id)]
-      [#metadata((numero: numero, obligatoire: obligatoire, stop: stop)) #repere-exercice]
+      [#metadata((numero: numero, route: route, stop: stop)) #repere-exercice]
 
       // Place à droite du cadre (marge ou entre-colonne) : si elle ne suffit pas à
       // la moitié d'une icône, les icônes sont posées à l'intérieur du filet au
@@ -590,7 +592,7 @@
               let taille = measure(icone)
               place(top + right, dx: decalage(icone), dy: 1.5cm + k * 1cm - taille.height / 2, icone)
             }
-            boite-exercice(numero: numero, titre: titre, obligatoire: obligatoire, calculatrice: calculatrice, corps)
+            boite-exercice(numero: numero, titre: titre, route: route, calculatrice: calculatrice, corps)
           })
         }
         boite-neutre(height: hauteur-boite, width: 100%)[
@@ -751,11 +753,11 @@
 
 // Découpe les exercices en tronçons (un tronçon se termine après chaque exercice
 // dont `stop` est vrai, et à la fin) et les place en colonnes, comme \BuildRouteTikz :
-// dans chaque tronçon, les obligatoires vont sur la ligne du bas, les
-// facultatifs sur celle du haut ; la plus courte est complétée par des vides
-// (none), puis vient une colonne « coche ». Renvoie un tronçon par élément :
-//   bas, haut   : une case par colonne — un exercice, none (vide) ou "coche" ;
-//   facultatifs : le tronçon a-t-il des exercices facultatifs ?
+// dans chaque tronçon, les exercices sur la route (route: true) vont sur la
+// ligne du bas, les autres sur celle du haut ; la plus courte est complétée par
+// des vides (none), puis vient une colonne « coche ». Renvoie un tronçon par élément :
+//   bas, haut  : une case par colonne — un exercice, none (vide) ou "coche" ;
+//   hors-route : le tronçon a-t-il des exercices hors route ?
 #let colonnes-fdr(exos) = {
   let troncons = ((),)
   for ex in exos {
@@ -764,13 +766,13 @@
   }
   if troncons.last() == () and troncons.len() > 1 { let _ = troncons.pop() }
   troncons.map(t => {
-    let obl = t.filter(ex => ex.obligatoire)
-    let fac = t.filter(ex => not ex.obligatoire)
-    let n = calc.max(obl.len(), fac.len())
+    let sur-route = t.filter(ex => ex.route)
+    let hors-route = t.filter(ex => not ex.route)
+    let n = calc.max(sur-route.len(), hors-route.len())
     (
-      bas: obl + (none,) * (n - obl.len()) + ("coche",),
-      haut: fac + (none,) * (n - fac.len()) + ("coche",),
-      facultatifs: fac.len() > 0,
+      bas: sur-route + (none,) * (n - sur-route.len()) + ("coche",),
+      haut: hors-route + (none,) * (n - hors-route.len()) + ("coche",),
+      hors-route: hors-route.len() > 0,
     )
   })
 }
@@ -781,8 +783,8 @@
 //   #maquette[
 //     #align(center, afficher-fdr)
 //     #thematique[Factoriser]
-//     #exercice[…]                            // obligatoire : route du bas
-//     #exercice(obligatoire: false)[…]        // facultatif : ligne du haut
+//     #exercice[…]                            // route (défaut) : ligne du bas
+//     #exercice(route: false)[…]              // hors route : ligne du haut
 //     #thematique[Résoudre]                   // coche avant cette thématique
 //     #exercice[…]
 //   ]                                         // coche finale
@@ -794,12 +796,12 @@
 //
 // L'élève fait les exercices de la route du bas jusqu'à la coche, puis demande
 // la validation ; l'enseignant peut alors lui proposer les exercices de la ligne
-// du haut (les facultatifs du même tronçon) avant qu'il poursuive la route.
+// du haut (hors route, du même tronçon) avant qu'il poursuive la route.
 // Chaque disque est un lien vers son exercice.
 //
 // C'est un contenu, pas une fonction : on écrit `#afficher-fdr`, sans
-// parenthèses. Il est en noir et blanc (disques pleins : obligatoires ; disques
-// blancs : facultatifs) ; sa couleur se règle avec `maquette(couleur-fdr: …)`.
+// parenthèses. Il est en noir et blanc (disques pleins : sur la route ; disques
+// blancs : hors route) ; sa couleur se règle avec `maquette(couleur-fdr: …)`.
 #let afficher-fdr = protege(_ => context {
   // Exercices situés entre les deux bornes qui entourent le schéma.
   let avant = query(selector(repere-borne).before(here()))
@@ -875,9 +877,9 @@
     let droite = if dernier { x(n + 1) + rayon } else { x(debut + m) + ecart / 2 }
     let X(j) = x(debut + j) - gauche // abscisse de la j-ième case du tronçon
     dessins.push(boite-neutre(width: droite - gauche, height: y-bas + rayon, {
-      // Ligne du haut : du premier facultatif jusqu'au-dessus de la coche, puis
+      // Ligne du haut : du premier exercice hors route jusqu'au-dessus de la coche, puis
       // descente vers la coche.
-      if t.facultatifs {
+      if t.hors-route {
         trait(X(1), y-haut, X(m), y-haut)
         trait(X(m), y-haut, X(m), y-bas)
       }
@@ -923,7 +925,7 @@
 //   localisation-correction : none/false (sujet seul) | "apres" (sous chaque énoncé)
 //                           | "fin"/true (en fin de fiche)
 //   liste-corriges        : corrigés affichés : auto (tous), 4, "1-6,9,12",
-//                           (1, "3-5"), "obligatoires" ou "facultatifs".
+//                           (1, "3-5"), "route" ou "pas-route".
 //                           Les énoncés, eux, sont toujours tous affichés.
 //   vers-solution         : clé cliquable exercice ↔ corrigé (VersSolution)
 //   lien-externe          : couleur des liens extérieurs (haltère, QR, source)
@@ -936,7 +938,7 @@
 //   page-par-corrige      : chaque corrigé commence sur sa propre page (jamais
 //                           le dernier) ; même limite que correction-nouvelle-page
 //                           dans `columns(…)` ou un cadre
-//   couleur-obligatoire   : couleur des exercices obligatoires (auto = noir)
+//   couleur-route         : couleur des exercices sur la route (auto = noir)
 //   style-exercice        : style des cadres : "fond-blanc" (défaut),
 //                           "etiquette-encadree", "bandeau" ou "etiquette-pleine"
 //   colonnes-automatismes : QR codes par ligne dans « Automatismes »
@@ -957,7 +959,7 @@
   titre-corriges: auto,
   correction-nouvelle-page: true,
   page-par-corrige: false,
-  couleur-obligatoire: auto,
+  couleur-route: auto,
   style-exercice: "fond-blanc",
   colonnes-automatismes: 3,
   taille-qr: 2cm,
@@ -971,7 +973,7 @@
   for (nom, valeur) in (
     lien-externe: lien-externe,
     lien-interne: lien-interne,
-    couleur-obligatoire: couleur-obligatoire,
+    couleur-route: couleur-route,
     couleur-fdr: couleur-fdr,
   ) {
     assert(
@@ -994,7 +996,7 @@
     nouvelle-page: correction-nouvelle-page,
     page-par-corrige: page-par-corrige,
   )
-  couleur-exercices-obligatoires(if couleur-obligatoire == auto { black } else { couleur-obligatoire })
+  couleur-exercices-route(if couleur-route == auto { black } else { couleur-route })
   style-exercices(style-exercice)
   etat-selection.update((corriges: parser-plage(liste-corriges)))
   etat-fdr.update((couleur: couleur-fdr))

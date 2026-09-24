@@ -2,6 +2,6 @@
 #maquette[
   #afficher-fdr
   #exercice[A]
-  #exercice(obligatoire: false)[B]
+  #exercice(route: false)[B]
   #afficher-fdr
 ]

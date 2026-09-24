@@ -215,10 +215,10 @@
 
   - les exercices sont numérotés automatiquement via l'ordre d'apparition dans le code ;
 
-  - on peut choisir si un exercice est *obligatoire* ou *facultatif* ;
+  - on peut choisir si un exercice est *sur la route* ou non ;
 
   - une *feuille de route* montre à l'élève le parcours de la fiche : les
-    exercices obligatoires, les facultatifs et les étapes à faire valider ;
+    exercices sur la route, les autres et les étapes à faire valider ;
   - un *entraînement en ligne* s'ouvre d'un clic sur l'exercice, et son QR code
     est regroupé en fin de fiche ;
   - les *corrigés* s'affichent sous chaque énoncé, en fin de fiche ou pas du
@@ -341,7 +341,7 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
 #signature("exercice(
   calculatrice: bool,
   entrainement: str | none,
-  obligatoire: bool,
+  route: bool,
   pas-corrige: bool,
   source: content | none,
   stop: bool,
@@ -388,16 +388,16 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
   J'utilise cette fonctionnalité pour travailler les automatismes, principalement avec Mathalea en glissant un lien Capytale vers l'activité. On peut l'utiliser pour sans doute mille et une autres choses (et, le cas échéant, on peut modifier le titre "Automatismes" en autre chose : voir la @entrainements). Pour l'élève/étudiant qui a sa feuille en version papier, cette haltère lui signifie qu'il y a des automatismes associés à cet exercice et il peut scanner le QR-Code en fin de feuille afin d'accéder au site. Si la feuille est donnée également en ligne, cliquer sur l'haltère suffit. Cette haltère a donc un double intérêt !]
 
 
-#parametre-carte("obligatoire", ("bool",), `true`)[
+#parametre-carte("route", ("bool",), `true`)[
   La valeur du paramètre modifie la couleur de l'entourage de l'exercice. Par défaut (`true`), la couleur du cadre est noire. Si on le met sur `false`, la couleur du cadre devient grise. \
-  Également, faire devenir un exercice non obligatoire change sa position dans la feuille de route. Voir @fdr. \
-  La couleur des exercices obligatoires se règle pour toute la fiche avec
-  `maquette(couleur-obligatoire: …)`. Pour plus de détails, voir @maquette 
+  Également, faire passer un exercice hors route change sa position dans la feuille de route. Voir @fdr. \
+  La couleur des exercices sur la route se règle pour toute la fiche avec
+  `maquette(couleur-route: …)`. Pour plus de détails, voir @maquette
 ]
 #exemple(```typ
 #maquette[
   #exercice[Calculer $2 + 3$.]
-  #exercice(obligatoire: false)[
+  #exercice(route: false)[
     Calculer $2^10$.
   ]
 ]
@@ -454,7 +454,7 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
 #show: maquette.with()
 #align(center,afficher-fdr) 
   #exercice(
-    obligatoire: false,
+    route: false,
     stop: true
   )[ 
   ]
@@ -474,7 +474,7 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
 #thematique[Calcul mental]
   #exercice[Calculer $9 times 7$.]
 
-  #exercice(obligatoire: false)[
+  #exercice(route: false)[
     Calculer (en posant) $1789 times 1870$.
   ]
 
@@ -532,16 +532,16 @@ existent pour le moment :
  
 #maquette(style-exercice: "bandeau")[
   #exercice[HEYYY] 
-  #exercice(obligatoire: false)[HEYYY] 
+  #exercice(route: false)[HEYYY] 
 ]
 
 #maquette(style-exercice: "etiquette-encadree")[
   #exercice[HEYYY] 
-  #exercice(obligatoire: false)[HEYYY] 
+  #exercice(route: false)[HEYYY] 
 ]
 #maquette(style-exercice: "etiquette-pleine")[
   #exercice[HEYYY] 
-  #exercice(obligatoire: false)[HEYYY] 
+  #exercice(route: false)[HEYYY] 
 ]
 ```)
 
@@ -591,8 +591,8 @@ En voici la liste, dans l'ordre alphabétique.
     `4`, [celui de l'exercice 4],
     `"1-6,9,12"`, [ceux des exercices 1 à 6, 9 et 12],
     `(1, "3-5")`, [ceux des exercices 1, 3, 4 et 5],
-    `"obligatoires"`, [ceux des exercices obligatoires],
-    `"facultatifs"`, [ceux des exercices facultatifs],
+    `"route"`, [ceux des exercices sur la route],
+    `"pas-route"`, [ceux des exercices hors route],
     `()`, [aucun],
     table.hline(stroke: .6pt),
   )
@@ -738,16 +738,16 @@ place en général avant le premier exercice, centré avec
 
 Les exercices sont alors distingués en deux genres : il y a ceux du haut et ceux du bas. On peut leur donner le sens que l'on veut.
 
-- Les exercices obligatoires forment la *route du bas* : ce sont des disques pleins, numérotés.
+- Les exercices sur la route (`route: true`, défaut) forment la *route du bas* : ce sont des disques pleins, numérotés.
 
-- Les exercices facultatifs sont sur la *ligne du haut*, en disques blancs.
+- Les exercices hors route (`route: false`) sont sur la *ligne du haut*, en disques blancs.
 - Les disques blancs rejoignent la coche avec les disques noirs.
 
 #exemple(```typ
 #maquette[
   #align(center, afficher-fdr)
   #exercice[Énoncé 1.]
-  #exercice(obligatoire: false)[
+  #exercice(route: false)[
     Énoncé 2.
   ]
   #exercice[Énoncé 3.]
@@ -764,7 +764,7 @@ couleur se règle avec `maquette(couleur-fdr: …)` (@maquette). Si la route est
 plus large que la page, elle passe à la ligne entre deux thématiques.
 
 #idea(title: "Quels usages de cette feuille de route ?")[
-  Me concernant, j'utilise ces FdR pour regrouper les exercices par thématiques, puis en désignant la liste des exercices que l'on va corriger en classe comme étant ceux qui sont obligatoires, et ceux qu'on ne corrigera pas en blanc qui sont facultatifs. Ce fonctionnement avec le schéma laisse la liberté à l'enseignant de l'utiliser (ou pas) comme bon lui semble !
+  Me concernant, j'utilise ces FdR pour regrouper les exercices par thématiques, puis en désignant la liste des exercices que l'on va corriger en classe comme étant ceux qui sont sur la route, et ceux qu'on ne corrigera pas en blanc, hors route. Ce fonctionnement avec le schéma laisse la liberté à l'enseignant de l'utiliser (ou pas) comme bon lui semble !
 ]
 
 #pagebreak()
@@ -784,7 +784,7 @@ coche finale termine toujours la route.
 
 #thematique[Factoriser]
 #exercice[Factoriser $9x -12$.]
-#exercice(obligatoire: false)[
+#exercice(route: false)[
   Factoriser $4x^2 + 6x$.
 ]
 #thematique[Résoudre]
@@ -816,7 +816,7 @@ deux thématiques. Seul le schéma est montré.
 
 #exemple(dessous: true, hauteur: 1.6cm, ```typ
 #let obl = exercice[…]
-#let fac = exercice(obligatoire: false)[…]
+#let fac = exercice(route: false)[…]
 #maquette[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
@@ -948,7 +948,7 @@ indépendamment les unes des autres.
   …
   lien-externe: color | auto,
   lien-interne: color | auto,
-  couleur-obligatoire: color | auto,
+  couleur-route: color | auto,
   couleur-fdr: color,
   …
 ) -> content")
@@ -994,13 +994,13 @@ indépendamment les unes des autres.
 ```)
  
 
-#parametre-carte("couleur-obligatoire", ("color", "auto"), `auto`)[
-  Couleur des exercices obligatoires (filet et titre). `auto` : noir. Les
-  exercices facultatifs, eux, restent toujours gris.
+#parametre-carte("couleur-route", ("color", "auto"), `auto`)[
+  Couleur des exercices sur la route (filet et titre). `auto` : noir. Les
+  exercices hors route, eux, restent toujours gris.
 ]
 #exemple(```typ
-#show: maquette.with(couleur-obligatoire: green)
-#exercice[Obligatoire.]
+#show: maquette.with(couleur-route: green)
+#exercice[Sur la route.]
 
 ```)
 
@@ -1011,7 +1011,7 @@ indépendamment les unes des autres.
 #show: maquette.with(couleur-fdr: orange)
 #align(center, afficher-fdr)
 #exercice[Énoncé 1.]
-#exercice(obligatoire: false)[Facultatif]
+#exercice(route: false)[Hors route.]
 
 ```)
 
@@ -1103,7 +1103,7 @@ Pour qui connaît ProfMaquette, voici l'équivalent de ses clés et commandes.
   table.hline(stroke: .4pt),
   [environnement `Maquette`], [`maquette`],
   [clé `FdR`, `\AfficheFdR`], [`afficher-fdr`],
-  [`Route`], [`obligatoire: true` (défaut)],
+  [`Route`], [`route: true` (défaut)],
   [`Stop`], [`#thematique[…]` (ou `stop: true`)],
   [`AEntretenir`, zone Entrainement], [`entrainement:`, bloc Automatismes],
   [`Source`], [`source:`],

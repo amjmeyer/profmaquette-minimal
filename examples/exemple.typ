@@ -1,12 +1,12 @@
 // Exemple complet du paquet profmaquette-minimal : une petite fiche d'exercices avec
-// feuille de route, entraînement en ligne, exercices facultatifs et corrigés en fin
+// feuille de route, entraînement en ligne, exercices hors route et corrigés en fin
 // de fiche.
 //
 // Pour essayer d'autres réglages, modifiez seulement les paramètres de `maquette` :
 //   localisation-correction: none    → fiche élève, sans corrigé
 //   localisation-correction: "apres" → corrigé sous chaque énoncé
 //   liste-corriges: "1,3"            → seulement les corrigés des exercices 1 et 3
-//   liste-corriges: "facultatifs"    → seulement les corrigés des exercices facultatifs
+//   liste-corriges: "pas-route"      → seulement les corrigés des exercices hors route
 //   lien-externe: blue, lien-interne: green.darken(20%)  → autres couleurs
 //   style-exercice: "bandeau"   → autre style de cadre ("etiquette-encadree", "etiquette-pleine"…)
 
@@ -26,8 +26,8 @@
   colonnes-automatismes: 4,
 )[
 
-  // Feuille de route : obligatoires en bas, facultatifs en haut, coche à la fin
-  // de chaque thématique (chaque #thematique ferme la précédente).
+  // Feuille de route : exercices sur la route en bas, hors route en haut, coche
+  // à la fin de chaque thématique (chaque #thematique ferme la précédente).
   #align(center, afficher-fdr)
 
   #thematique[Factoriser, résoudre]
@@ -46,7 +46,7 @@
     + $B(x) = (2x)^2 + 2 times 2x times 3 + 3^2 = (2x + 3)^2$.
   ]
 
-  #exercice(titre: "Pour aller plus loin", obligatoire: false)[
+  #exercice(titre: "Pour aller plus loin", route: false)[
     Résoudre dans $RR$ l'équation $x^2 - 9 = 0$.
   ]
   #solution[

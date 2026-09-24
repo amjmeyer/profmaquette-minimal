@@ -21,7 +21,7 @@
   ]
   #solution[$x^2 - 9 = (x - 3)(x + 3)$.]
 
-  #exercice(titre: "Pour aller plus loin", obligatoire: false)[
+  #exercice(titre: "Pour aller plus loin", route: false)[
     Factoriser $4x^2 - 12x + 9$.
   ]
   #solution[$4x^2 - 12x + 9 = (2x - 3)^2$.]
@@ -48,7 +48,7 @@
   ]
   #solution[$u_0 = 1$ et $u_1 = 3$.]
 
-  #exercice(titre: "Sens de variation", obligatoire: false)[
+  #exercice(titre: "Sens de variation", route: false)[
     La suite $(u_n)$ est-elle croissante ?
   ]
   #solution[$u_(n+1) - u_n = 2 > 0$ : elle est croissante.]

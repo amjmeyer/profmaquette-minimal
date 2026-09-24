@@ -1,5 +1,6 @@
 #import "../../src/lib.typ": *
-#maquette()[
-  #exercice[#afficher-fdr]
+#maquette[
+  #afficher-fdr
+  #exercice(route: false)[A]
   #exercice(route: false)[B]
 ]

@@ -3,7 +3,7 @@
 // bleue, exercice noir attendus).
 #import "../../src/lib.typ": *
 #set page(height: auto)
-#maquette(lien-externe: green, lien-interne: purple, couleur-obligatoire: navy, localisation-correction: "apres")[
+#maquette(lien-externe: green, lien-interne: purple, couleur-route: navy, localisation-correction: "apres")[
   #exercice(entrainement: "https://a.b")[Première maquette : vert, violet, navy.] #solution[a]
 ]
 #maquette(localisation-correction: "apres")[
