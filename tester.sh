@@ -35,5 +35,5 @@ for f in examples/*.typ; do
   fi
 done
 echo "Compilation du manuel"
-"$TYPST" compile --root . docs/manuel.typ docs/manuel.pdf
+"$TYPST" compile --root . --package-path "$LOCAL" docs/manuel.typ docs/manuel.pdf
 echo "OK"
