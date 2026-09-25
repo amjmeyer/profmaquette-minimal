@@ -29,10 +29,10 @@ use, and may change in future versions.*
 ## Démarrage rapide
 
 ```typ
-#import "@preview/profmaquette-minimal:0.1.0": maquette, exercice, solution, afficher-fdr, thematique
+#import "@preview/profmaquette-minimal:0.1.0": maquette, exercice, corrige, afficher-fdr, thematique
 
 #show: maquette.with(
-  localisation-correction: "fin",
+  position-corriges: "fin",
   titre-maquette: (gauche: "CH 02", centre: "Suites numériques", droite: "1 C"),
 )
 
@@ -42,7 +42,7 @@ use, and may change in future versions.*
 #exercice(titre: "Identités remarquables", entrainement: "https://exemple.fr")[
   Factoriser $x^2 - 9$.
 ]
-#solution[
+#corrige[
   $x^2 - 9 = (x - 3)(x + 3)$.
 ]
 
@@ -50,7 +50,7 @@ use, and may change in future versions.*
 #exercice(titre: "Pour aller plus loin", route: false)[
   Résoudre $x^2 - 9 = 0$.
 ]
-#solution[
+#corrige[
   Les solutions sont $-3$ et $3$.
 ]
 ```

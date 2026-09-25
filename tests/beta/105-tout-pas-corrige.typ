@@ -1,5 +1,5 @@
 #import "../../src/lib.typ": *
 #maquette()[
-  #exercice(pas-corrige: true)[A] #solution[a]
-  #exercice(pas-corrige: true)[B] #solution[b]
+  #exercice(pas-corrige: true)[A] #corrige[a]
+  #exercice(pas-corrige: true)[B] #corrige[b]
 ]

@@ -2,21 +2,21 @@
 #maquette(liste-corriges: ())[
   #afficher-fdr
   #thematique[T]
-  #exercice(entrainement: "https://a.b/0")[A] #solution[a]
-  #exercice(route: false)[B] #solution[b]
+  #exercice(entrainement: "https://a.b/0")[A] #corrige[a]
+  #exercice(route: false)[B] #corrige[b]
 ]
 #pagebreak()
-#maquette(localisation-correction: "apres")[
+#maquette(position-corriges: "apres")[
   #afficher-fdr
   #thematique[T]
-  #exercice(entrainement: "https://a.b/1")[A] #solution[a]
-  #exercice(route: false)[B] #solution[b]
+  #exercice(entrainement: "https://a.b/1")[A] #corrige[a]
+  #exercice(route: false)[B] #corrige[b]
 ]
 #pagebreak()
-#maquette(localisation-correction: "fin")[
+#maquette(position-corriges: "fin")[
   #afficher-fdr
   #thematique[T]
-  #exercice(entrainement: "https://a.b/2")[A] #solution[a]
-  #exercice(route: false)[B] #solution[b]
+  #exercice(entrainement: "https://a.b/2")[A] #corrige[a]
+  #exercice(route: false)[B] #corrige[b]
 ]
 #pagebreak()

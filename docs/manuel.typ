@@ -42,7 +42,7 @@
 }
 
 // Fiche d'un paramètre : nom, type(s) et valeur par défaut, puis description.
-//   #parametre("localisation-correction", ("str", "bool"), `"fin"`)[…]
+//   #parametre("position-corriges", ("str", "bool"), `"fin"`)[…]
 #let parametre(nom, types, defaut, description) = block(
   width: 100%,
   inset: (left: 10pt, y: 4pt),
@@ -278,7 +278,7 @@ exemple.
   #exercice(titre: "Factoriser")[
     Factoriser $x^2 - 9$.
   ]
-  #solution[$(x - 3)(x + 3)$] 
+  #corrige[$(x - 3)(x + 3)$] 
 ]
 ```)
 
@@ -300,7 +300,7 @@ fiche et sur une nouvelle page. La clé de couleur rouge sert d'indicateur pour 
   #exercice(titre: "Factoriser")[
     Factoriser $x^2 - 9$.
   ]
-  #solution[$(x - 3)(x + 3)$] 
+  #corrige[$(x - 3)(x + 3)$] 
 ```)
 
 == Les fonctions du paquet
@@ -317,7 +317,7 @@ Le paquet n'expose que ces cinq fonctions.
   table.hline(stroke: .4pt),
   `maquette`, [englobe la fiche et regroupe tous les réglages],
   `exercice`, [un énoncé numéroté (@exercices)],
-  `solution`, [le corrigé de l'exercice qui précède (@corriges)],
+  `corrige`, [le corrigé de l'exercice qui précède (@corriges)],
   `thematique`, [le titre d'une thématique, qui place une coche sur la feuille de route (@fdr)],
   `afficher-fdr`, [le schéma de la feuille de route (@fdr)],
   table.hline(stroke: .6pt),
@@ -506,17 +506,17 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
 ```) 
 
 #parametre-carte("pas-corrige", ("bool",), `false`)[
-  Ce paramètre, s'il est réglé sur `true`, permet de ne pas afficher le corrigé d'un corrigé alors même qu'il est écrit dans un `solution` qui le suit. Pour en savoir plus, voir la @corriges. 
+  Ce paramètre, s'il est réglé sur `true`, permet de ne pas afficher le corrigé d'un corrigé alors même qu'il est écrit dans un `corrige` qui le suit. Pour en savoir plus, voir la @corriges.
 ]
 #exemple(```typ
 #maquette[
   #exercice(pas-corrige: true)[Calculer $5 times 6$.]
-  #solution[Ce corrigé ne sera jamais affiché.]
+  #corrige[Ce corrigé ne sera jamais affiché.]
 
   #exercice[
     Résoudre les équations de Navier-Stokes
   ]
-  #solution[
+  #corrige[
     Facile ! (from OpenAI)
   ]
 ]
@@ -603,7 +603,7 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
     titre-complement: "méthode",
     calculatrice: false
   )[Calculer $2^10$.]
-  #solution[$1024$]
+  #corrige[$1024$]
 ]
 ```)
 
@@ -654,7 +654,7 @@ Chaque maquette repart de l'exercice 1, d'où les numéros identiques.
 
 = Les corrigés <corriges>
 
-Le corrigé d'un exercice s'écrit juste après lui, avec `#solution[…]`. Cette fonction n'admet pas de paramètre, et c'est un choix voulu : les paramètres sont tous appliqués localement sur `#exercice(…)[…]` ou alors au niveau des réglages de la maquette.
+Le corrigé d'un exercice s'écrit juste après lui, avec `#corrige[…]`. Cette fonction n'admet pas de paramètre, et c'est un choix voulu : les paramètres sont tous appliqués localement sur `#exercice(…)[…]` ou alors au niveau des réglages de la maquette.
 Ce sont les réglages de la `maquette` qui
 décident où ils s'affichent, et lesquels s'affichent.
 
@@ -664,19 +664,14 @@ En voici la liste, dans l'ordre alphabétique.
 
 #signature("maquette(
   …
-  correction-nouvelle-page: bool,
   liste-corriges: auto | int | str | array,
-  localisation-correction: str | bool,
+  nouvelle-page-corriges: bool,
   page-par-corrige: bool,
+  position-corriges: str | bool,
   titre-corriges: content | auto,
-  vers-solution: bool,
+  vers-corrige: bool,
   …
 ) -> content")
-
-#parametre-carte("correction-nouvelle-page", ("bool",), `true`)[
-  Le bloc « Correction » commence sur une nouvelle page par défaut. Si l'on règle le paramètre sur `false`, alors il suit la
-  fiche, sans saut de page.
-]
 
 #parametre-carte("liste-corriges", ("auto", "int", "str", "array"), `auto`)[
   Le paramètre `liste-corriges` permet, depuis la maquette, d'afficher une liste des exercices corrigés. Voici ce qui est pris en compte :
@@ -697,21 +692,28 @@ En voici la liste, dans l'ordre alphabétique.
     table.hline(stroke: .6pt),
   )
 ]
+
+$$
+
+#idea(title: "Utilisation comme prof !")[
+  L'intérêt de cette combinaison est la suivante : on affiche tous les corrigés lorsqu'on est en train de préparer sa fiche d'exos : on ecrit en paramètre de maquette `liste-corriges: auto`. Une fois que tout semble bon, on règle `liste-corriges` sur `()` pour imprimer un sujet seul. Ensuite, au moment de rajouter les exercices, on remet `liste-corriges` sur ce que l'on veut voir apparaître (voir plus haut), en choisissant où avec `position-corriges` (`"fin"` ou `"apres"`). 
+]
+
 #exemple(```typ
 #show: maquette.with(
-  localisation-correction: "fin",
+  position-corriges: "fin",
   liste-corriges: "1, 3-5",
 )
   #exercice[Énoncé 1.]
-  #solution[Corrigé 1.]
+  #corrige[Corrigé 1.]
   #exercice[Énoncé 2.]
-  #solution[Corrigé 2.]
+  #corrige[Corrigé 2.]
   #exercice[Énoncé 3.]
-  #solution[Corrigé 3.]
+  #corrige[Corrigé 3.]
   #exercice[Énoncé 4.]
-  #solution[Corrigé 4.]
+  #corrige[Corrigé 4.]
   #exercice[Énoncé 5.]
-  #solution[Corrigé 5.]
+  #corrige[Corrigé 5.]
 ```)
 
 
@@ -723,19 +725,30 @@ En voici la liste, dans l'ordre alphabétique.
 
 #exemple(```typ
 #show: maquette.with(
-  localisation-correction: "apres",
+  position-corriges: "apres",
   liste-corriges: "1-2",
 )
   #exercice[Hello]
-  #solution[Corrigé 1.]
+  #corrige[Corrigé 1.]
   #exercice(pas-corrige: true)[World]
-  #solution[Corrigé 2.]
+  #corrige[Corrigé 2.]
 
 ```)
 
-#pagebreak()
 
-#parametre-carte("localisation-correction", ("str", "bool"), `"fin"`)[
+
+ 
+
+#parametre-carte("nouvelle-page-corriges", ("bool",), `true`)[
+  Le bloc « Correction » commence sur une nouvelle page par défaut. Si l'on règle le paramètre sur `false`, alors il suit la
+  fiche, sans saut de page.
+]
+
+#parametre-carte("page-par-corrige", ("bool",), `false`)[
+  Si ce paramètre est réglé sur `true`, chaque corrigé est écrit sur une page. Chaque corrigé démarre en haut d'une page et dispose ainsi de toute la place possible. Pour une utilisation pertinente de ce paramètre, il vaut mieux que `position-corriges` soit réglée sur `fin`.
+]
+
+#parametre-carte("position-corriges", ("str", "bool"), `"fin"`)[
   Ce paramètre décide où afficher les corrigés sélectionnés : `"fin"` (bloc
   Correction en fin de fiche, sur une nouvelle page) ou `"apres"` (sous chaque
   énoncé). `true` est aussi accepté : il vaut `"fin"`. Il ne règle jamais le
@@ -743,16 +756,16 @@ En voici la liste, dans l'ordre alphabétique.
   `liste-corriges: ()` (voir plus haut) plutôt que ce paramètre.
 ]
 #exemple(```typ
-#maquette(localisation-correction: "apres")[
+#maquette(position-corriges: "apres")[
   #exercice[Calculer $2 + 3$.]
-  #solution[$2 + 3 = 5$.]
+  #corrige[$2 + 3 = 5$.]
 ]
 ```)
 
 #exemple(```typ
 #maquette(liste-corriges: ())[
   #exercice[Calculer $2 + 3$.]
-  #solution[$2 + 3 = 5$.]
+  #corrige[$2 + 3 = 5$.]
 ]
 ```)
 
@@ -760,38 +773,31 @@ En voici la liste, dans l'ordre alphabétique.
   lorsqu'on écrit `"après"` ou `"fin"`, il faut mettre des guillemets, mais pas pour `true`.
 ]
 
-#idea(title: "Utilisation comme prof !")[
-  L'intérêt de cette combinaison est la suivante : on affiche tous les corrigés lorsqu'on est en train de préparer sa fiche d'exos, puis une fois que tout semble bon, on règle `liste-corriges` sur `()` pour imprimer un sujet seul. Ensuite, au moment de rajouter les exercices, on remet `liste-corriges` sur ce que l'on veut voir apparaître (voir plus haut), en choisissant où avec `localisation-correction` (`"fin"` ou `"apres"`).
-]
-
-#parametre-carte("page-par-corrige", ("bool",), `false`)[
-  Si ce paramètre est réglé sur `true`, chaque corrigé est écrit sur une page. Chaque corrigé démarre en haut d'une page et dispose ainsi de toute la place possible. Pour une utilisation pertinente de ce paramètre, il vaut mieux que `localisation-correction` soit réglée sur `fin`.
-]
 
 #parametre-carte("titre-corriges", ("content", "auto"), `auto`)[
   Ce paramètre permet de modifier le texte automatisé affiché lorsqu'un exercice corrigé est affiché.
 ]
 #exemple(```typ
 #show: maquette.with(
-  localisation-correction: "apres",
+  position-corriges: "apres",
   titre-corriges: "Solution de l'exercice"
 )
 #exercice[Calculer $2 + 3$.]
-#solution[$5$.]
+#corrige[$5$.]
 ```)
 
-#parametre-carte("vers-solution", ("bool",), `true`)[
+#parametre-carte("vers-corrige", ("bool",), `true`)[
   Ce paramètre permet de faire apparaître la clé cliquable sur l'exercice lorsque le corrigé est écrit et qu'on a décidé de l'afficher. Cette clé est cliquable et mène au corrigé dans le document. En cliquant sur #text(red)[*Corrigé de l'exercice ...*], on retourne à l'exercice correspondant.
 ]
 #exemple(```typ
 #show: maquette.with(
-  localisation-correction: "fin",
-  vers-solution: false
+  position-corriges: "fin",
+  vers-corrige: false
 )
 
 #exercice[Calculer $2 + 3$.]
 
-#solution[$5$.]
+#corrige[$5$.]
 
 ```)
 
@@ -805,20 +811,20 @@ En voici la liste, dans l'ordre alphabétique.
 
 #exemple(```typ
 #show: maquette.with(
-  localisation-correction: "apres"
+  position-corriges: "apres"
 )
   #exercice(
     titre-complement: "méthode"
   )[
     Résoudre $2x = 6$.
   ]
-  #solution[On divise par 2. Il vient  $x = 3$.]
+  #corrige[On divise par 2. Il vient  $x = 3$.]
   #exercice(
     pas-corrige: true
   )[
     Résoudre $3x = 12$.
   ]
-  #solution[$x = 4$.]
+  #corrige[$x = 4$.]
 ```)
  
 
@@ -949,7 +955,7 @@ QR code porte le numéro de son exercice, et il est lui aussi cliquable.
 #info(title: "Où et de quelle couleur ?")[
   Le bloc se place en bas de la dernière page s'il reste de la place, sinon en
   bas de la page suivante. Sa couleur est
-  celle des liens vers l'extérieur, `lien-externe` (@maquette), comme l'haltère
+  celle des liens vers l'extérieur, `couleur-externe` (@maquette), comme l'haltère
   et la source.
 ]
  
@@ -957,7 +963,7 @@ QR code porte le numéro de son exercice, et il est lui aussi cliquable.
   …
   nombre-qr: int,
   taille-qr: length,
-  titre-automatismes: content | auto,
+  titre-qr: content | auto,
   …
 ) -> content")
 
@@ -1004,13 +1010,13 @@ QR code porte le numéro de son exercice, et il est lui aussi cliquable.
   ]
 ```)
 
-#parametre-carte("titre-automatismes", ("content", "auto"), `auto`)[
+#parametre-carte("titre-qr", ("content", "auto"), `auto`)[
   Ce paramètre modifie le nom donné au cadre contenant les QR-Codes.
 ]
 #exemple(```typ
 #show: maquette.with(
   taille-qr: 1cm,
-  titre-automatismes: "QR codes à scanner"
+  titre-qr: "QR codes à scanner"
 )
 #exercice(entrainement: "https://typst.app")[
   Tables de multiplication. 
@@ -1027,7 +1033,7 @@ QR code porte le numéro de son exercice, et il est lui aussi cliquable.
 Tous les réglages de la fiche se donnent à `maquette`, en un seul endroit. Nous en avons déjà vu une bonne partie. \  
 Il y a deux possibilités pour définir les réglages de la maquette. Soit :
 ```typ
-#maquette(localisation-correction: "fin", liste-corriges: "1-6,9,12")[
+#maquette(position-corriges: "fin", liste-corriges: "1-6,9,12")[
   … la fiche …
 ]
 ```
@@ -1035,7 +1041,7 @@ Il y a deux possibilités pour définir les réglages de la maquette. Soit :
 ou, sans crochets autour de toute la fiche, en tête du fichier :
 
 ```typ
-#show: maquette.with(localisation-correction: "fin", liste-corriges: "1-6,9,12")
+#show: maquette.with(position-corriges: "fin", liste-corriges: "1-6,9,12")
 ```
 
 Si vous n'utilisez qu'une seule maquette dans votre document .typ, je conseille d'utiliser la méthode avec `#show:` qui permettra une indentation de moins tout le long du document. 
@@ -1046,20 +1052,20 @@ indépendamment les unes des autres.
 
 #signature("maquette(
   …
-  lien-externe: color | auto,
-  lien-interne: color | auto,
+  couleur-externe: color | auto,
+  couleur-interne: color | auto,
   couleur-route: color | auto,
   couleur-fdr: color,
   …
 ) -> content")
 
-#parametre-carte("lien-externe", ("color", "auto"), `auto`)[
+#parametre-carte("couleur-externe", ("color", "auto"), `auto`)[
   Couleur de ce qui mène *hors* du document : haltère, QR codes, source.
   `auto` : `rgb("#0090C8")` (cyan foncé).
 ]
 #exemple(```typ
 #show: maquette.with(
-  lien-externe: green.darken(20%)
+  couleur-externe: green.darken(20%)
   )
 #exercice(
   entrainement: "https://typst.app",
@@ -1067,29 +1073,29 @@ indépendamment les unes des autres.
   )[Énoncé.]
 ```)
 
-#parametre-carte("lien-interne", ("color", "auto"), `auto`)[
+#parametre-carte("couleur-interne", ("color", "auto"), `auto`)[
   Ce paramètre détermine la couleur des éléments cliquables qui permettent de *naviguer* dans le document : la clé, et les titres « Corrigé de l'exercice N ». La valeur de `auto` est `rgb("#DC143C")`
   (Crimson, comme dans ProfMaquette).
 ]
 #exemple(```typ
 #show: maquette.with(
-  localisation-correction: "fin",
-  vers-solution: false,
-  lien-interne: purple
+  position-corriges: "fin",
+  vers-corrige: false,
+  couleur-interne: purple
 )
 
 #exercice[Énoncé.]
-#solution[Corrigé.]
+#corrige[Corrigé.]
 
 ```)
 
 #exemple(```typ
 #show: maquette.with(
-  localisation-correction: "apres", 
-  lien-interne: yellow
+  position-corriges: "apres", 
+  couleur-interne: yellow
 )
 #exercice[Énoncé.]
-#solution[Corrigé.]
+#corrige[Corrigé.]
 ```)
  
 
@@ -1145,11 +1151,11 @@ paquet suit la langue du document (`#set text(lang: …)`).
 
 #exemple(```typ
 #set text(lang: "de")
-#maquette(localisation-correction: "apres")[
+#maquette(position-corriges: "apres")[
   #exercice(titre: "Brüche")[
     Berechne $1/2 + 1/3$.
   ]
-  #solution[$5/6$]
+  #corrige[$5/6$]
 ]
 ```)
  
@@ -1163,22 +1169,22 @@ fiche retrouve les couleurs par défaut.
 
 #exemple(```typ
 #maquette(
-  localisation-correction: "apres",
-  lien-interne: purple,
+  position-corriges: "apres",
+  couleur-interne: purple,
 )[
   #exercice(titre: "Fiche A")[…]
-  #solution[Corrigé A.]
+  #corrige[Corrigé A.]
 ]
-#maquette(localisation-correction: "apres")[
+#maquette(position-corriges: "apres")[
   #exercice(titre: "Fiche B")[…]
-  #solution[Corrigé B.]
+  #corrige[Corrigé B.]
 ]
 ```)
 
 #tip(title: "Les réglages vont dans la maquette")[
   Une maquette part toujours de ses propres réglages, indépendamment de ce qui
   l'entoure : ses couleurs se donnent avec ses propres paramètres
-  (`#maquette(lien-interne: …)`), jamais à part. Pour cette raison, lorsqu'on veut plusieurs maquettes, on n'utilisera pas `show: maquette.with(..)`
+  (`#maquette(couleur-interne: …)`), jamais à part. Pour cette raison, lorsqu'on veut plusieurs maquettes, on n'utilisera pas `show: maquette.with(..)`
 ]
  
 
@@ -1207,9 +1213,9 @@ Pour qui connaît ProfMaquette, voici l'équivalent de ses clés et commandes.
   [`AEntretenir`, zone Entrainement], [`entrainement:`, bloc Automatismes],
   [`Source`], [`source:`],
   [`Calculatrice`], [`calculatrice: false`],
-  [environnement `Solution`], [`solution`],
-  [`CorrigeApres` / `CorrigeFin`], [`localisation-correction: "apres"` / `"fin"`],
-  [`VersSolution`], [`vers-solution: true`],
+  [environnement `Solution`], [`corrige`],
+  [`CorrigeApres` / `CorrigeFin`], [`position-corriges: "apres"` / `"fin"`],
+  [`VersSolution`], [`vers-corrige: true`],
   [`PasCorrige`], [`pas-corrige: true`],
   [`TitreSolution`, `TitreCorrige`], [`titre-complement:`, `titre-corriges:`],
   table.hline(stroke: .6pt),
@@ -1224,7 +1230,7 @@ n'ont pas d'équivalent.
   `#columns(…)`, un `#block` ou une case de tableau ne peut pas laisser le
   bloc Correction (ni, avec `page-par-corrige: true`, chaque corrigé) sauter
   de page automatiquement : Typst l'interdit (« pagebreaks are not allowed
-  inside of containers »). Il faut alors régler `correction-nouvelle-page: false`
+  inside of containers »). Il faut alors régler `nouvelle-page-corriges: false`
   et `page-par-corrige: false`.
 
 - *Pas de maquette dans une maquette.* `#maquette[#maquette[…]]` arrête la
@@ -1233,7 +1239,7 @@ n'ont pas d'équivalent.
   indépendantes, il faut les placer l'une après l'autre (@plusieurs-fiches).
 
 - *Réglages invalides.* Une couleur qui n'en est pas une, un `style-exercice`
-  ou une `localisation-correction` hors des valeurs prévues, une sélection de
+  ou une `position-corriges` hors des valeurs prévues, une sélection de
   corrigés mal écrite (`"3-1"`)… arrêtent la compilation avec un message
   clair plutôt que de produire un rendu silencieusement faux.
 

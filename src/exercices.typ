@@ -36,7 +36,7 @@
 //     thématiques).
 //   • maquette : un seul appel qui règle toute la fiche, dont la sélection des
 //     corrigés à afficher (ex. "1-6,9,12", "route") et les deux couleurs
-//     du paquet (lien-externe, lien-interne).
+//     du paquet (couleur-externe, couleur-interne).
 //
 // Non porté : types de documents, en-tête de la feuille de route, Reponse / Indice…
 //
@@ -44,14 +44,14 @@
 // UTILISATION
 // ──────────────────────────────────────────────────────────────────────────────
 //
-//   #import "@preview/profmaquette-minimal:0.1.0": maquette, exercice, solution, afficher-fdr
+//   #import "@preview/profmaquette-minimal:0.1.0": maquette, exercice, corrige, afficher-fdr
 //
-//   #maquette(localisation-correction: "fin", liste-corriges: "1-6,9,12")[
+//   #maquette(position-corriges: "fin", liste-corriges: "1-6,9,12")[
 //     #afficher-fdr
 //     #exercice(titre: "Factoriser", entrainement: "https://…", source: "Calculs 30.1")[
 //       Énoncé…
 //     ]
-//     #solution[
+//     #corrige[
 //       Corrigé…
 //     ]
 //     #exercice(titre: "Pour aller plus loin", route: false)[ … ]
@@ -63,7 +63,7 @@
 // style-exercices, liste-entrainements et bloc-corriges : `maquette` seule les
 // appelle, via ses propres paramètres :
 //   maquette                        réglages de la fiche + blocs de fin automatiques
-//   exercice / solution             un énoncé / son corrigé
+//   exercice / corrige              un énoncé / son corrigé
 //   thematique                      titre d'une thématique (coche sur la feuille de route)
 //   afficher-fdr                    schéma de la feuille de route (contenu, sans parenthèses)
 //
@@ -100,12 +100,12 @@
 
 // Les deux couleurs du paquet, modifiables par `maquette` ou `reglages-couleurs`
 // (n'importe quelle couleur Typst : blue, rgb("#1E90FF"), luma(30%)…) :
-//   lien-externe = lien vers l'extérieur (haltère, QR codes, source) ;
-//   lien-interne = navigation dans le document (clé, titres des corrigés).
+//   couleur-externe = lien vers l'extérieur (haltère, QR codes, source) ;
+//   couleur-interne = navigation dans le document (clé, titres des corrigés).
 // Valeurs par défaut :
-//   lien-externe : cyan foncé, gris foncé bien contrasté une fois imprimé en
+//   couleur-externe : cyan foncé, gris foncé bien contrasté une fois imprimé en
 //                  noir et blanc ;
-//   lien-interne : Crimson, couleur « CouleurSol=Crimson » de ProfMaquette.
+//   couleur-interne : Crimson, couleur « CouleurSol=Crimson » de ProfMaquette.
 #let couleurs-defaut = (
   externe: rgb("#0090C8"),
   interne: rgb("#DC143C"),
@@ -113,8 +113,8 @@
 #let etat-couleurs = state("etat-couleurs-liens", couleurs-defaut)
 
 // Accès aux couleurs courantes (à appeler dans un `context`).
-#let couleur-lien-externe() = etat-couleurs.get().externe
-#let couleur-lien-interne() = etat-couleurs.get().interne
+#let couleur-externe() = etat-couleurs.get().externe
+#let couleur-interne() = etat-couleurs.get().interne
 
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -134,7 +134,7 @@
 // Réglages des corrigés (cf. `reglages-corriges`). Par défaut : aucun corrigé.
 #let etat-reglages-corriges = state("etat-reglages-corriges", (
   mode: none,
-  vers-solution: false,
+  vers-corrige: false,
   titre-corriges: auto,
   nouvelle-page: true,
   page-par-corrige: false,
@@ -165,7 +165,7 @@
 
 // Corrigés en mode "fin" (numero, id, titre, body), restitués par
 // `bloc-corriges`. Les entraînements, eux, sont lus dans `etat-historique`.
-#let etat-solutions = state("etat-solutions", ())
+#let etat-corriges = state("etat-corriges", ())
 
 // Nombre de maquettes ouvertes à cet endroit du document (1 dans une maquette).
 #let etat-profondeur = state("etat-profondeur-maquette", 0)
@@ -330,13 +330,13 @@
 // ProfMaquette, sur le fond de la page pour se détacher du filet.
 #let icone-entrainement(url) = link(url)[
   #boite-neutre(fill: fond(), inset: 3pt, radius: 2pt)[
-    #rotate(45deg, reflow: true, icone("dumbbell", 14pt * echelle(), couleur-lien-externe()))
+    #rotate(45deg, reflow: true, icone("dumbbell", 14pt * echelle(), couleur-externe()))
   ]
 ]
 
 // Clé menant au corrigé (VersSolution), sur le fond de la page.
 #let icone-corrige() = boite-neutre(fill: fond(), inset: 2pt, radius: 2pt)[
-  #icone("key", 12pt * echelle(), couleur-lien-interne())
+  #icone("key", 12pt * echelle(), couleur-interne())
 ]
 
 // Calculatrice barrée (clé Calculatrice=false de ProfMaquette), un trait
@@ -358,9 +358,9 @@
   ]
 }
 
-// Étiquette « Source » : petit texte de la couleur lien-externe, posé sur le filet bas.
+// Étiquette « Source » : petit texte dans couleur-externe, posé sur le filet bas.
 #let etiquette-source(texte) = boite-neutre(fill: fond(), inset: 2pt, radius: 2pt)[
-  #text(size: 7pt * echelle(), fill: couleur-lien-externe())[#texte]
+  #text(size: 7pt * echelle(), fill: couleur-externe())[#texte]
 ]
 
 // Boîte à titre (exercices, bloc « Automatismes »), dans le style choisi par
@@ -441,14 +441,14 @@
 // titre (en couleur, le texte restant en noir) ramène à l'exercice.
 #let rendu-corrige(item, reglages, rendre: c => c) = bloc-neutre(width: 100%, above: 1.4em, below: 1em)[
   #metadata("corrige-" + item.id)
-  #let titre = text(weight: "bold", fill: couleur-lien-interne())[
+  #let titre = text(weight: "bold", fill: couleur-interne())[
     #if reglages.titre-corriges == auto { terme("titre-corriges") } else { reglages.titre-corriges } #item.numero#if item.titre != none [ : #item.titre]
   ]
   // Titre dans son propre bloc : le corrigé commence à la ligne suivante, et le
   // titre n'est jamais laissé seul en bas de page (sticky).
   #bloc-neutre(width: 100%, below: .8em, sticky: true, context {
     let cible = query(metadata.where(value: "exercice-" + item.id))
-    if reglages.vers-solution and cible.len() > 0 { link(cible.first().location(), titre) } else { titre }
+    if reglages.vers-corrige and cible.len() > 0 { link(cible.first().location(), titre) } else { titre }
   })
   #rendre(item.body)
 ]
@@ -463,9 +463,9 @@
 // paramètres.
 
 // Couleurs du paquet (cf. section 1) ; auto = inchangée.
-#let reglages-couleurs(lien-externe: auto, lien-interne: auto) = etat-couleurs.update(c => (
-  externe: if lien-externe == auto { c.externe } else { lien-externe },
-  interne: if lien-interne == auto { c.interne } else { lien-interne },
+#let reglages-couleurs(couleur-externe: auto, couleur-interne: auto) = etat-couleurs.update(c => (
+  externe: if couleur-externe == auto { c.externe } else { couleur-externe },
+  interne: if couleur-interne == auto { c.interne } else { couleur-interne },
 ))
 
 // Réglages des corrigés (équivalent des clés de l'environnement Maquette).
@@ -473,7 +473,7 @@
 //                    n'afficher aucun corrigé, ne pas passer par `mode` :
 //                    utiliser `liste-corriges: ()` sur `maquette(…)`, seule
 //                    façon prévue d'obtenir « aucun corrigé » (cf. sa note).
-//   vers-solution  : clé cliquable exercice ↔ corrigé (VersSolution)
+//   vers-corrige   : clé cliquable exercice ↔ corrigé (VersSolution)
 //   titre-corriges : début du titre de chaque corrigé (TitreCorrige ; auto =
 //                    « Corrigé de l'exercice », ou sa traduction)
 //   nouvelle-page  : la Correction commence sur une nouvelle page (false : elle
@@ -484,7 +484,7 @@
 //                    conteneur)
 #let reglages-corriges(
   mode: "fin",
-  vers-solution: true,
+  vers-corrige: true,
   titre-corriges: auto,
   nouvelle-page: true,
   page-par-corrige: false,
@@ -495,7 +495,7 @@
   )
   etat-reglages-corriges.update((
     mode: mode,
-    vers-solution: vers-solution,
+    vers-corrige: vers-corrige,
     titre-corriges: titre-corriges,
     nouvelle-page: nouvelle-page,
     page-par-corrige: page-par-corrige,
@@ -645,7 +645,7 @@
 //   route            : true (défaut) = couleur des exercices sur la route
 //                      (clés Route / Stop), ligne du bas de la feuille de
 //                      route ; false = gris, ligne du haut
-//   pas-corrige      : true = jamais de corrigé, même si un `#solution` suit
+//   pas-corrige      : true = jamais de corrigé, même si un `#corrige` suit
 //                      (clé PasCorrige)
 //   titre-complement : complément du titre du corrigé (clé TitreSolution)
 //   stop             : true = coche de validation après cet exercice sur la feuille
@@ -683,7 +683,7 @@
       // Le choix de la mise en page (boîte mesurée ou non) dépend de `cle-possible`
       // et PAS du résultat de la requête, sinon le document ne converge pas.
       let reglages = etat-reglages-corriges.get()
-      let cle-possible = reglages.vers-solution and reglages.mode != none and infos.corrige
+      let cle-possible = reglages.vers-corrige and reglages.mode != none and infos.corrige
       let cible = query(metadata.where(value: "corrige-" + infos.id))
       let avec-cle = cle-possible and cible.len() > 0
       [#metadata("exercice-" + infos.id)]
@@ -756,8 +756,8 @@
 // `liste-corriges` (utiliser `liste-corriges: ()` pour n'afficher aucun
 // corrigé de la fiche). Le contenu peut venir d'un fichier séparé :
 //   #import "CH_01_EXO_01.typ" as exo01
-//   #solution(exo01.corrige)
-#let solution(body) = protege(rendre => context {
+//   #corrige(exo01.corrige)
+#let corrige(body) = protege(rendre => context {
   let reglages = etat-reglages-corriges.get()
   if reglages.mode == none or etat-historique.get().len() == 0 { return }
   let infos = infos-exercice()
@@ -768,7 +768,7 @@
     rendu-corrige(item, reglages, rendre: rendre)
     etat-corrige-deja-affiche.update(true)
   } else {
-    etat-solutions.update(lst => lst + (item,))
+    etat-corriges.update(lst => lst + (item,))
   }
 })
 
@@ -790,7 +790,7 @@
 // Non exportées par `lib.typ` : `maquette` les appelle elle-même, automatiquement,
 // dans cet ordre (comme ProfMaquette : entraînements, puis corrections).
 
-// Bloc « Automatismes » : tous les QR codes d'entraînement, dans une boîte de la couleur lien-externe.
+// Bloc « Automatismes » : tous les QR codes d'entraînement, dans une boîte de la couleur donnée par couleur-externe.
 // Flottant en bas de la dernière page s'il reste de la place, sinon en bas de la
 // suivante (pas de saut de page forcé). S'il occuperait plus des trois quarts
 // d'une page, il ne flotte pas : il suit la fiche et peut se couper entre deux pages.
@@ -798,8 +798,8 @@
 //   taille-qr : côté commun des QR codes (sinon une URL longue donne un QR code
 //               plus grand). Une URL trop longue pour cette taille (plus de 150
 //               caractères pour 2 cm) donne un QR code agrandi, pour rester lisible.
-//   titre-automatismes : titre du bloc (auto = « Automatismes », ou sa traduction)
-#let liste-entrainements(colonnes: 3, taille-qr: 2cm, titre-automatismes: auto) = protege(_ => context {
+//   titre-qr : titre du bloc (auto = « Automatismes », ou sa traduction)
+#let liste-entrainements(colonnes: 3, taille-qr: 2cm, titre-qr: auto) = protege(_ => context {
   assert(
     type(colonnes) == int and colonnes >= 1,
     message: "Automatismes : le nombre de colonnes doit être un entier supérieur ou égal à 1.",
@@ -821,8 +821,8 @@
     let lignes = calc.ceil(items.len() / colonnes)
     let hauteur-estimee = lignes * (taille-qr.to-absolute() + 30pt) + 50pt
     let flottant = type(page.height) == length and hauteur-estimee < .75 * page.height
-    let titre = if titre-automatismes == auto { terme("automatismes") } else { titre-automatismes }
-    let bloc = boite-etiquette(couleur-lien-externe(), titre)[
+    let titre = if titre-qr == auto { terme("automatismes") } else { titre-qr }
+    let bloc = boite-etiquette(couleur-externe(), titre)[
         #grid(
           columns: (1fr,) * colonnes,
           row-gutter: 18pt,
@@ -838,7 +838,7 @@
             #v(4pt)
             #layout(case => link(it.url, qrcode(
               it.url,
-              options: (fg-color: couleur-lien-externe()),
+              options: (fg-color: couleur-externe()),
               width: calc.min(calc.max(taille-qr.to-absolute(), cote-minimal(it.url)), case.width),
             )))
           ])
@@ -854,10 +854,10 @@
 // corrigé commence en plus sur sa propre page (jamais le dernier).
 #let bloc-corriges() = protege(rendre => context {
   let reglages = etat-reglages-corriges.get()
-  let items = etat-solutions.get()
+  let items = etat-corriges.get()
   if reglages.mode != "fin" or items.len() == 0 or etat-blocs-fin.get().corriges { return }
   if reglages.nouvelle-page { pagebreak(weak: true) }
-  let couleur = couleur-lien-interne()
+  let couleur = couleur-interne()
   bloc-neutre(
     width: 100%,
     stroke: (top: none, x: none, bottom: 1.5pt + couleur),
@@ -1041,69 +1041,66 @@
 // Ajoute à la fin les blocs « Automatismes » puis « Correction » : ne plus
 // appeler `liste-entrainements` ni `bloc-corriges` à la main.
 //
-//   #maquette(localisation-correction: "fin", liste-corriges: "1-6,9,12")[ … ]
+//   #maquette(position-corriges: "fin", liste-corriges: "1-6,9,12")[ … ]
 //   ou, en tête de fiche : #show: maquette.with(…)
 //
-//   localisation-correction : "apres" (sous chaque énoncé) | "fin"/true (en fin
-//                           de fiche). Règle la POSITION des corrigés affichés,
-//                           jamais leur nombre : pour un sujet seul (aucun
-//                           corrigé du tout), utiliser liste-corriges: () —
-//                           c'est la seule façon prévue de n'afficher aucun
-//                           corrigé (localisation-correction n'accepte plus
-//                           none/false).
-//   liste-corriges        : corrigés affichés : auto (tous), 4, "1-6,9,12",
-//                           (1, "3-5"), "route", "pas-route" ou () (aucun —
-//                           sujet seul, cf. ci-dessus).
-//                           Les énoncés, eux, sont toujours tous affichés.
-//   vers-solution         : clé cliquable exercice ↔ corrigé (VersSolution)
-//   lien-externe          : couleur des liens extérieurs (haltère, QR, source)
-//   lien-interne          : couleur de navigation (clé, titres des corrigés)
-//   titre-corriges        : début du titre de chaque corrigé (TitreCorrige ;
-//                           auto = « Corrigé de l'exercice », ou sa traduction)
-//   correction-nouvelle-page : la Correction commence sur une nouvelle page
-//                           (false : elle suit la fiche ; indispensable pour une
-//                           maquette placée dans `columns(…)` ou dans un cadre)
-//   page-par-corrige      : chaque corrigé commence sur sa propre page (jamais
-//                           le dernier) ; même limite que correction-nouvelle-page
-//                           dans `columns(…)` ou un cadre
-//   couleur-route         : couleur des exercices sur la route (auto = noir)
-//   style-exercice        : style des cadres : "fond-blanc" (défaut),
-//                           "etiquette-encadree", "bandeau" ou "etiquette-pleine"
-//   nombre-qr             : QR codes par ligne dans « Automatismes »
-//   taille-qr             : côté des QR codes
-//   titre-automatismes    : titre du bloc « Automatismes » (auto = « Automatismes »,
-//                           ou sa traduction)
-//   couleur-fdr           : couleur du schéma `afficher-fdr` (noir par défaut)
-//   langue                : langue des mots du paquet : "fr", "en", "de", "es",
-//                           "it" ; auto = celle du document, sauf l'anglais (défaut
-//                           de Typst) qui donne le français : écrire "en" pour
-//                           l'anglais
-//   mode-maquette         : "exercices" (défaut) ou "interro" (ajoute une zone
-//                           Nom / Prénom / Classe sous le cartouche de titre)
-//   titre-maquette        : cartouche de titre, dictionnaire avec les clés
-//                           gauche / centre / droite, toutes facultatives (ex.
-//                           chapitre, titre du chapitre, niveau de la classe) ;
-//                           rien n'est affiché si aucune des trois n'est donnée
-//                           (mode "exercices", défaut)
-//   style-maquette        : présentation du cartouche de titre : "onglet" (seul
-//                           style pour l'instant, donc défaut)
-//   couleur-titre         : couleur d'accent du cartouche de titre (onglet et
-//                           contour du cadre ; le niveau, à droite, reste
-//                           noir), noir par défaut
+//   position-corriges      : "apres" (sous chaque énoncé) | "fin"/true (en fin de
+//                            fiche). Règle la POSITION des corrigés affichés, jamais
+//                            leur nombre : pour un sujet seul (aucun corrigé du tout),
+//                            utiliser liste-corriges: () — c'est la seule façon prévue
+//                            de n'afficher aucun corrigé (position-corriges n'accepte
+//                            plus none/false).
+//   liste-corriges         : corrigés affichés : auto (tous), 4, "1-6,9,12", (1,
+//                            "3-5"), "route", "pas-route" ou () (aucun — sujet seul,
+//                            cf. ci-dessus). Les énoncés, eux, sont toujours tous
+//                            affichés.
+//   vers-corrige           : clé cliquable exercice ↔ corrigé (VersSolution)
+//   couleur-externe        : couleur des liens extérieurs (haltère, QR, source)
+//   couleur-interne        : couleur de navigation (clé, titres des corrigés)
+//   titre-corriges         : début du titre de chaque corrigé (TitreCorrige ; auto = «
+//                            Corrigé de l'exercice », ou sa traduction)
+//   nouvelle-page-corriges : la Correction commence sur une nouvelle page (false : elle
+//                            suit la fiche ; indispensable pour une maquette placée
+//                            dans `columns(…)` ou dans un cadre)
+//   page-par-corrige       : chaque corrigé commence sur sa propre page (jamais le
+//                            dernier) ; même limite que nouvelle-page-corriges dans
+//                            `columns(…)` ou un cadre
+//   couleur-route          : couleur des exercices sur la route (auto = noir)
+//   style-exercice         : style des cadres : "fond-blanc" (défaut),
+//                            "etiquette-encadree", "bandeau" ou "etiquette-pleine"
+//   nombre-qr              : QR codes par ligne dans « Automatismes »
+//   taille-qr              : côté des QR codes
+//   titre-qr               : titre du bloc « Automatismes » (auto = « Automatismes »,
+//                            ou sa traduction)
+//   couleur-fdr            : couleur du schéma `afficher-fdr` (noir par défaut)
+//   langue                 : langue des mots du paquet : "fr", "en", "de", "es", "it" ;
+//                            auto = celle du document, sauf l'anglais (défaut de Typst)
+//                            qui donne le français : écrire "en" pour l'anglais
+//   mode-maquette          : "exercices" (défaut) ou "interro" (ajoute une zone Nom /
+//                            Prénom / Classe sous le cartouche de titre)
+//   titre-maquette         : cartouche de titre, dictionnaire avec les clés gauche /
+//                            centre / droite, toutes facultatives (ex. chapitre, titre
+//                            du chapitre, niveau de la classe) ; rien n'est affiché si
+//                            aucune des trois n'est donnée (mode "exercices", défaut)
+//   style-maquette         : présentation du cartouche de titre : "onglet" (seul style
+//                            pour l'instant, donc défaut)
+//   couleur-titre          : couleur d'accent du cartouche de titre (onglet et contour
+//                            du cadre ; le niveau, à droite, reste noir), noir par
+//                            défaut
 #let maquette(
-  localisation-correction: "fin",
+  position-corriges: "fin",
   liste-corriges: auto,
-  vers-solution: true,
-  lien-externe: auto,
-  lien-interne: auto,
+  vers-corrige: true,
+  couleur-externe: auto,
+  couleur-interne: auto,
   titre-corriges: auto,
-  correction-nouvelle-page: true,
+  nouvelle-page-corriges: true,
   page-par-corrige: false,
   couleur-route: auto,
   style-exercice: "fond-blanc",
   nombre-qr: 3,
   taille-qr: 2cm,
-  titre-automatismes: auto,
+  titre-qr: auto,
   couleur-fdr: black,
   langue: auto,
   mode-maquette: "exercices",
@@ -1115,8 +1112,8 @@
   // Réglages invalides : message clair plutôt qu'une erreur de Typst plus loin.
   let est-couleur(c) = type(c) in (color, gradient, tiling)
   for (nom, valeur) in (
-    lien-externe: lien-externe,
-    lien-interne: lien-interne,
+    couleur-externe: couleur-externe,
+    couleur-interne: couleur-interne,
     couleur-route: couleur-route,
     couleur-fdr: couleur-fdr,
     couleur-titre: couleur-titre,
@@ -1144,19 +1141,19 @@
   // Chaque maquette repart des couleurs par défaut (auto) : elle n'hérite pas
   // de celles d'une maquette précédente du même document.
   reglages-couleurs(
-    lien-externe: if lien-externe == auto { couleurs-defaut.externe } else { lien-externe },
-    lien-interne: if lien-interne == auto { couleurs-defaut.interne } else { lien-interne },
+    couleur-externe: if couleur-externe == auto { couleurs-defaut.externe } else { couleur-externe },
+    couleur-interne: if couleur-interne == auto { couleurs-defaut.interne } else { couleur-interne },
   )
   assert(
-    localisation-correction == true or localisation-correction in ("apres", "fin"),
-    message: "maquette : localisation-correction doit valoir \"apres\", \"fin\" ou true (jamais none/false : pour n'afficher aucun corrigé, utiliser liste-corriges: () plutôt que ce réglage), pas " + repr(localisation-correction) + ".",
+    position-corriges == true or position-corriges in ("apres", "fin"),
+    message: "maquette : position-corriges doit valoir \"apres\", \"fin\" ou true (jamais none/false : pour n'afficher aucun corrigé, utiliser liste-corriges: () plutôt que ce réglage), pas " + repr(position-corriges) + ".",
   )
-  let mode = if localisation-correction == true { "fin" } else { localisation-correction }
+  let mode = if position-corriges == true { "fin" } else { position-corriges }
   reglages-corriges(
     mode: mode,
-    vers-solution: vers-solution,
+    vers-corrige: vers-corrige,
     titre-corriges: titre-corriges,
-    nouvelle-page: correction-nouvelle-page,
+    nouvelle-page: nouvelle-page-corriges,
     page-par-corrige: page-par-corrige,
   )
   couleur-exercices-route(if couleur-route == auto { black } else { couleur-route })
@@ -1166,7 +1163,7 @@
   etat-langue.update(langue)
   etat-historique.update(())
   etat-serie.update(n => n + 1)
-  etat-solutions.update(())
+  etat-corriges.update(())
   etat-blocs-fin.update((entrainements: false, corriges: false))
   etat-corrige-deja-affiche.update(false)
   etat-profondeur.update(n => n + 1)
@@ -1178,7 +1175,7 @@
   [#metadata(none) #repere-borne]
   body
   [#metadata(none) #repere-borne]
-  liste-entrainements(colonnes: nombre-qr, taille-qr: taille-qr, titre-automatismes: titre-automatismes)
+  liste-entrainements(colonnes: nombre-qr, taille-qr: taille-qr, titre-qr: titre-qr)
   bloc-corriges()
   etat-profondeur.update(n => n - 1)
 }

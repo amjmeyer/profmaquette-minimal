@@ -1,9 +1,9 @@
 #import "../../src/lib.typ": *
-#maquette(localisation-correction: "apres", page-par-corrige: true)[
+#maquette(position-corriges: "apres", page-par-corrige: true)[
   #exercice[Énoncé 1.]
-  #solution[Corrigé 1.]
+  #corrige[Corrigé 1.]
   #exercice[Énoncé 2.]
-  #solution[Corrigé 2.]
+  #corrige[Corrigé 2.]
   #exercice[Énoncé 3.]
-  #solution[Corrigé 3.]
+  #corrige[Corrigé 3.]
 ]

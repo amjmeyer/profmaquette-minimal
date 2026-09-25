@@ -1,4 +1,4 @@
 #import "../../src/lib.typ": *
-#maquette(liste-corriges: ())[
+#maquette(position-corriges: "debut")[
   #exercice[A] #corrige[a]
 ]

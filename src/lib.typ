@@ -22,7 +22,7 @@
 #import "exercices.typ": (
   maquette,
   exercice,
-  solution,
+  corrige,
   afficher-fdr,
   thematique,
 )

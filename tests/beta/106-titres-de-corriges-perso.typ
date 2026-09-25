@@ -1,4 +1,4 @@
 #import "../../src/lib.typ": *
-#maquette(titre-corriges: "Réponse", lien-interne: olive, vers-solution: false)[
-  #exercice(titre-complement: "méthode rapide")[A] #solution[a]
+#maquette(titre-corriges: "Réponse", couleur-interne: olive, vers-corrige: false)[
+  #exercice(titre-complement: "méthode rapide")[A] #corrige[a]
 ]

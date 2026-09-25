@@ -39,7 +39,7 @@ Poulain. Tout le code est dans deux fichiers `.typ`, pas de build system.
   « Correction ». Chaque `maquette` repart de zéro (pas d'héritage entre deux
   maquettes d'un même document) et ne peut pas en contenir une autre.
 - `exercice(...)[body]` — un énoncé, numéroté automatiquement.
-- `solution[body]` — le corrigé de l'exercice qui précède immédiatement.
+- `corrige[body]` — le corrigé de l'exercice qui précède immédiatement.
 - `thematique[titre]` — titre de thématique (contenu, pas une fonction sur `body`) ;
   ferme le tronçon courant de la feuille de route.
 - `afficher-fdr` — contenu (pas une fonction, s'utilise sans parenthèses) qui
