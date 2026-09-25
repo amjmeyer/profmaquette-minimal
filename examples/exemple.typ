@@ -3,7 +3,7 @@
 // de fiche.
 //
 // Pour essayer d'autres réglages, modifiez seulement les paramètres de `maquette` :
-//   localisation-correction: none    → fiche élève, sans corrigé
+//   liste-corriges: ()               → fiche élève, sans corrigé
 //   localisation-correction: "apres" → corrigé sous chaque énoncé
 //   liste-corriges: "1,3"            → seulement les corrigés des exercices 1 et 3
 //   liste-corriges: "pas-route"      → seulement les corrigés des exercices hors route
@@ -23,7 +23,7 @@
   localisation-correction: "fin",
   liste-corriges: auto,
   vers-solution: true,
-  colonnes-automatismes: 4,
+  nombre-qr: 4,
 )[
 
   // Feuille de route : exercices sur la route en bas, hors route en haut, coche

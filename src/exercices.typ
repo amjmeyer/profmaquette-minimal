@@ -388,7 +388,7 @@
         width: 100%,
         spacing: 0pt,
         stroke: (top: filet, x: none, bottom: none),
-        inset: (x: 1.2em, top: .9em, bottom: 1.2em),
+        inset: (x: 1.2em, top: .6em, bottom: 1.2em),
         body,
       )
     })
@@ -408,7 +408,7 @@
       bloc-neutre(width: 100%, spacing: 0pt, stroke: filet, radius: 5pt, {
         v(demi)
         place(top + left, dx: 1em, dy: -demi, bloc-neutre(width: largeur-etiquette, etiquette))
-        bloc-neutre(width: 100%, spacing: 0pt, inset: (x: 1.2em, top: 1.1em, bottom: 1.2em), body)
+        bloc-neutre(width: 100%, spacing: 0pt, inset: (x: 1.2em, top: .6em, bottom: 1.2em), body)
       })
     }
   }
@@ -469,7 +469,10 @@
 ))
 
 // Réglages des corrigés (équivalent des clés de l'environnement Maquette).
-//   mode           : none (aucun corrigé) | "apres" (CorrigeApres) | "fin" (CorrigeFin)
+//   mode           : "apres" (CorrigeApres) | "fin" (CorrigeFin). Pour
+//                    n'afficher aucun corrigé, ne pas passer par `mode` :
+//                    utiliser `liste-corriges: ()` sur `maquette(…)`, seule
+//                    façon prévue d'obtenir « aucun corrigé » (cf. sa note).
 //   vers-solution  : clé cliquable exercice ↔ corrigé (VersSolution)
 //   titre-corriges : début du titre de chaque corrigé (TitreCorrige ; auto =
 //                    « Corrigé de l'exercice », ou sa traduction)
@@ -487,8 +490,8 @@
   page-par-corrige: false,
 ) = {
   assert(
-    mode in (none, "apres", "fin"),
-    message: "reglages-corriges : mode doit valoir none, \"apres\" ou \"fin\".",
+    mode in ("apres", "fin"),
+    message: "reglages-corriges : mode doit valoir \"apres\" ou \"fin\" (jamais none : pour n'afficher aucun corrigé, utiliser liste-corriges: () sur maquette(…), pas ce réglage).",
   )
   etat-reglages-corriges.update((
     mode: mode,
@@ -748,9 +751,10 @@
   ])
 }
 
-// Corrigé de l'exercice qui précède (environnement Solution). Ignoré si le mode
-// est none, si l'exercice porte `pas-corrige: true`, ou s'il est hors de la
-// sélection `liste-corriges`. Le contenu peut venir d'un fichier séparé :
+// Corrigé de l'exercice qui précède (environnement Solution). Ignoré si
+// l'exercice porte `pas-corrige: true`, ou s'il est hors de la sélection
+// `liste-corriges` (utiliser `liste-corriges: ()` pour n'afficher aucun
+// corrigé de la fiche). Le contenu peut venir d'un fichier séparé :
 //   #import "CH_01_EXO_01.typ" as exo01
 //   #solution(exo01.corrige)
 #let solution(body) = protege(rendre => context {
@@ -1040,10 +1044,16 @@
 //   #maquette(localisation-correction: "fin", liste-corriges: "1-6,9,12")[ … ]
 //   ou, en tête de fiche : #show: maquette.with(…)
 //
-//   localisation-correction : none/false (sujet seul) | "apres" (sous chaque énoncé)
-//                           | "fin"/true (en fin de fiche)
+//   localisation-correction : "apres" (sous chaque énoncé) | "fin"/true (en fin
+//                           de fiche). Règle la POSITION des corrigés affichés,
+//                           jamais leur nombre : pour un sujet seul (aucun
+//                           corrigé du tout), utiliser liste-corriges: () —
+//                           c'est la seule façon prévue de n'afficher aucun
+//                           corrigé (localisation-correction n'accepte plus
+//                           none/false).
 //   liste-corriges        : corrigés affichés : auto (tous), 4, "1-6,9,12",
-//                           (1, "3-5"), "route" ou "pas-route".
+//                           (1, "3-5"), "route", "pas-route" ou () (aucun —
+//                           sujet seul, cf. ci-dessus).
 //                           Les énoncés, eux, sont toujours tous affichés.
 //   vers-solution         : clé cliquable exercice ↔ corrigé (VersSolution)
 //   lien-externe          : couleur des liens extérieurs (haltère, QR, source)
@@ -1059,7 +1069,7 @@
 //   couleur-route         : couleur des exercices sur la route (auto = noir)
 //   style-exercice        : style des cadres : "fond-blanc" (défaut),
 //                           "etiquette-encadree", "bandeau" ou "etiquette-pleine"
-//   colonnes-automatismes : QR codes par ligne dans « Automatismes »
+//   nombre-qr             : QR codes par ligne dans « Automatismes »
 //   taille-qr             : côté des QR codes
 //   titre-automatismes    : titre du bloc « Automatismes » (auto = « Automatismes »,
 //                           ou sa traduction)
@@ -1091,7 +1101,7 @@
   page-par-corrige: false,
   couleur-route: auto,
   style-exercice: "fond-blanc",
-  colonnes-automatismes: 3,
+  nombre-qr: 3,
   taille-qr: 2cm,
   titre-automatismes: auto,
   couleur-fdr: black,
@@ -1137,7 +1147,11 @@
     lien-externe: if lien-externe == auto { couleurs-defaut.externe } else { lien-externe },
     lien-interne: if lien-interne == auto { couleurs-defaut.interne } else { lien-interne },
   )
-  let mode = if localisation-correction == false { none } else if localisation-correction == true { "fin" } else { localisation-correction }
+  assert(
+    localisation-correction == true or localisation-correction in ("apres", "fin"),
+    message: "maquette : localisation-correction doit valoir \"apres\", \"fin\" ou true (jamais none/false : pour n'afficher aucun corrigé, utiliser liste-corriges: () plutôt que ce réglage), pas " + repr(localisation-correction) + ".",
+  )
+  let mode = if localisation-correction == true { "fin" } else { localisation-correction }
   reglages-corriges(
     mode: mode,
     vers-solution: vers-solution,
@@ -1164,7 +1178,7 @@
   [#metadata(none) #repere-borne]
   body
   [#metadata(none) #repere-borne]
-  liste-entrainements(colonnes: colonnes-automatismes, taille-qr: taille-qr, titre-automatismes: titre-automatismes)
+  liste-entrainements(colonnes: nombre-qr, taille-qr: taille-qr, titre-automatismes: titre-automatismes)
   bloc-corriges()
   etat-profondeur.update(n => n - 1)
 }

@@ -1,5 +1,5 @@
 #import "../../src/lib.typ": *
-#maquette(localisation-correction: none)[
+#maquette(liste-corriges: ())[
   #afficher-fdr
   #thematique[T]
   #exercice(entrainement: "https://a.b/0")[A] #solution[a]

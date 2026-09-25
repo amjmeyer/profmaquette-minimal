@@ -1,4 +1,4 @@
 #import "../../src/lib.typ": *
-#maquette(colonnes-automatismes: 0)[
+#maquette(nombre-qr: 0)[
   #exercice(entrainement: "https://a.b")[A]
 ]

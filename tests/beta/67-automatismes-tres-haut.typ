@@ -1,5 +1,5 @@
 #import "../../src/lib.typ": *
-#maquette(colonnes-automatismes: 2)[
+#maquette(nombre-qr: 2)[
   #exercice(entrainement: "https://a.b/0")[E0]
   #exercice(entrainement: "https://a.b/1")[E1]
   #exercice(entrainement: "https://a.b/2")[E2]

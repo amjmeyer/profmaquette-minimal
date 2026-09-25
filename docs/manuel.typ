@@ -42,7 +42,7 @@
 }
 
 // Fiche d'un paramètre : nom, type(s) et valeur par défaut, puis description.
-//   #parametre("localisation-correction", ("none", "str"), `"fin"`)[…]
+//   #parametre("localisation-correction", ("str", "bool"), `"fin"`)[…]
 #let parametre(nom, types, defaut, description) = block(
   width: 100%,
   inset: (left: 10pt, y: 4pt),
@@ -270,7 +270,7 @@ exemple.
 == Fonctionnement d'une "maquette"
 
 #idea(title: "Le principe")[
-  Toute la fiche se place dans une `maquette`. Les réglages de cette maquette déterminent entièrement le fonctionnement de la maquette tout le long du document. Nous détaillerons tous les réglages possibles le moment venu, mais voyons des exemples.
+  Toute la fiche d'exercices se place dans une `maquette`. Les réglages de cette maquette déterminent entièrement le fonctionnement de la maquette tout le long du document. Nous détaillerons tous les réglages possibles le moment venu, mais voyons des exemples simples.
 ]
 
 #exemple(```typ
@@ -305,7 +305,7 @@ fiche et sur une nouvelle page. La clé de couleur rouge sert d'indicateur pour 
 
 == Les fonctions du paquet
 
-Quasiment tout passe par `maquette(..)` ou par `exercice(..)`. Les réglages de `maquette(..)` s'appliquent pour toute la fiche, alors que les autres s'appliquent localement. \
+Quasiment tout passe par `maquette(…)` ou par `exercice(…)`. Les réglages de `maquette(…)` s'appliquent pour toute la fiche, alors que ceux d'`exercice(…)` s'appliquent localement (c'est-à-dire uniquement sur l'exercice en question). \
 Les paramètres à régler sont regroupés dans les différentes sections. \
 Le paquet n'expose que ces cinq fonctions.
 #table(
@@ -330,10 +330,7 @@ Le paquet n'expose que ces cinq fonctions.
 
 = Mode maquette <mode-maquette>
 
-Jusqu'ici, le titre de la fiche a été écrit à la main, au-dessus de `maquette`
-(comme dans l'exemple de la partie précédente). Le paquet peut aussi le
-construire lui-même, dans un cartouche à trois zones (gauche / centre / droite
-— par exemple un numéro de chapitre, son titre et le niveau de la classe) :
+Le paquet permet de définir un `mode` à la maquette, et on peut appliquer des paramètres qui influent sur ces modes. 
 
 #signature("maquette(
   …
@@ -344,29 +341,9 @@ construire lui-même, dans un cartouche à trois zones (gauche / centre / droite
   …
 ) -> content")
 
-#parametre-carte("titre-maquette", ("dictionary",), `(:)`)[
-  Cartouche de titre de la fiche : un dictionnaire avec les clés facultatives
-  `gauche`, `centre` et `droite`. Rien n'est affiché si aucune des trois n'est
-  donnée — sauf en mode "interro" (ci-dessous), où la zone Nom / Prénom /
-  Classe reste affichée.
-]
-#exemple(```typ
-#show: maquette.with(
-  titre-maquette: (
-    gauche: "CH 02",
-    centre: "Suites numériques",
-    droite: "1 C",
-  ),
-)
-#exercice(titre: "Premiers termes")[
-  Calculer $u_1$ et $u_2$.
-]
-```)
 
 #parametre-carte("mode-maquette", ("str",), `"exercices"`)[
-  "exercices" (défaut) : fiche d'exercices classique, sans zone à remplir. \
-  "interro" : ajoute, à droite du cartouche de titre et à sa hauteur, une zone
-  Nom / Prénom / Classe à compléter à la main, comme les évaluations de
+  Pour le moment, il n'y a que deux modes à la maquette : `exercices` et `interro`. Le mode interro ajoute juste Nom / Prénom / Classe à compléter à la main, comme les évaluations de
   ProfMaquette (clé IE).
 ]
 #exemple(dessous: true, ```typ
@@ -375,7 +352,7 @@ construire lui-même, dans un cartouche à trois zones (gauche / centre / droite
   titre-maquette: (
     gauche: "CH 02",
     centre: "Suites numériques",
-    droite: "1 C",
+    droite: "",
   ),
 )
 #exercice(titre: "Premiers termes")[
@@ -393,25 +370,49 @@ Prénom / Classe, en pleine largeur :
 ]
 ```)
 
-#parametre-carte("style-maquette", ("str",), `"onglet"`)[
-  Présentation du cartouche de titre. "onglet" est le seul style pour
-  l'instant (donc la valeur par défaut) : un numéro sur un onglet coloré
-  (coins arrondis en haut seulement), posé sans espace sur un cadre
-  entièrement arrondi contenant le titre et le niveau. Il est inspiré du thème
-  « pretty » du paquet Typst bookly (fonction `pretty-part` de son code
-  source).
+#parametre-carte("titre-maquette", ("dictionary",), `(:)`)[
+  Ce paramètre permet de régler le titre de la maquette. C'est un dictionnaire avec les clés facultatives
+  `gauche`, `centre` et `droite`. Rien n'est affiché si aucune des trois n'est
+  donnée, sauf en mode `interro` (ci-dessus), où la zone Nom / Prénom /
+  Classe reste affichée. Par défaut, rien n'est affiché et cet usage laisse la possibilité à l'utilisateur d'utiliser son propre template.
 ]
 
-#parametre-carte("couleur-titre", ("color", "auto"), `auto`)[
-  Couleur d'accent du cartouche de titre (onglet et contour du cadre) ; le
-  niveau, à droite, reste toujours noir. `auto` : noir.
-]
 #exemple(```typ
 #show: maquette.with(
   titre-maquette: (
     gauche: "CH 02",
     centre: "Suites numériques",
-    droite: "1 C",
+    droite: "coucou",
+  ),
+)
+#exercice(titre: "Premiers termes")[
+  Calculer $u_1$ et $u_2$.
+]
+```)
+
+#exemple(```typ
+#show: maquette.with()
+#exercice(titre: "Premiers termes")[
+  Calculer $u_1$ et $u_2$.
+]
+```)
+
+
+#parametre-carte("style-maquette", ("str",), `"onglet"`)[
+  Présentation du cartouche de titre. `onglet` est le seul style pour
+  l'instant (donc la valeur par défaut). Il est inspiré du thème
+  « pretty » du paquet Typst bookly (fonction `pretty-part` de son code
+  source).
+]
+
+#parametre-carte("couleur-titre", ("color", "auto"), `auto`)[
+  Couleur d'accent du cartouche de titre.
+]
+#exemple(```typ
+#show: maquette.with(
+  titre-maquette: (
+    gauche: "CH 07",
+    centre: "Espaces de Banach", 
   ),
   couleur-titre: rgb("#1B3A6B"),
 )
@@ -421,9 +422,7 @@ Prénom / Classe, en pleine largeur :
 ```)
 
 #tip(title: "Une clé du cartouche peut manquer")[
-  `gauche`, `centre` et `droite` sont toutes facultatives : par exemple
-  `titre-maquette: (centre: "Suites numériques")` n'affiche que le titre,
-  centré dans le cadre.
+  `gauche`, `centre` et `droite` sont toutes facultatives comme le montrent les exemples précédents. 
 ]
 
 
@@ -494,8 +493,8 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
 #parametre-carte("route", ("bool",), `true`)[
   La valeur du paramètre modifie la couleur de l'entourage de l'exercice. Par défaut (`true`), la couleur du cadre est noire. Si on le met sur `false`, la couleur du cadre devient grise. \
   Également, faire passer un exercice hors route change sa position dans la feuille de route. Voir @fdr. \
-  La couleur des exercices sur la route se règle pour toute la fiche avec
-  `maquette(couleur-route: …)`. Pour plus de détails, voir @maquette
+  La couleur des exercices sur toute la route peut se régler une fois pour toute avec le paramètre  
+  `couleur-route`. Pour plus de détails, voir @maquette
 ]
 #exemple(```typ
 #maquette[
@@ -504,13 +503,10 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
     Calculer $2^10$.
   ]
 ]
-```)
-
-#idea(title: "Potentiels usages en classe")[
-  J'utilise cette fonctionnalité pour qu'en un coup d'œil, l'élève puisse voir si l'exercice est à faire ou non.]
+```) 
 
 #parametre-carte("pas-corrige", ("bool",), `false`)[
-  Ce paramètre, s'il est réglé sur `true`, permet de ne pas afficher le corrigé alors même qu'il est écrit dans un `solution` qui le suit. Pour en savoir plus, voir la @corriges.
+  Ce paramètre, s'il est réglé sur `true`, permet de ne pas afficher le corrigé d'un corrigé alors même qu'il est écrit dans un `solution` qui le suit. Pour en savoir plus, voir la @corriges. 
 ]
 #exemple(```typ
 #maquette[
@@ -529,13 +525,10 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
 #warning(title: "Rajoute utile par rapport à ProfMaquette")[
   La gestion présentée ici des corrigés est locale, par exercice. Ayant expérimenté beaucoup, j'ai trouvé cela plutôt désagréable lorsque nos fiches sont longues (j'expliquerai le fonctionnement que j'avais plus loin dans le document). En conséquence, j'ai rajouté un paramètre global (dans les paramètres de `#maquette`) qui permet de gérer directement l'affichage des corrigés. Voir @corriges.
 ]
-
-#idea(title: "Potentiels usages en classe")[
-  L'idée est la suivante : on imprime sa fiche d'exercices (son DS, son interro, ce qu'on veut) en ayant écrit les corrigés (ou pas !) mais sans les afficher (car si tous les exercices apparaissent comme non corrigés, la section Correction de fin de page disparaît). Une fois qu'on avance dans le chapitre, on peut décider de faire apparaître des corrigés au compte-gouttes, puis de mettre à jour sa fiche d'exercices sur PRONOTE
-]
+ 
 
 #parametre-carte("source", ("content", "none"), `none`)[
-  Petit texte posé sur le filet bas de l'exercice, à droite, de la même couleur que celui de l'haltère.  
+  Ce paramètre permet d'afficher un petit texte posé sur le filet bas de l'exercice, à droite, de la même couleur que celui de l'haltère.  
 ]
 #exemple(```typ
 #show: maquette.with()
@@ -545,7 +538,7 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
 ```)
 
 #idea(title: "Potentiels usages en classe")[
-  On peut très bien utiliser ce `source` pour sourcer la provenance d'un exercice (un type DNB, un type BAC, un examen...). Mon usage est différent : lorsque je mets un automatisme, j'utilise `source` pour préciser aux élèves les calculs que j'attends d'eux. 
+  On peut très bien utiliser ce `source` pour sourcer la provenance d'un exercice (un type DNB, un type BAC, un examen...). Mon usage est différent : lorsque je mets un automatisme, j'utilise `source` pour ajouter des précisions aux élèves sur ce que j'attends d'eux dans l'automatisme. 
 ]
 
 #parametre-carte("stop", ("bool",), `false`)[
@@ -567,7 +560,7 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
 
 
 #warning(title: "Rajoute utile par rapport à ProfMaquette")[
-  La gestion des `stop` peut se faire manuellement, comme dans l'exemple ci-dessus. C'est le fonctionnement de ProfMaquette. Si vous ajoutez un `#thematique[...]` (dans le but de thématiser par thème les exercices que vous donnez dans votre fiche), alors le `stop` s'appliquera à l'endroit voulu.
+  La gestion des `stop` peut se faire manuellement, comme dans l'exemple ci-dessus. C'est le fonctionnement de ProfMaquette. Si vous ajoutez un `#thematique[…]` (dans le but de thématiser par thème les exercices que vous donnez dans votre fiche), alors le `stop` s'appliquera à l'endroit voulu.
 ]
 
 #exemple(```typ
@@ -592,7 +585,7 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
  
 
 #parametre-carte("titre", ("content", "none"), `none`)[
-  Affiché après « Exercice N : », dans l'étiquette du cadre.
+  Ce paramètre permet d'afficher un titre à l'exercice  après « Exercice N : » dans l'étiquette du cadre.
 ]
 #exemple(```typ
 #show: maquette.with()
@@ -602,8 +595,7 @@ On note ci-dessous, après "paramètre:" les types que peut valoir le paramètre
 ```)
 
 #parametre-carte("titre-complement", ("content", "none"), `none`)[
-  Complément du titre du corrigé correspondant : « Corrigé de l'exercice 3 :
-  méthode ».
+  Ce titre permet de compléter le titre du titre du corrigé correspondant.
 ]
 #exemple(```typ
 #maquette[
@@ -632,7 +624,12 @@ existent pour le moment :
 
 
 #exemple(dessous: true, ```typ
- 
+
+#maquette(style-exercice: "fond-blanc")[
+  #exercice[HEYYY] 
+  #exercice(route: false)[HEYYY] 
+]
+
 #maquette(style-exercice: "bandeau")[
   #exercice[HEYYY] 
   #exercice(route: false)[HEYYY] 
@@ -669,7 +666,7 @@ En voici la liste, dans l'ordre alphabétique.
   …
   correction-nouvelle-page: bool,
   liste-corriges: auto | int | str | array,
-  localisation-correction: str | none | bool,
+  localisation-correction: str | bool,
   page-par-corrige: bool,
   titre-corriges: content | auto,
   vers-solution: bool,
@@ -738,11 +735,12 @@ En voici la liste, dans l'ordre alphabétique.
 
 #pagebreak()
 
-#parametre-carte("localisation-correction", ("str", "none", "bool"), `"fin"`)[
-  Ce paramètre permet de décider où afficher les corrigés : `"fin"` (bloc Correction en fin de fiche, sur une
-  nouvelle page), `"apres"` (sous chaque énoncé) ou `none` (aucun, c'est la
-  fiche élève). `true` et `false` sont aussi acceptés : ils valent `"fin"` et
-  `none`.
+#parametre-carte("localisation-correction", ("str", "bool"), `"fin"`)[
+  Ce paramètre décide où afficher les corrigés sélectionnés : `"fin"` (bloc
+  Correction en fin de fiche, sur une nouvelle page) ou `"apres"` (sous chaque
+  énoncé). `true` est aussi accepté : il vaut `"fin"`. Il ne règle jamais le
+  *nombre* de corrigés affichés — pour un sujet seul (aucun corrigé), utiliser
+  `liste-corriges: ()` (voir plus haut) plutôt que ce paramètre.
 ]
 #exemple(```typ
 #maquette(localisation-correction: "apres")[
@@ -752,18 +750,18 @@ En voici la liste, dans l'ordre alphabétique.
 ```)
 
 #exemple(```typ
-#maquette(localisation-correction: none)[
+#maquette(liste-corriges: ())[
   #exercice[Calculer $2 + 3$.]
   #solution[$2 + 3 = 5$.]
 ]
 ```)
 
 #warning(title: "Attention aux subtilités !")[
-  lorsqu'on écrit `"après"` ou `"fin"`, il faut mettre des guillemets, mais pas pour `none`, `true` et `false`.
+  lorsqu'on écrit `"après"` ou `"fin"`, il faut mettre des guillemets, mais pas pour `true`.
 ]
 
 #idea(title: "Utilisation comme prof !")[
-  L'intérêt de cette commande est la suivante : on affiche tous les corrigés lorsqu'on est en train de préparer sa fiche d'exos, puis une fois que tout semble bon, on met le paramètre `localisation-correction` sur `none` pour imprimer. Ensuite, au moment de rajouter les exercices, on met le paramètre sur ce que l'on veut (`fin` ou `apres`), puis on affiche la liste des corrigés que l'on veut voir (depuis la `maquette`, avec le paramètre global `liste-corriges` (voir plus haut))
+  L'intérêt de cette combinaison est la suivante : on affiche tous les corrigés lorsqu'on est en train de préparer sa fiche d'exos, puis une fois que tout semble bon, on règle `liste-corriges` sur `()` pour imprimer un sujet seul. Ensuite, au moment de rajouter les exercices, on remet `liste-corriges` sur ce que l'on veut voir apparaître (voir plus haut), en choisissant où avec `localisation-correction` (`"fin"` ou `"apres"`).
 ]
 
 #parametre-carte("page-par-corrige", ("bool",), `false`)[
@@ -950,25 +948,24 @@ QR code porte le numéro de son exercice, et il est lui aussi cliquable.
 
 #info(title: "Où et de quelle couleur ?")[
   Le bloc se place en bas de la dernière page s'il reste de la place, sinon en
-  bas de la page suivante ; s'il occupe plus des trois quarts d'une page, il
-  suit simplement la fiche et peut se couper entre deux pages. Sa couleur est
+  bas de la page suivante. Sa couleur est
   celle des liens vers l'extérieur, `lien-externe` (@maquette), comme l'haltère
   et la source.
 ]
  
 #signature("maquette(
   …
-  colonnes-automatismes: int,
+  nombre-qr: int,
   taille-qr: length,
   titre-automatismes: content | auto,
   …
 ) -> content")
 
-#parametre-carte("colonnes-automatismes", ("int",), `3`)[
+#parametre-carte("nombre-qr", ("int",), `3`)[
   Nombre de QR codes par ligne dans le bloc « Automatismes ».
 ]
 #exemple(```typ
-#maquette(colonnes-automatismes: 4)[
+#maquette(nombre-qr: 4)[
   #exercice(entrainement: "https://typst.app")[
     Tables de multiplication.
   ]
@@ -989,7 +986,7 @@ QR code porte le numéro de son exercice, et il est lui aussi cliquable.
 #exemple(```typ
 #show: maquette.with(
   taille-qr: 0.5cm,
-  colonnes-automatismes: 4)
+  nombre-qr: 4)
   #exercice(entrainement: "https://typst.app")[
     Tables de multiplication.
   ]
@@ -1071,8 +1068,7 @@ indépendamment les unes des autres.
 ```)
 
 #parametre-carte("lien-interne", ("color", "auto"), `auto`)[
-  Couleur de ce qui permet de *naviguer* dans le document : clé, titres «
-  Correction » et « Corrigé de l'exercice N ». `auto` : `rgb("#DC143C")`
+  Ce paramètre détermine la couleur des éléments cliquables qui permettent de *naviguer* dans le document : la clé, et les titres « Corrigé de l'exercice N ». La valeur de `auto` est `rgb("#DC143C")`
   (Crimson, comme dans ProfMaquette).
 ]
 #exemple(```typ
@@ -1098,7 +1094,7 @@ indépendamment les unes des autres.
  
 
 #parametre-carte("couleur-route", ("color", "auto"), `auto`)[
-  Couleur des exercices sur la route (filet et titre). `auto` : noir. Les
+  Ce paramètre gère la couleur des exercices sur la route (filet et titre). La valeur de `auto` est noire. Les
   exercices hors route, eux, restent toujours gris.
 ]
 #exemple(```typ
@@ -1108,7 +1104,7 @@ indépendamment les unes des autres.
 ```)
 
 #parametre-carte("couleur-fdr", ("color",), `black`)[
-  Couleur du schéma de la feuille de route (@fdr).
+  Ce paramètre gère la couleur du schéma de la feuille de route (@fdr).
 ]
 #exemple(```typ
 #show: maquette.with(couleur-fdr: orange)

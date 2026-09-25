@@ -2,6 +2,6 @@
 #maquette(localisation-correction: true)[
   #exercice[A] #solution[a]
 ]
-#maquette(localisation-correction: false)[
+#maquette(liste-corriges: ())[
   #exercice[B] #solution[b]
 ]
