@@ -1,3 +1,4 @@
+// Page de hauteur automatique.
 #import "../../src/lib.typ": *
 #set page(height: auto)
 #maquette(position-corriges: "fin")[
