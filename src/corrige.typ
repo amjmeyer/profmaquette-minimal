@@ -14,7 +14,7 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
-// corrige.typ — fonction corrige, le corrigé de l'exercice qui précède.
+// Fonction corrige, le corrigé de l'exercice qui précède.
 
 #import "interne/etats.typ": *
 #import "interne/utils.typ": *
