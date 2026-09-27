@@ -1,3 +1,4 @@
+// Texte en 8 pt.
 #import "../../src/lib.typ": *
 #set text(size: 8pt)
 #maquette(position-corriges: "fin")[
