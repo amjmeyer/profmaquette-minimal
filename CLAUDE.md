@@ -23,16 +23,16 @@ paquet fletcher), pas de build system.
   Convention d'import : `etats.typ` et `utils.typ` avec `*`, les autres modules
   en nommant ce qu'on utilise.
 - [src/icones/](src/icones/) — SVG Font Awesome Free (haltère, clé, coche, calculatrice).
-- [docs/manuel.typ](docs/manuel.typ) → compilé en `docs/manuel.pdf`, LE manuel
-  utilisateur complet (tous les réglages + exemple/rendu pour chacun). Long
-  (~1300 lignes) : préférer ce fichier-ci pour une vue d'ensemble rapide.
-- [README.md](README.md) — présentation courte + lien vers le manuel PDF.
+- [toot/](toot/) — LA doc utilisateur : site web construit avec toot (voir
+  `toot/README.md`), une page par partie dans `toot/src/`, menu dans
+  `toot/src/OUTLINE.typ`. Aperçu : `toot-builder serve` depuis `toot/`.
+- [README.md](README.md) — présentation courte.
 - [examples/exemple.typ](examples/exemple.typ) — exemple minimal complet.
 - [tests/beta/](tests/beta/) — ~100 fichiers de non-régression, un cas par fichier
   (noms explicites : `62-selection-hors-limites.typ`…). Compilés par
   `tests/lancer.sh` (option : préfixes de noms à filtrer), sortie dans
   `tests/sortie/*.pdf` (ignoré par git).
-- `tester.sh` — compile `examples/*.typ` et `docs/manuel.typ` comme si le paquet
+- `tester.sh` — compile `examples/*.typ` comme si le paquet
   était publié (simule `@preview/profmaquette-minimal` via `--package-path`).
 - `PUBLIER.md` — procédure de publication sur Typst Universe (usage ponctuel).
 - `CHANGELOG.md` — historique des versions.
@@ -55,7 +55,7 @@ paquet fletcher), pas de build system.
 
 Tous les paramètres de `maquette` sont documentés en commentaire juste avant sa
 définition dans `src/maquette.typ` — c'est la source de
-vérité la plus à jour, à préférer à `docs/manuel.typ` en cas de divergence
+vérité la plus à jour, à préférer à la doc `toot/` en cas de divergence
 pendant un développement.
 
 ## Concepts internes à connaître avant de modifier le code
@@ -82,7 +82,7 @@ pendant un développement.
 ## Workflow de dev
 
 ```bash
-./tester.sh              # compile examples/*.typ + docs/manuel.typ (comme publié)
+./tester.sh              # compile examples/*.typ (comme publié)
 ./tester.sh --images     # + régénère docs/exemple-*.png (captures du README)
 tests/lancer.sh           # tous les tests de non-régression (tests/beta/*.typ)
 tests/lancer.sh 62 65     # seulement les tests dont le nom commence par 62 ou 65
@@ -96,7 +96,7 @@ rendu (PDF dans `tests/sortie/`) reste manuel.
 
 - Changer un paramètre public de `maquette` (nom, valeurs acceptées) impacte
   potentiellement : `src/maquette.typ` (déclaration + usage + commentaire),
-  `docs/manuel.typ`, `examples/exemple.typ`, et plusieurs fichiers de
+  `toot/src/`, `examples/exemple.typ`, et plusieurs fichiers de
   `tests/beta/`. Chercher le nom dans tout le dépôt avant de considérer un
   renommage terminé.
 - Une seule licence LPPL pour tous les `.typ` de `src/` : même en-tête dans
