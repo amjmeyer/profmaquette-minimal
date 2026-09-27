@@ -1,3 +1,4 @@
+// Un corrigé par page, en fin de fiche.
 #import "../../src/lib.typ": *
 #maquette(position-corriges: "fin", page-par-corrige: true)[
   #exercice[Énoncé 1.]
