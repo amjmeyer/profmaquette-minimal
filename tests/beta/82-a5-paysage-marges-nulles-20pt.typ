@@ -1,3 +1,4 @@
+// A5 paysage, marges nulles, texte en 20 pt.
 #import "../../src/lib.typ": *
 #set page(paper: "a5", flipped: true, margin: 0pt)
 #set text(size: 20pt)
