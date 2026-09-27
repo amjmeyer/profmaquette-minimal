@@ -1,3 +1,4 @@
+// Calculatrice interdite.
 #import "../../src/lib.typ": *
 #maquette[
   #exercice[Calculatrice autorisée (défaut).]
