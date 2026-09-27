@@ -100,5 +100,6 @@ version 2008 or later.
 This work has the LPPL maintenance status `maintained'.
 The Current Maintainer of this work is Arthur Meyer.
 
-This work consists of the files src/lib.typ and src/exercices.typ.
+This work consists of all the .typ files in the src/ directory
+and its subdirectories.
 ```

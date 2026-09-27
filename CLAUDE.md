@@ -2,18 +2,26 @@
 
 Paquet **Typst** (pas LaTeX) qui génère des fiches d'exercices : portage minimaliste
 du paquet LaTeX [ProfMaquette](https://ctan.org/pkg/profmaquette) de Christophe
-Poulain. Tout le code est dans deux fichiers `.typ`, pas de build system.
+Poulain. Code dans `src/` (un fichier par fonction publique, à la manière du
+paquet fletcher), pas de build system.
 
 ## Où est quoi
 
 - [src/lib.typ](src/lib.typ) — point d'entrée du paquet (déclaré dans `typst.toml`).
-  Ne fait qu'exporter les 5 fonctions publiques depuis `exercices.typ`.
-- [src/exercices.typ](src/exercices.typ) — **tout le code** (~1200 lignes), organisé
-  en sections numérotées (chercher `// ══` pour naviguer) :
-  1. Couleurs, 2. États internes, 3. Outils internes, 4. Éléments graphiques,
-  5. API publique et fonctions internes.
-  Le long commentaire en tête de fichier (avant la section 1) est la doc de
-  référence de l'architecture : la lire en premier en cas de doute.
+  Ne fait qu'exporter les 5 fonctions publiques ; son commentaire d'en-tête
+  décrit l'organisation de `src/` et les règles de convergence : le lire en
+  premier en cas de doute.
+- Un fichier par fonction publique : [src/maquette.typ](src/maquette.typ),
+  [src/exercice.typ](src/exercice.typ), [src/corrige.typ](src/corrige.typ),
+  [src/thematique.typ](src/thematique.typ), [src/afficher-fdr.typ](src/afficher-fdr.typ).
+- [src/deps.typ](src/deps.typ) — dépendances externes (seul endroit qui importe
+  `@preview/tiaoma`).
+- [src/interne/](src/interne/) — code partagé, jamais exporté : `etats.typ`
+  (tous les `state`), `utils.typ` (sélection des corrigés, langues, `protege`…),
+  `dessins.typ` (icônes, cadres, rendu d'un corrigé), `cartouche.typ` (cartouche
+  de titre), `blocs-fin.typ` (« Automatismes » et « Correction »).
+  Convention d'import : `etats.typ` et `utils.typ` avec `*`, les autres modules
+  en nommant ce qu'on utilise.
 - [src/icones/](src/icones/) — SVG Font Awesome Free (haltère, clé, coche, calculatrice).
 - [docs/manuel.typ](docs/manuel.typ) → compilé en `docs/manuel.pdf`, LE manuel
   utilisateur complet (tous les réglages + exemple/rendu pour chacun). Long
@@ -31,7 +39,7 @@ Poulain. Tout le code est dans deux fichiers `.typ`, pas de build system.
 
 ## API publique (exportée par `lib.typ`)
 
-5 fonctions seulement, tout le reste de `exercices.typ` est interne :
+5 fonctions seulement, tout le reste de `src/` est interne :
 
 - `maquette(...)[body]` — englobe toute la fiche, un seul appel règle tout
   (couleurs, corrigés, style des cadres, langue, cartouche de titre…). Ajoute
@@ -46,7 +54,7 @@ Poulain. Tout le code est dans deux fichiers `.typ`, pas de build system.
   dessine le schéma de la feuille de route.
 
 Tous les paramètres de `maquette` sont documentés en commentaire juste avant sa
-définition dans `exercices.typ` (autour de la ligne 1040) — c'est la source de
+définition dans `src/maquette.typ` — c'est la source de
 vérité la plus à jour, à préférer à `docs/manuel.typ` en cas de divergence
 pendant un développement.
 
@@ -54,7 +62,7 @@ pendant un développement.
 
 - **États (`state(...)`)** : tout ce qui doit être partagé entre les fonctions
   (couleurs, historique des exercices, réglages des corrigés…) passe par des
-  `state`, jamais par des variables globales. Voir section 2 de `exercices.typ`.
+  `state`, jamais par des variables globales. Tous dans `src/interne/etats.typ`.
 - **Convergence** : Typst recompile au plus 5 fois pour stabiliser les requêtes
   (`query`). La chaîne « clé d'exercice → corrigé → mesure de boîte » est longue :
   les `state.update(...)` se font toujours **hors** `context`, avec des valeurs
@@ -87,9 +95,10 @@ rendu (PDF dans `tests/sortie/`) reste manuel.
 ## Pièges connus
 
 - Changer un paramètre public de `maquette` (nom, valeurs acceptées) impacte
-  potentiellement : `src/exercices.typ` (déclaration + usage + commentaire),
+  potentiellement : `src/maquette.typ` (déclaration + usage + commentaire),
   `docs/manuel.typ`, `examples/exemple.typ`, et plusieurs fichiers de
   `tests/beta/`. Chercher le nom dans tout le dépôt avant de considérer un
   renommage terminé.
-- Le fichier consiste en une seule licence LPPL commune à `lib.typ` et
-  `exercices.typ` (voir l'en-tête des deux fichiers) : ne pas la dupliquer/diverger.
+- Une seule licence LPPL pour tous les `.typ` de `src/` : même en-tête dans
+  chaque fichier (« all the .typ files in the src/ directory »), à recopier tel
+  quel dans tout nouveau fichier, sans le faire diverger.
