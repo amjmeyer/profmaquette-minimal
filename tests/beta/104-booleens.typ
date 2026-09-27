@@ -1,3 +1,4 @@
+// Position des corrigés par `true`, et sujet seul.
 #import "../../src/lib.typ": *
 #maquette(position-corriges: true)[
   #exercice[A] #corrige[a]
