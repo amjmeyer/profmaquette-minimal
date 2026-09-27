@@ -1,3 +1,4 @@
+// Corrigés des seuls exercices sur la route.
 #import "../../src/lib.typ": *
 #maquette(liste-corriges: "route")[
   #exercice[A] #corrige[a]
