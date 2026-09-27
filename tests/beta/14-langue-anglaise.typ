@@ -1,3 +1,4 @@
+// Langue anglaise forcée.
 #import "../../src/lib.typ": *
 #set text(lang: "en")
 // lang "en" seul donne le français (défaut de Typst) : langue: "en" force l'anglais.
