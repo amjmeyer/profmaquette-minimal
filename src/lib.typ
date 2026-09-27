@@ -14,6 +14,8 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
+// lib.typ — point d'entrée du paquet, exporte les 5 fonctions publiques.
+//
 // profmaquette-minimal : portage minimaliste, en Typst, du paquet LaTeX
 // ProfMaquette (Christophe Poulain). Point d'entrée déclaré dans typst.toml :
 // seules les cinq fonctions ci-dessous sont exportées.
