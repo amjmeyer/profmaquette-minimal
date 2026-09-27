@@ -1,3 +1,4 @@
+// Un corrigé par page, sous l'énoncé.
 #import "../../src/lib.typ": *
 #maquette(position-corriges: "apres", page-par-corrige: true)[
   #exercice[Énoncé 1.]
