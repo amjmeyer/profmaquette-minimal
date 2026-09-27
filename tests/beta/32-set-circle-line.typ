@@ -1,3 +1,4 @@
+// Réglages de cercles, traits et polygones sans effet.
 #import "../../src/lib.typ": *
 #set circle(stroke: 2pt + red, fill: yellow)
 #set line(stroke: 3pt + blue)
