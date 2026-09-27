@@ -1,3 +1,4 @@
+// Titres numérotés du document avant la fiche.
 #import "../../src/lib.typ": *
 #set heading(numbering: "I.1.a")
 #show heading.where(level: 3): it => block(fill: yellow, inset: 4pt)[#counter(heading).display() -- #it.body]
