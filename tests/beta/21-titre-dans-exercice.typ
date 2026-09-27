@@ -1,3 +1,4 @@
+// Titre Typst dans un énoncé.
 #import "../../src/lib.typ": *
 #set heading(numbering: "1.")
 #maquette[
