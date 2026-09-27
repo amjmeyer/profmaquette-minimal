@@ -1,3 +1,4 @@
+// Couleurs indépendantes d'une maquette à l'autre.
 // Chaque maquette repart des couleurs par défaut : la seconde ne doit PAS
 // hériter du vert, du violet ni du navy de la première (clé rouge, haltère
 // bleue, exercice noir attendus).
