@@ -14,7 +14,7 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
-// maquette.typ — fonction maquette, qui englobe et règle toute la fiche.
+// Fonction maquette, qui englobe et règle toute la fiche.
 
 #import "interne/etats.typ": *
 #import "interne/utils.typ": *
