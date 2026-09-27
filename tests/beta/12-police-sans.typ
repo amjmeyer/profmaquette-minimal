@@ -1,3 +1,4 @@
+// Police sans empattement.
 #import "../../src/lib.typ": *
 #set text(font: "DejaVu Sans")
 #maquette(position-corriges: "fin")[
