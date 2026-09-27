@@ -1,3 +1,4 @@
+// Texte en 20 pt.
 #import "../../src/lib.typ": *
 #set text(size: 20pt)
 #maquette(position-corriges: "fin")[
