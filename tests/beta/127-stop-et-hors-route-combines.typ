@@ -1,3 +1,4 @@
+// Stops et exercices hors route combinés.
 #import "../../src/lib.typ": *
 #maquette()[
   #afficher-fdr
