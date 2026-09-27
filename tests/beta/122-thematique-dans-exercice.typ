@@ -1,3 +1,4 @@
+// Thématique au milieu d'un exercice.
 #import "../../src/lib.typ": *
 #maquette()[
   #afficher-fdr
