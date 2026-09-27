@@ -1,3 +1,4 @@
+// Bloc « Automatismes » très haut.
 #import "../../src/lib.typ": *
 #maquette(nombre-qr: 2)[
   #exercice(entrainement: "https://a.b/0")[E0]
