@@ -1,3 +1,4 @@
+// Page en deux colonnes.
 #import "../../src/lib.typ": *
 #set page(columns: 2)
 #maquette(position-corriges: "fin")[
