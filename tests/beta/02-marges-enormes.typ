@@ -1,3 +1,4 @@
+// Marges de page énormes.
 #import "../../src/lib.typ": *
 #set page(margin: (x: 7cm, y: 3cm))
 #maquette(position-corriges: "fin")[
