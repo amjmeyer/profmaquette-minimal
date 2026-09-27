@@ -1,3 +1,4 @@
+// Marges de page nulles.
 #import "../../src/lib.typ": *
 #set page(margin: 0pt)
 #maquette(position-corriges: "fin")[
