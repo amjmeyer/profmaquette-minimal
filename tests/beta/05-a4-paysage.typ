@@ -1,3 +1,4 @@
+// Page A4 en paysage.
 #import "../../src/lib.typ": *
 #set page(paper: "a4", flipped: true)
 #maquette(position-corriges: "fin")[
