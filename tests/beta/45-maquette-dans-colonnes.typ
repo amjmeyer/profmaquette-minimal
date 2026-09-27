@@ -1,5 +1,5 @@
+// Maquette dans des colonnes, sans saut de page.
 #import "../../src/lib.typ": *
-// Avec nouvelle-page-corriges: false, la maquette fonctionne dans columns().
 #columns(3)[#maquette(position-corriges: "fin", nouvelle-page-corriges: false)[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
