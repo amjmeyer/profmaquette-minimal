@@ -1,3 +1,4 @@
+// Page au format A6.
 #import "../../src/lib.typ": *
 #set page(paper: "a6", margin: 1cm)
 #maquette(position-corriges: "fin")[
