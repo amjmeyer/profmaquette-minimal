@@ -1,3 +1,4 @@
+// Feuille de route sans exercice sur la route.
 #import "../../src/lib.typ": *
 #maquette[
   #afficher-fdr
