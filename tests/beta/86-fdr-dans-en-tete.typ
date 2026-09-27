@@ -1,3 +1,4 @@
+// Feuille de route dans l'en-tête.
 #import "../../src/lib.typ": *
 #set page(header: context align(center, afficher-fdr))
 #maquette(position-corriges: "fin")[
