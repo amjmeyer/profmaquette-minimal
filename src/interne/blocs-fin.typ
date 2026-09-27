@@ -14,8 +14,8 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
-// Blocs ajoutés automatiquement par `maquette` en fin de fiche, dans cet ordre
-// (comme ProfMaquette) : « Automatismes » puis « Correction ».
+// blocs-fin.typ — blocs « Automatismes » et « Correction » de fin de fiche.
+// Ajoutés automatiquement par `maquette`, dans cet ordre (comme ProfMaquette).
 
 #import "../deps.typ": tiaoma
 #import "etats.typ": *
