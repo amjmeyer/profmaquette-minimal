@@ -14,7 +14,7 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
-// exercice.typ — fonction exercice, un énoncé numéroté automatiquement.
+// Fonction exercice, un énoncé numéroté automatiquement.
 
 #import "interne/etats.typ": *
 #import "interne/utils.typ": *
