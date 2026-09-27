@@ -1,3 +1,4 @@
+// Trois maquettes aux réglages différents.
 #import "../../src/lib.typ": *
 #maquette(liste-corriges: ())[
   #afficher-fdr
