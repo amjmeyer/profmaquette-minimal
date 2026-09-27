@@ -14,7 +14,7 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
-// afficher-fdr.typ — schéma de la feuille de route.
+// Schéma de la feuille de route.
 
 #import "interne/etats.typ": *
 #import "interne/utils.typ": *
