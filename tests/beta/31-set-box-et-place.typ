@@ -1,3 +1,4 @@
+// Réglages `box` et `place` du document sans effet.
 #import "../../src/lib.typ": *
 #set box(stroke: 1pt + green, inset: 3pt)
 #set place(clearance: 3cm)
