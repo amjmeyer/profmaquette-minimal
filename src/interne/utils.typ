@@ -14,7 +14,8 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
-// Petits outils sans rendu graphique propre.
+// utils.typ — outils (sélection des corrigés, langues, mise en page).
+// Petits outils, sans rendu graphique propre.
 
 #import "etats.typ": *
 
