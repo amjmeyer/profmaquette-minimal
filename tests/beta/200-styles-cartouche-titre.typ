@@ -1,3 +1,4 @@
+// Cartouche de titre, modes exercices et interro.
 // Test visuel (pas un beta-test d'erreur) : le style de cartouche de titre
 // "onglet", en mode "exercices" puis "interro" (zone Nom/Prénom/Classe à
 // droite, même hauteur que le cartouche), avec couleur personnalisée
