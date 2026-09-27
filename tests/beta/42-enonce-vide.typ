@@ -1,3 +1,4 @@
+// Énoncés vides.
 #import "../../src/lib.typ": *
 #maquette[
   #exercice[]
