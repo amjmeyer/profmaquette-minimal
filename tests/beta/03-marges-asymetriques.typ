@@ -1,3 +1,4 @@
+// Marges asymétriques.
 #import "../../src/lib.typ": *
 #set page(margin: (left: 4cm, right: 0.5cm))
 #maquette(position-corriges: "fin")[
