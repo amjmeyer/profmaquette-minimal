@@ -1,3 +1,4 @@
+// Marges nulles et deux colonnes.
 #import "../../src/lib.typ": *
 #set page(margin: 0pt, columns: 2)
 #maquette(position-corriges: "fin")[
