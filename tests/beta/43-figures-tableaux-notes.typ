@@ -1,3 +1,4 @@
+// Figures, tableaux, notes et flottants.
 #import "../../src/lib.typ": *
 #maquette(position-corriges: "apres")[
   #exercice(titre: "Figure")[
