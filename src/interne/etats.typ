@@ -14,8 +14,9 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
-// États partagés entre les fonctions du paquet. Tous sont remis à zéro par
-// `maquette` : deux maquettes d'un même document ne partagent rien.
+// etats.typ — états partagés entre les fonctions.
+// Tous sont remis à zéro par `maquette` : deux maquettes d'un même document ne
+// partagent rien.
 
 // ─── Couleurs ────────────────────────────────────────────────────────────────
 
