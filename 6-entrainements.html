@@ -1,0 +1,49 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Les entraînements</title><style>:root { --accent-color: #dc143c; } </style><link rel="stylesheet" href="/profmaquette-minimal/resources/style.css"><script defer src="/profmaquette-minimal/resources/control.js"></script><style>.encadre { border-left: 4px solid var(--c); background: color-mix(in srgb, var(--c) 10%, transparent); padding: .6em 1em; margin: 1em 0; border-radius: 4px; }
+.encadre > .titre { font-weight: bold; color: var(--c); display: block; margin-bottom: .3em; }
+.encadre.info { --c: #2563eb; }
+.encadre.astuce { --c: #16a34a; }
+.encadre.attention { --c: #ea580c; }
+.encadre.idee { --c: #9333ea; }
+.parametre { background: color-mix(in srgb, currentColor 6%, transparent); border-radius: 4px; padding: .8em 1em; margin: 1.2em 0 .6em; }
+.parametre > .nom { font-weight: bold; font-size: 1.15em; margin-right: .5em; }
+.parametre .type { font-family: monospace; font-size: .8em; padding: .1em .4em; border-radius: 3px; margin-right: .3em; background: color-mix(in srgb, currentColor 12%, transparent); }
+.parametre .defaut { display: block; font-size: .85em; opacity: .7; margin-top: .4em; }
+table { border-collapse: collapse; margin: 1em 0; }
+th, td { border-bottom: 1px solid color-mix(in srgb, currentColor 25%, transparent); padding: .3em .8em; text-align: left; }</style></head><body><div id="outline" class="hidden"><p><a href="/profmaquette-minimal/index.html">Accueil</a></p><p><a href="/profmaquette-minimal/1-demarrer.html">I. Démarrer</a></p><p><a href="/profmaquette-minimal/2-mode-maquette.html">II. Différents modes</a></p><p><a href="/profmaquette-minimal/3-exercices.html">III. Les exercices</a></p><p><a href="/profmaquette-minimal/4-corriges.html">IV. Les corrigés</a></p><p><a href="/profmaquette-minimal/5-feuille-de-route.html">V. La feuille de route</a></p><p><a href="/profmaquette-minimal/6-entrainements.html">VI. Les entraînements</a></p><p><a href="/profmaquette-minimal/7-couleurs.html">VII. Les couleurs</a></p><p><a href="/profmaquette-minimal/8-usages-avances.html">VIII. Usages avancés</a></p><p><a href="/profmaquette-minimal/annexes.html">Annexes</a></p></div><header><p><button id="outline-toggle"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBmaWxsPSJub25lIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIj4KPHBhdGggZD0ibTIwLjc1IDdjMCAwLjQxNDIxLTAuMzM1OCAwLjc1LTAuNzUgMC43NWgtMTZjLTAuNDE0MjEgMC0wLjc1LTAuMzM1NzktMC43NS0wLjc1czAuMzM1NzktMC43NSAwLjc1LTAuNzVoMTZjMC40MTQyIDAgMC43NSAwLjMzNTc5IDAuNzUgMC43NXoiLz4KPHBhdGggZD0ibTIwLjc1IDEyYzAgMC40MTQyLTAuMzM1OCAwLjc1LTAuNzUgMC43NWgtMTZjLTAuNDE0MjEgMC0wLjc1LTAuMzM1OC0wLjc1LTAuNzVzMC4zMzU3OS0wLjc1IDAuNzUtMC43NWgxNmMwLjQxNDIgMCAwLjc1IDAuMzM1OCAwLjc1IDAuNzV6Ii8+CjxwYXRoIGQ9Im0yMC43NSAxN2MwIDAuNDE0Mi0wLjMzNTggMC43NS0wLjc1IDAuNzVoLTE2Yy0wLjQxNDIxIDAtMC43NS0wLjMzNTgtMC43NS0wLjc1czAuMzM1NzktMC43NSAwLjc1LTAuNzVoMTZjMC40MTQyIDAgMC43NSAwLjMzNTggMC43NSAwLjc1eiIvPgo8L2c+Cjwvc3ZnPgo=" width="24" height="24" style="display: block; width: 2em"></button><strong>profmaquette-minimal</strong></p><p><a href="https://typst.app/universe/package/profmaquette-minimal">→ Universe</a></p></header><main><h1>VI. Les entraînements</h1><p>Un exercice avec <code>entrainement: "https://…"</code> porte une haltère cliquable sur son filet droit (<a href="/profmaquette-minimal/3-exercices.html">partie III</a>). Toutes les adresses de la fiche sont aussi regroupées en QR codes dans le bloc « Automatismes », ajouté automatiquement par la maquette : l’élève qui travaille sur papier y accède avec son téléphone. Chaque QR code porte le numéro de son exercice, et il est lui aussi cliquable.</p><div class="encadre info"><span class="titre">Où et de quelle couleur ?</span> Le bloc se place en bas de la dernière page s’il reste de la place, sinon en bas de la page suivante. Sa couleur est celle des liens vers l’extérieur, <code>couleur-externe</code> (<a href="/profmaquette-minimal/7-couleurs.html">partie VII</a>), comme l’haltère et la source.</div><pre><code>maquette(
+  …
+  nombre-qr: int,
+  taille-qr: length,
+  titre-qr: content | auto,
+  …
+) -> content</code></pre><div class="parametre"><span class="nom"><code>nombre-qr</code></span><span class="type">int</span><div>Nombre de QR codes par ligne dans le bloc « Automatismes ».</div><span class="defaut">Défaut : <code>3</code></span></div><pre><code data-lang="typ"><span style="color: #4b69c6">#</span><span style="color: #4b69c6">maquette</span>(nombre-qr: <span style="color: #b60157">4</span>)[
+  <span style="color: #4b69c6">#</span><span style="color: #4b69c6">exercice</span>(entrainement: <span style="color: #198810">"https://typst.app"</span>)[
+    Tables de multiplication.
+  ]
+  <span style="color: #4b69c6">#</span><span style="color: #4b69c6">exercice</span>[Sans entraînement.]
+  <span style="color: #4b69c6">#</span><span style="color: #4b69c6">exercice</span>(entrainement: <span style="color: #198810">"https://ctan.org"</span>)[
+    Fractions.
+  ]
+]</code></pre><p><picture><source media="(prefers-color-scheme: light)" srcset="/profmaquette-minimal/page7-example0-light.svg"><source media="(prefers-color-scheme: dark)" srcset="/profmaquette-minimal/page7-example0-dark.svg"><img alt="page7-example0" src="/profmaquette-minimal/page7-example0-light.svg"></picture></p><div class="parametre"><span class="nom"><code>taille-qr</code></span><span class="type">length</span><div>Longueur du côté commun de tous les QR codes. Une adresse trop longue pour rester lisible à cette taille donne un QR code agrandi automatiquement.</div><span class="defaut">Défaut : <code>2cm</code></span></div><pre><code data-lang="typ"><span style="color: #d73948">#</span><span style="color: #d73948">show</span>: maquette.<span style="color: #4b69c6">with</span>(
+  taille-qr: <span style="color: #b60157">0.5cm</span>,
+  nombre-qr: <span style="color: #b60157">4</span>)
+<span style="color: #4b69c6">#</span><span style="color: #4b69c6">exercice</span>(entrainement: <span style="color: #198810">"https://typst.app"</span>)[
+  Tables de multiplication.
+]
+<span style="color: #4b69c6">#</span><span style="color: #4b69c6">exercice</span>[
+  Tables de multiplication.
+]
+<span style="color: #4b69c6">#</span><span style="color: #4b69c6">exercice</span>(entrainement: <span style="color: #198810">"https://typst.app"</span>)[
+  Tables de multiplication.
+]
+<span style="color: #4b69c6">#</span><span style="color: #4b69c6">exercice</span>(entrainement: <span style="color: #198810">"https://typst.app"</span>)[
+  Tables de multiplication.
+]
+<span style="color: #4b69c6">#</span><span style="color: #4b69c6">exercice</span>(entrainement: <span style="color: #198810">"https://typst.app"</span>)[
+  Tables de multiplication.
+]</code></pre><p><picture><source media="(prefers-color-scheme: light)" srcset="/profmaquette-minimal/page7-example1-light.svg"><source media="(prefers-color-scheme: dark)" srcset="/profmaquette-minimal/page7-example1-dark.svg"><img alt="page7-example1" src="/profmaquette-minimal/page7-example1-light.svg"></picture></p><div class="parametre"><span class="nom"><code>titre-qr</code></span><span class="type">content</span><span class="type">auto</span><div>Ce paramètre modifie le nom donné au cadre contenant les QR-Codes.</div><span class="defaut">Défaut : <code>auto</code></span></div><pre><code data-lang="typ"><span style="color: #d73948">#</span><span style="color: #d73948">show</span>: maquette.<span style="color: #4b69c6">with</span>(
+  taille-qr: <span style="color: #b60157">1cm</span>,
+  titre-qr: <span style="color: #198810">"QR codes à scanner"</span>
+)
+<span style="color: #4b69c6">#</span><span style="color: #4b69c6">exercice</span>(entrainement: <span style="color: #198810">"https://typst.app"</span>)[
+  Tables de multiplication.
+]</code></pre><p><picture><source media="(prefers-color-scheme: light)" srcset="/profmaquette-minimal/page7-example2-light.svg"><source media="(prefers-color-scheme: dark)" srcset="/profmaquette-minimal/page7-example2-dark.svg"><img alt="page7-example2" src="/profmaquette-minimal/page7-example2-light.svg"></picture></p></main><footer><a href="/profmaquette-minimal/5-feuille-de-route.html"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBmaWxsPSJub25lIiBzdHJva2U9IiIgdmlld0JveD0iMCAwIDI0IDI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJtMTUuNDg4IDQuNDMwNmMwLjMxNDUgMC4yNjk1NyAwLjM1MDkgMC43NDMwNCAwLjA4MTMgMS4wNTc1bC01LjU4MTYgNi41MTE5IDUuNTgxNiA2LjUxMTljMC4yNjk2IDAuMzE0NSAwLjIzMzIgMC43ODgtMC4wODEzIDEuMDU3Ni0wLjMxNDUgMC4yNjk1LTAuNzg4IDAuMjMzMS0xLjA1NzUtMC4wODE0bC02LTdjLTAuMjQwNzUtMC4yODA5LTAuMjQwNzUtMC42OTUzIDAtMC45NzYybDYtN2MwLjI2OTUtMC4zMTQ0OSAwLjc0My0wLjM1MDkyIDEuMDU3NS0wLjA4MTM1eiIgY2xpcC1ydWxlPSJldmVub2RkIiBmaWxsPSIjZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz4KPC9zdmc+Cg==" width="24" height="24" style="display: block; width: 2em"></a><a href="/profmaquette-minimal/7-couleurs.html"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBmaWxsPSJub25lIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Im04LjUxMTkgNC40MzA2YzAuMzE0NDktMC4yNjk1NyAwLjc4Nzk3LTAuMjMzMTQgMS4wNTc1IDAuMDgxMzVsNiA3YzAuMjQwNyAwLjI4MDkgMC4yNDA3IDAuNjk1MyAwIDAuOTc2MmwtNiA3Yy0wLjI2OTU3IDAuMzE0NS0wLjc0MzA1IDAuMzUwOS0xLjA1NzUgMC4wODE0LTAuMzE0NDktMC4yNjk2LTAuMzUwOTItMC43NDMxLTAuMDgxMzUtMS4wNTc2bDUuNTgxNi02LjUxMTktNS41ODE2LTYuNTExOWMtMC4yNjk1Ny0wLjMxNDUtMC4yMzMxNC0wLjc4Nzk3IDAuMDgxMzUtMS4wNTc1eiIgY2xpcC1ydWxlPSJldmVub2RkIiBmaWxsPSIjZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz4KPC9zdmc+Cg==" width="24" height="24" style="display: block; width: 2em"></a></footer></body></html>
