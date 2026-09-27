@@ -14,7 +14,7 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
-// Dépendances externes, importées ici seulement (une version à changer = un
-// seul endroit).
+// deps.typ — dépendances du paquet.
+// Importées ici seulement : une version à changer = un seul endroit.
 
 #import "@preview/tiaoma:0.3.0"
