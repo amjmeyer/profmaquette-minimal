@@ -1,3 +1,4 @@
+// Page en trois colonnes.
 #import "../../src/lib.typ": *
 #set page(columns: 3)
 #maquette(position-corriges: "fin")[
