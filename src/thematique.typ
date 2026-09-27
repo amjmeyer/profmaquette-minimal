@@ -14,6 +14,8 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
+// thematique.typ — fonction thematique, titre d'une partie de la fiche.
+
 #import "interne/etats.typ": *
 #import "interne/utils.typ": *
 
