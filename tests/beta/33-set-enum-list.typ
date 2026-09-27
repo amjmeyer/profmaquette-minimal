@@ -1,3 +1,4 @@
+// Réglages de listes et grilles du document.
 #import "../../src/lib.typ": *
 #set enum(numbering: "a)")
 #set list(marker: [→])
