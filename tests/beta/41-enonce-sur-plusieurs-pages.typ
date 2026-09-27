@@ -1,3 +1,4 @@
+// Énoncé plus long qu'une page.
 #import "../../src/lib.typ": *
 #maquette[
   #exercice(titre: "Très long", entrainement: "https://typst.app")[
