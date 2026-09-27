@@ -1,5 +1,5 @@
+// Erreur voulue : maquette dans des colonnes avec saut de page.
 #import "../../src/lib.typ": *
-// Erreur attendue : saut de page interdit dans columns() (voir test 45).
 #columns(2)[#maquette(position-corriges: "fin")[
   #align(center, afficher-fdr)
   #thematique[Première thématique]
