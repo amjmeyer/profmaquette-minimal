@@ -1,3 +1,4 @@
+// Bloc de code et image dans un exercice.
 #import "../../src/lib.typ": *
 #maquette()[
   #exercice[
