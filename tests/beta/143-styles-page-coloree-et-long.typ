@@ -1,3 +1,4 @@
+// Styles sur page colorée, exercice plus haut qu'une page.
 // Étiquette pleine et fond blanc sur une page colorée, et exercice plus haut
 // qu'une page (la boîte se coupe) avec le style bandeau.
 #import "../../src/lib.typ": *
