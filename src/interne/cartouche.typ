@@ -14,8 +14,9 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
-// Cartouche de titre de la fiche (`maquette(titre-maquette: …)`) et zone
-// Nom / Prénom / Classe du mode "interro". Tout est à appeler dans un `context`.
+// cartouche.typ — cartouche de titre de la fiche.
+// Réglé par `maquette(titre-maquette: …)`, avec la zone Nom / Prénom / Classe
+// du mode "interro". Tout est à appeler dans un `context`.
 
 #import "utils.typ": *
 
