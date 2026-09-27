@@ -1,3 +1,4 @@
+// Arabe, écriture de droite à gauche.
 #import "../../src/lib.typ": *
 #set text(lang: "ar", dir: rtl)
 #maquette(position-corriges: "fin")[
