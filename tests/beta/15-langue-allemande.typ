@@ -1,3 +1,4 @@
+// Langue allemande suivie automatiquement.
 #import "../../src/lib.typ": *
 #set text(lang: "de")
 #maquette(position-corriges: "fin")[
