@@ -1,3 +1,4 @@
+// Dix exercices hors route d'affilée.
 #import "../../src/lib.typ": *
 #maquette[
   #afficher-fdr
