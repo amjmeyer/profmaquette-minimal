@@ -1,3 +1,4 @@
+// Thématiques vides, stops et thématique finale.
 #import "../../src/lib.typ": *
 #maquette[
   #afficher-fdr
