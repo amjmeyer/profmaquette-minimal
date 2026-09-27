@@ -14,7 +14,7 @@
 // This work consists of all the .typ files in the src/ directory
 // and its subdirectories.
 
-// Éléments graphiques communs : icônes, cadres, rendu d'un corrigé.
+// dessins.typ — icônes, cadres et rendu des corrigés.
 // Tous (sauf `icone`) sont à appeler dans un `context`.
 
 #import "etats.typ": *
