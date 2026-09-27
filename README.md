@@ -54,7 +54,6 @@ use, and may change in future versions.*
 ]
 ```
 
-Un exemple complet se trouve dans [`examples/exemple.typ`](examples/exemple.typ).
 Pour tous les réglages (`maquette`, `exercice`, feuille de route, cartouche de
 titre, styles de cadre, langues…), voir la **[documentation](https://amjmeyer.github.io/profmaquette-minimal/)**.
 

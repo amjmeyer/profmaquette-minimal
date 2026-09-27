@@ -7,7 +7,7 @@
 
 cd "$(dirname "$0")/.."
 
-# Compilateur : même logique que tester.sh.
+# Compilateur : `typst` s'il est installé, sinon celui de l'extension Tinymist de VSCodium.
 if command -v typst > /dev/null; then
   TYPST=typst
 else

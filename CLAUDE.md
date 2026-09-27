@@ -27,13 +27,12 @@ paquet fletcher), pas de build system.
   `toot/README.md`), une page par partie dans `toot/src/`, menu dans
   `toot/src/OUTLINE.typ`. Aperçu : `toot-builder serve` depuis `toot/`.
 - [README.md](README.md) — présentation courte.
-- [examples/exemple.typ](examples/exemple.typ) — exemple minimal complet.
 - [tests/beta/](tests/beta/) — ~100 fichiers de non-régression, un cas par fichier
   (noms explicites : `62-selection-hors-limites.typ`…). Compilés par
   `tests/lancer.sh` (option : préfixes de noms à filtrer), sortie dans
   `tests/sortie/*.pdf` (ignoré par git).
-- `tester.sh` — compile `examples/*.typ` comme si le paquet
-  était publié (simule `@preview/profmaquette-minimal` via `--package-path`).
+- `docs/exemple-*.png` — les deux captures affichées dans le README (figées :
+  plus de script pour les régénérer).
 - `PUBLIER.md` — procédure de publication sur Typst Universe (usage ponctuel).
 - `CHANGELOG.md` — historique des versions.
 
@@ -82,8 +81,6 @@ pendant un développement.
 ## Workflow de dev
 
 ```bash
-./tester.sh              # compile examples/*.typ (comme publié)
-./tester.sh --images     # + régénère docs/exemple-*.png (captures du README)
 tests/lancer.sh           # tous les tests de non-régression (tests/beta/*.typ)
 tests/lancer.sh 62 65     # seulement les tests dont le nom commence par 62 ou 65
 ```
@@ -96,7 +93,7 @@ rendu (PDF dans `tests/sortie/`) reste manuel.
 
 - Changer un paramètre public de `maquette` (nom, valeurs acceptées) impacte
   potentiellement : `src/maquette.typ` (déclaration + usage + commentaire),
-  `toot/src/`, `examples/exemple.typ`, et plusieurs fichiers de
+  `toot/src/`, `README.md` (démarrage rapide), et plusieurs fichiers de
   `tests/beta/`. Chercher le nom dans tout le dépôt avant de considérer un
   renommage terminé.
 - Une seule licence LPPL pour tous les `.typ` de `src/` : même en-tête dans
