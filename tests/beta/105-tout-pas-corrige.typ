@@ -1,3 +1,4 @@
+// Tous les exercices sans corrigé.
 #import "../../src/lib.typ": *
 #maquette()[
   #exercice(pas-corrige: true)[A] #corrige[a]
