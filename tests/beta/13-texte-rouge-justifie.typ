@@ -1,3 +1,4 @@
+// Texte coloré, justifié, avec alinéa.
 #import "../../src/lib.typ": *
 #set text(fill: maroon)
 #set par(justify: true, first-line-indent: 2em)
