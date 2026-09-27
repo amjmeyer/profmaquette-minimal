@@ -1,4 +1,4 @@
-// Erreur voulue : style inconnu, message clair attendu.
+// Erreur voulue : style de cadre inconnu.
 #import "../../src/lib.typ": *
 #maquette(style-exercice: "fancy")[
   #exercice[A]
