@@ -1,3 +1,4 @@
+// Page noire, texte blanc.
 #import "../../src/lib.typ": *
 #set page(fill: black)
 #set text(fill: white)
