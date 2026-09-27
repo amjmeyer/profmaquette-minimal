@@ -1,3 +1,4 @@
+// Les quatre styles de cadre, tous éléments.
 // Les quatre styles de cadre, chacun avec tous les éléments du filet : clé,
 // haltère, source, hors route, titre très long, bloc Automatismes.
 #import "../../src/lib.typ": *
