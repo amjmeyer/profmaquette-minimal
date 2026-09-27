@@ -1,3 +1,4 @@
+// Page de couleur.
 #import "../../src/lib.typ": *
 #set page(fill: rgb("#FFF3D6"))
 #maquette(position-corriges: "fin")[
