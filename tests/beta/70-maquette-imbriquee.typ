@@ -1,5 +1,5 @@
+// Erreur voulue : maquette dans une maquette.
 #import "../../src/lib.typ": *
-// Erreur attendue : message clair.
 #maquette[
   #exercice[A]
   #maquette[
