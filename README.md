@@ -59,7 +59,9 @@ titre, styles de cadre, langues…), voir la **[documentation](https://amjmeyer.
 
 ## Historique des versions
 
-Les changements de chaque version sont listés dans [CHANGELOG.md](CHANGELOG.md).
+### 0.1.0 — version de départ
+
+Première version du paquet.
 
 ## Remerciements
 
