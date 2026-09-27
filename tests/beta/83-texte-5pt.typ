@@ -1,3 +1,4 @@
+// Texte en 5 pt.
 #import "../../src/lib.typ": *
 #set text(size: 5pt)
 #maquette(position-corriges: "fin")[
