@@ -1,3 +1,4 @@
+// Trois cents exercices.
 #import "../../src/lib.typ": *
 #maquette(position-corriges: "fin")[
   #afficher-fdr
