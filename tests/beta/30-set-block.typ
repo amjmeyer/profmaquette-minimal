@@ -1,3 +1,4 @@
+// Réglages `block` du document sans effet.
 #import "../../src/lib.typ": *
 #set block(spacing: 3em, inset: 6pt, stroke: 0.5pt + red)
 #maquette(position-corriges: "fin")[
