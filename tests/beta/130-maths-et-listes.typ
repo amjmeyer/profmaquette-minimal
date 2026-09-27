@@ -1,3 +1,4 @@
+// Maths, tableaux et listes imbriquées.
 #import "../../src/lib.typ": *
 #maquette(position-corriges: "apres")[
   #exercice(titre: "Maths")[
