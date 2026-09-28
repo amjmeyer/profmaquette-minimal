@@ -53,8 +53,9 @@
   page-par-corrige: false,
 ))
 
-// Barème (mode "interro" seulement, sinon none) : none, "partiel" ou "complet".
-#let etat-brm = state("etat-brm", none)
+// Affichage du barème (mode "interro" seulement, sinon none) : none, "partiel"
+// ou "complet" (cf. `maquette(afficher-brm: …)`).
+#let etat-afficher-brm = state("etat-afficher-brm", none)
 
 // Corrigés à afficher (auto = tous), sous la forme rendue par `parser-plage`.
 #let etat-selection = state("etat-selection", (corriges: auto))

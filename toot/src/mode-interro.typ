@@ -14,7 +14,7 @@ fichier donne le sujet de l'élève et le corrigé à mettre en ligne.
   mode-maquette: \"interro\",
   largeur-cartouche: ratio,
   position-corriges: \"apres-question\",
-  brm: none | str,
+  afficher-brm: none | str,
   …
 ) -> content")
 
@@ -141,15 +141,18 @@ mettre en ligne la version corrigée en changeant un seul réglage.
 
 = Barème
 
-#parametre("brm", ("none", "str"), `none`)[
+Le barème se donne exercice par exercice (`brm`), et la maquette décide de son
+affichage (`afficher-brm`).
+
+#parametre("afficher-brm", ("none", "str"), `none`)[
   Affiche le barème, en mode `interro` seulement (sans effet en mode
   `exercices`) : `none` (rien), `"partiel"` (le total de chaque exercice, sur
-  son filet en haut à droite) ou `"complet"` (le total, et la note de chaque
-  question, en gris à sa droite). Les notes viennent du paramètre `points` de
-  chaque exercice.
+  son filet en haut à droite, par exemple « 7,5 points ») ou `"complet"` (le
+  total, et la note de chaque question, en gris à sa droite, par exemple
+  « (1,5 pt) »). Les notes viennent du paramètre `brm` de chaque exercice.
 ]
 
-#parametre("points", ("int", "float", "array"), `none`)[
+#parametre("brm", ("int", "float", "array"), `none`)[
   Paramètre de `#exercice`. Un nombre (l'exercice est noté d'un bloc), ou un
   tableau qui suit les questions numérotées avec `+` : un nombre par question,
   un tableau pour une question à sous-questions. Par exemple,
@@ -162,9 +165,9 @@ mettre en ligne la version corrigée en changeant un seul réglage.
 // START
 #show: maquette.with(
   mode-maquette: "interro",
-  brm: "complet",
+  afficher-brm: "complet",
 )
-#exercice(titre: "Suites", points: (2, (1, 1.5), 3))[
+#exercice(titre: "Suites", brm: (2, (1, 1.5), 3))[
   + Calculer $u_0$ et $u_1$.
   + Étude de la suite.
     + Montrer qu'elle est arithmétique.
@@ -177,6 +180,7 @@ mettre en ligne la version corrigée en changeant un seul réglage.
   - Seules les questions numérotées avec `+` reçoivent leur note ; des
     questions écrites à la main (« a) … ») comptent dans le total, sans note
     affichée.
-  - En `"complet"`, le texte d'une question notée (et ses zones de réponse)
-    s'arrête avant la note, pour ne jamais passer dessous.
+  - En `"complet"`, le texte d'une question notée s'arrête avant la note,
+    pour ne jamais passer dessous ; ses zones de réponse (`seyes`, ou le
+    corrigé qui les remplace) gardent toute la largeur du cadre.
 ]

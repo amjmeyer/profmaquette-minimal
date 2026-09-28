@@ -15,7 +15,8 @@ paquet suit la langue du document (`#set text(lang: …)`).
   [Automatismes], [Automatismes], [Practice], [Übungen], [Práctica], [Allenamento],
   [QR code], [Exo], [Ex.], [Aufg.], [Ej.], [Es.],
   [Corrigé (interro)], [Corrigé], [Solution], [Lösung], [Solución], [Soluzione],
-  [Barème], [pt / pts], [pt / pts], [P.], [pto / ptos], [pt],
+  [Barème (total)], [point(s)], [point(s)], [Punkt / Punkte], [punto(s)], [punto / punti],
+  [Barème (question)], [pt / pts], [pt / pts], [P.], [pto / ptos], [pt],
 )
 
 #example(```typ
