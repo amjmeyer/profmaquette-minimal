@@ -35,6 +35,7 @@
 //     dessins.typ            icônes, cadres, rendu d'un corrigé
 //     cartouche.typ          cartouche de titre de la fiche
 //     blocs-fin.typ          blocs « Automatismes » et « Correction »
+//     bareme.typ             barème des interros (total, note des questions)
 //   icones/                  SVG Font Awesome Free (CC BY 4.0)
 //
 // Convergence : Typst recompile au plus 5 fois pour stabiliser les requêtes, et

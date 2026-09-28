@@ -12,6 +12,11 @@
   cartouche de titre à côté de la zone Nom / Prénom / Classe, en mode interro.
 - Cartouche de titre et zone Nom / Prénom / Classe protégés des
   `set block(…)` / `set box(…)` de l'utilisateur.
+- Barème des interros : `maquette(brm: "partiel" | "complet")` (mode interro
+  seulement) et `exercice(points: …)`, un nombre ou un tableau qui suit les
+  questions numérotées, imbriqué pour les sous-questions. Total de l'exercice
+  sur son filet en haut à droite ; en `"complet"`, note grisée de chaque
+  question à sa droite.
 - Exercice plus haut qu'une page : à chaque changement de page, le cadre
   n'est plus refermé par un filet plein mais par un filet pâle (et le filet
   sous le titre du style « bandeau » n'est plus répété).

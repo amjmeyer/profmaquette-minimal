@@ -20,6 +20,7 @@
 #import "interne/utils.typ": *
 #import "interne/cartouche.typ": cartouche-titre, modes-maquette, styles-maquette
 #import "interne/blocs-fin.typ": bloc-corriges, liste-entrainements
+#import "interne/bareme.typ": modes-bareme
 
 // ─── Réglages (internes, appelés par `maquette` seule) ───────────────────────
 
@@ -112,6 +113,10 @@
 //   style-maquette         : présentation du cartouche : "onglet" (seul style)
 //   couleur-titre          : accent du cartouche (onglet, contour) ; le niveau
 //                            (à droite) reste noir. Noir par défaut
+//   brm                    : barème, en mode "interro" seulement (sans effet
+//                            sinon) : none (défaut), "partiel" (total de chaque
+//                            exercice sur son filet) ou "complet" (et note de
+//                            chaque question), d'après `exercice(points: …)`
 //   largeur-cartouche      : part de la largeur prise par le cartouche en mode
 //                            "interro", à côté de la zone Nom / Prénom /
 //                            Classe (65 % par défaut). Sans effet sinon
@@ -136,6 +141,7 @@
   style-maquette: "onglet",
   couleur-titre: auto,
   largeur-cartouche: 65%,
+  brm: none,
   body,
 ) = {
   // Réglages invalides : message clair plutôt qu'une erreur de Typst plus loin.
@@ -160,6 +166,10 @@
   assert(
     style-maquette in styles-maquette,
     message: "maquette : style-maquette doit valoir " + styles-maquette.map(s => "\"" + s + "\"").join(", ", last: " ou ") + ", pas " + repr(style-maquette) + ".",
+  )
+  assert(
+    brm == none or brm in modes-bareme,
+    message: "maquette : brm doit valoir none, " + modes-bareme.map(m => "\"" + m + "\"").join(" ou ") + ", pas " + repr(brm) + ".",
   )
   assert(
     type(largeur-cartouche) == ratio and largeur-cartouche > 0% and largeur-cartouche < 100%,
@@ -195,6 +205,7 @@
   style-exercices(style-exercice)
   etat-selection.update((corriges: parser-plage(liste-corriges)))
   etat-fdr.update((couleur: couleur-fdr))
+  etat-brm.update(if mode-maquette == "interro" { brm } else { none })
   etat-langue.update(langue)
   etat-historique.update(())
   etat-serie.update(n => n + 1)

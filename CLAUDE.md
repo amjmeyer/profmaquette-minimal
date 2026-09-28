@@ -20,7 +20,8 @@ paquet fletcher), pas de build system.
 - [src/interne/](src/interne/) — code partagé, jamais exporté : `etats.typ`
   (tous les `state`), `utils.typ` (sélection des corrigés, langues, `protege`…),
   `dessins.typ` (icônes, cadres, rendu d'un corrigé), `cartouche.typ` (cartouche
-  de titre), `blocs-fin.typ` (« Automatismes » et « Correction »).
+  de titre), `blocs-fin.typ` (« Automatismes » et « Correction »), `bareme.typ`
+  (barème des interros : `brm` sur la maquette, `points` sur l'exercice).
   Convention d'import : `etats.typ` et `utils.typ` avec `*`, les autres modules
   en nommant ce qu'on utilise.
 - [src/icones/](src/icones/) — SVG Font Awesome Free (haltère, clé, coche, calculatrice).

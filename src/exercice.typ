@@ -19,6 +19,7 @@
 #import "interne/etats.typ": *
 #import "interne/utils.typ": *
 #import "interne/dessins.typ": boite-exercice, etiquette-source, icone-corrige, icone-entrainement
+#import "interne/bareme.typ": marquer-questions, points-valides, texte-points, total-points
 
 // Un exercice, numéroté automatiquement.
 //   titre            : titre affiché après « Exercice N : » (none : pas de titre)
@@ -32,6 +33,9 @@
 //   stop             : true = coche après cet exercice sur la feuille de route
 //                      (rarement utile : `thematique` en place déjà une)
 //   calculatrice     : false = calculatrice barrée dans le titre
+//   points           : barème (mode "interro" avec `maquette(brm: …)`) : un
+//                      nombre, ou un tableau qui suit les questions numérotées
+//                      (`+`), imbriqué pour les sous-questions : (2, (1, 1.5), 3)
 #let exercice(
   titre: none,
   entrainement: none,
@@ -41,8 +45,13 @@
   titre-complement: none,
   stop: false,
   calculatrice: true,
+  points: none,
   body,
 ) = {
+  assert(
+    points == none or points-valides(points),
+    message: "exercice : points doit être un nombre positif ou un tableau (éventuellement imbriqué) de nombres positifs, comme (2, (1, 1.5), 3), pas " + repr(points) + ".",
+  )
   // Hors `context`, avec des valeurs fixes : sinon, pas de convergence.
   etat-historique.update(h => h + ((
     route: route,
@@ -57,7 +66,11 @@
     #context {
       let infos = infos-exercice()
       let numero = infos.numero
-      let boite = boite-exercice(numero: numero, titre: titre, route: route, calculatrice: calculatrice, rendre(body))
+      // Barème : total sur le filet ; en "complet", note de chaque question.
+      let brm = etat-brm.get()
+      let total = if brm != none and points != none { texte-points(total-points(points)) }
+      let body = if brm == "complet" and type(points) == array { marquer-questions(body, points).at(0) } else { body }
+      let boite = boite-exercice(numero: numero, titre: titre, route: route, calculatrice: calculatrice, total: total, rendre(body))
 
       // La mise en page dépend de `cle-possible`, jamais du résultat de la
       // requête : sinon, pas de convergence.
@@ -91,7 +104,7 @@
               let taille = measure(icone)
               place(top + right, dx: decalage(icone), dy: 1.5cm + k * 1cm - taille.height / 2, icone)
             }
-            boite-exercice(numero: numero, titre: titre, route: route, calculatrice: calculatrice, corps)
+            boite-exercice(numero: numero, titre: titre, route: route, calculatrice: calculatrice, total: total, corps)
           })
         }
         boite-neutre(height: hauteur-boite, width: 100%)[
