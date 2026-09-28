@@ -66,8 +66,10 @@
       let etiquette = note-question(note)
       let largeur = measure(etiquette).width
       let marge = largeur + .6em
-      [#place(top + right, etiquette)#pad(right: marge, {
-        show repere-seyes: it => pad(right: -marge, it)
+      // Blocs neutres (et non `pad`) : les `set block(…)` de l'utilisateur ne
+      // doivent ni les remplir ni masquer la note.
+      [#place(top + right, etiquette)#bloc-neutre(width: 100%, inset: (right: marge), {
+        show repere-seyes: it => bloc-neutre(width: 100% + marge, it)
         c.body
       })]
     }
