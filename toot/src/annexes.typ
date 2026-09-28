@@ -39,8 +39,8 @@ n'ont pas d'équivalent.
 
 - *Pas de maquette dans une maquette.* `#maquette[#maquette[…]]` arrête la
   compilation avec un message clair, de même que `#show: maquette.with()`
-  utilisé deux fois dans le même document. Pour plusieurs fiches
-  indépendantes, il faut les placer l'une après l'autre (#i-link("8-usages-avances.typ")[partie VIII]).
+  utilisé deux fois dans le même document. Pour plusieurs fiches, faire un
+  fichier par fiche.
 
 - *Réglages invalides.* Une couleur qui n'en est pas une, un `style-exercice`
   ou une `position-corriges` hors des valeurs prévues, une sélection de

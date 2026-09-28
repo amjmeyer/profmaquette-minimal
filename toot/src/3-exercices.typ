@@ -2,7 +2,7 @@
 #set document(title: [Les exercices])
 #show: toot-page
 
-#title[III. Les exercices]
+#title[IV. Les exercices]
 
 Un exercice s'écrit `#exercice(…)[…]`, avec entre parenthèses les paramètres de l'exercice et entre crochets le contenu de l'exercice. \
 L'énoncé est encadré et
@@ -42,7 +42,7 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 
 #parametre("entrainement", ("str", "none"), `none`)[
   Ce paramètre permet de mettre l'adresse d'un lien en ligne et génère automatiquement un QR-Code à la fin de la page d'exercices (non modifiable). Également, cela ajoute une haltère sur le filet droit de l'exercice. \
-  Cette haltère est cliquable depuis le pdf, et amène sur ledit site. Pour en savoir plus, se rendre à la #i-link("6-entrainements.typ")[partie VI].
+  Cette haltère est cliquable depuis le pdf, et amène sur ledit site. Pour en savoir plus, se rendre à la #i-link("6-entrainements.typ")[partie VII].
 ]
 
 #example(```typ
@@ -63,14 +63,14 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 ```)
 
 #idea(title: "Potentiels usages en classe")[
-  J'utilise cette fonctionnalité pour travailler les automatismes, principalement avec Mathalea en glissant un lien Capytale vers l'activité. On peut l'utiliser pour sans doute mille et une autres choses (et, le cas échéant, on peut modifier le titre "Automatismes" en autre chose : voir la #i-link("6-entrainements.typ")[partie VI]). Pour l'élève/étudiant qui a sa feuille en version papier, cette haltère lui signifie qu'il y a des automatismes associés à cet exercice et il peut scanner le QR-Code en fin de feuille afin d'accéder au site. Si la feuille est donnée également en ligne, cliquer sur l'haltère suffit. Cette haltère a donc un double intérêt !
+  J'utilise cette fonctionnalité pour travailler les automatismes, principalement avec Mathalea en glissant un lien Capytale vers l'activité. On peut l'utiliser pour sans doute mille et une autres choses (et, le cas échéant, on peut modifier le titre "Automatismes" en autre chose : voir la #i-link("6-entrainements.typ")[partie VII]). Pour l'élève/étudiant qui a sa feuille en version papier, cette haltère lui signifie qu'il y a des automatismes associés à cet exercice et il peut scanner le QR-Code en fin de feuille afin d'accéder au site. Si la feuille est donnée également en ligne, cliquer sur l'haltère suffit. Cette haltère a donc un double intérêt !
 ]
 
 #parametre("route", ("bool",), `true`)[
   La valeur du paramètre modifie la couleur de l'entourage de l'exercice. Par défaut (`true`), la couleur du cadre est noire. Si on le met sur `false`, la couleur du cadre devient grise. \
-  Également, faire passer un exercice hors route change sa position dans la feuille de route. Voir #i-link("5-feuille-de-route.typ")[partie V]. \
+  Également, faire passer un exercice hors route change sa position dans la feuille de route. Voir #i-link("5-feuille-de-route.typ")[partie VI]. \
   La couleur des exercices sur toute la route peut se régler une fois pour toute avec le paramètre
-  `couleur-route`. Pour plus de détails, voir #i-link("7-couleurs.typ")[partie VII].
+  `couleur-route`. Pour plus de détails, voir #i-link("7-couleurs.typ")[partie VIII].
 ]
 
 #example(```typ
@@ -85,7 +85,7 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 ```)
 
 #parametre("pas-corrige", ("bool",), `false`)[
-  Ce paramètre, s'il est réglé sur `true`, permet de ne pas afficher le corrigé d'un exercice alors même qu'il est écrit dans un `corrige` qui le suit. Pour en savoir plus, voir la #i-link("4-corriges.typ")[partie IV].
+  Ce paramètre, s'il est réglé sur `true`, permet de ne pas afficher le corrigé d'un exercice alors même qu'il est écrit dans un `corrige` qui le suit. Pour en savoir plus, voir la #i-link("4-corriges.typ")[partie V].
 ]
 
 #example(columns: 2, ```typ
@@ -105,7 +105,7 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 ```)
 
 #warning(title: "Ajout utile par rapport à ProfMaquette")[
-  La gestion présentée ici des corrigés est locale, par exercice. Ayant expérimenté beaucoup, j'ai trouvé cela plutôt désagréable lorsque nos fiches sont longues. En conséquence, j'ai rajouté un paramètre global (dans les paramètres de `#maquette`) qui permet de gérer directement l'affichage des corrigés. Voir #i-link("4-corriges.typ")[partie IV].
+  La gestion présentée ici des corrigés est locale, par exercice. Ayant expérimenté beaucoup, j'ai trouvé cela plutôt désagréable lorsque nos fiches sont longues. En conséquence, j'ai rajouté un paramètre global (dans les paramètres de `#maquette`) qui permet de gérer directement l'affichage des corrigés. Voir #i-link("4-corriges.typ")[partie V].
 ]
 
 #parametre("source", ("content", "none"), `none`)[
@@ -126,7 +126,7 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 ]
 
 #parametre("stop", ("bool",), `false`)[
-  Ce paramètre permet d'arrêter la feuille de route à un endroit donné en y ajoutant une coche, juste après cet exercice. Voir #i-link("5-feuille-de-route.typ")[partie V] pour les détails.
+  Ce paramètre permet d'arrêter la feuille de route à un endroit donné en y ajoutant une coche, juste après cet exercice. Voir #i-link("5-feuille-de-route.typ")[partie VI] pour les détails.
 ]
 
 #example(```typ

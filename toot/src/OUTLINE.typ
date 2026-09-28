@@ -4,16 +4,20 @@
 
 #link("2-mode-maquette.typ")[II. Différents modes]
 
-#link("3-exercices.typ")[III. Les exercices]
+#link("titres.typ")[III. Les titres]
 
-#link("4-corriges.typ")[IV. Les corrigés]
+#link("3-exercices.typ")[IV. Les exercices]
 
-#link("5-feuille-de-route.typ")[V. La feuille de route]
+#link("4-corriges.typ")[V. Les corrigés]
 
-#link("6-entrainements.typ")[VI. Les entraînements]
+#link("5-feuille-de-route.typ")[VI. La feuille de route]
 
-#link("7-couleurs.typ")[VII. Les couleurs]
+#link("6-entrainements.typ")[VII. Les entraînements]
 
-#link("8-usages-avances.typ")[VIII. Usages avancés]
+#link("7-couleurs.typ")[VIII. Les couleurs]
+
+#link("mode-interro.typ")[IX. Mode interro]
+
+#link("langues.typ")[X. Langues]
 
 #link("annexes.typ")[Annexes]

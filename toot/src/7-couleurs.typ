@@ -2,7 +2,7 @@
 #set document(title: [Les couleurs])
 #show: toot-page
 
-#title[VII. Les couleurs]
+#title[VIII. Les couleurs]
 
 Tous les réglages de la fiche se donnent à `maquette`, en un seul endroit. Nous en avons déjà vu une bonne partie. \
 Il y a deux possibilités pour définir les réglages de la maquette. Soit :
@@ -92,7 +92,7 @@ indépendamment les unes des autres.
 ```)
 
 #parametre("couleur-fdr", ("color",), `black`)[
-  Ce paramètre gère la couleur du schéma de la feuille de route (#i-link("5-feuille-de-route.typ")[partie V]).
+  Ce paramètre gère la couleur du schéma de la feuille de route (#i-link("5-feuille-de-route.typ")[partie VI]).
 ]
 
 #example(```typ
