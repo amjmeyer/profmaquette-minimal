@@ -112,6 +112,9 @@
 //   style-maquette         : présentation du cartouche : "onglet" (seul style)
 //   couleur-titre          : accent du cartouche (onglet, contour) ; le niveau
 //                            (à droite) reste noir. Noir par défaut
+//   largeur-cartouche      : part de la largeur prise par le cartouche en mode
+//                            "interro", à côté de la zone Nom / Prénom /
+//                            Classe (65 % par défaut). Sans effet sinon
 #let maquette(
   position-corriges: "fin",
   liste-corriges: auto,
@@ -132,6 +135,7 @@
   titre-maquette: (:),
   style-maquette: "onglet",
   couleur-titre: auto,
+  largeur-cartouche: 65%,
   body,
 ) = {
   // Réglages invalides : message clair plutôt qu'une erreur de Typst plus loin.
@@ -156,6 +160,10 @@
   assert(
     style-maquette in styles-maquette,
     message: "maquette : style-maquette doit valoir " + styles-maquette.map(s => "\"" + s + "\"").join(", ", last: " ou ") + ", pas " + repr(style-maquette) + ".",
+  )
+  assert(
+    type(largeur-cartouche) == ratio and largeur-cartouche > 0% and largeur-cartouche < 100%,
+    message: "maquette : largeur-cartouche doit être un pourcentage strictement entre 0% et 100% (65%, 70%…), pas " + repr(largeur-cartouche) + ".",
   )
   for cle in titre-maquette.keys() {
     assert(
@@ -200,7 +208,7 @@
     etat-profondeur.get() == 1,
     message: "maquette : une maquette ne peut pas en contenir une autre. Pour plusieurs fiches dans un même document, placer les maquettes l'une après l'autre.",
   )
-  context cartouche-titre(mode-maquette, titre-maquette, style-maquette, if couleur-titre == auto { black } else { couleur-titre })
+  context cartouche-titre(mode-maquette, titre-maquette, style-maquette, if couleur-titre == auto { black } else { couleur-titre }, largeur: largeur-cartouche)
   [#metadata(none) #repere-borne]
   body
   [#metadata(none) #repere-borne]

@@ -12,6 +12,7 @@ Le paquet permet de définir un `mode` à la maquette, et on peut appliquer des 
   titre-maquette: dictionary,
   style-maquette: str,
   couleur-titre: color | auto,
+  largeur-cartouche: ratio,
   …
 ) -> content")
 
@@ -105,6 +106,24 @@ Prénom / Classe, en pleine largeur :
 #exercice[
   Montrer que $L^(p)(X, cal(T), mu)$ est réflexif sans hypothèse pour $1 < p < + oo$.
 ]
+```)
+
+#parametre("largeur-cartouche", ("ratio",), `65%`)[
+  En mode `interro`, part de la largeur prise par le cartouche de titre ; la
+  zone Nom / Prénom / Classe occupe le reste, à droite. Sans effet en mode
+  `exercices`, ou en `interro` sans `titre-maquette` (la zone est alors seule,
+  sur toute la largeur).
+]
+
+#example(```typ
+// SETUP
+// START
+#show: maquette.with(
+  mode-maquette: "interro",
+  titre-maquette: (gauche: "IE 01", centre: "Suites"),
+  largeur-cartouche: 55%,
+)
+#exercice[Calculer $u_1$.]
 ```)
 
 #info(title: "Un paramètre du cartouche peut manquer")[
