@@ -20,7 +20,7 @@ chaque exemple.
 ]
 
 #example(columns: 2, ```typ
-// SETUP
+// SETUP-COTE-A-COTE
 // START
 #maquette[
   #exercice(titre: "Factoriser")[
@@ -43,7 +43,7 @@ fiche et sur une nouvelle page (par défaut, mais c'est modifiable). La clé de 
 ]
 
 #example(columns: 2, ```typ
-// SETUP
+// SETUP-COTE-A-COTE
 // START
 #show: maquette.with()
 #exercice(titre: "Factoriser")[

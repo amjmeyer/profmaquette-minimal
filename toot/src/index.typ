@@ -21,7 +21,7 @@ Le même fichier donne ainsi la fiche élève et la fiche corrigée. Le paquet
 s'adresse d'abord aux enseignants, en particulier de mathématiques.
 
 #example(columns: 2, ```typ
-// SETUP
+// SETUP-COTE-A-COTE
 // START
 #show: maquette.with(liste-corriges: "1")
 #align(center, afficher-fdr)

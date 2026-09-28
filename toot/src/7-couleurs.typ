@@ -56,7 +56,7 @@ indépendamment les unes des autres.
 ]
 
 #example(columns: 2, ```typ
-// SETUP
+// SETUP-COTE-A-COTE
 // START
 #show: maquette.with(
   position-corriges: "fin",
