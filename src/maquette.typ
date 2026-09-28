@@ -30,8 +30,10 @@
 ))
 
 // Équivalent des clés de l'environnement Maquette de ProfMaquette.
-//   mode             : "apres" (CorrigeApres) | "fin" (CorrigeFin) ; « aucun
-//                      corrigé » passe par `liste-corriges: ()`, jamais par ici
+//   mode             : "apres" (CorrigeApres) | "fin" (CorrigeFin) |
+//                      "apres-question" (à la place des `seyes`) | none (aucun
+//                      corrigé : seulement pour "apres-question" hors interro ;
+//                      sinon, « aucun corrigé » passe par `liste-corriges: ()`)
 //   vers-corrige     : clé cliquable exercice ↔ corrigé (VersSolution)
 //   titre-corriges   : début du titre de chaque corrigé (TitreCorrige)
 //   nouvelle-page    : la Correction commence sur une nouvelle page
@@ -46,8 +48,8 @@
   page-par-corrige: false,
 ) = {
   assert(
-    mode in ("apres", "fin"),
-    message: "reglages-corriges : mode doit valoir \"apres\" ou \"fin\" (jamais none : pour n'afficher aucun corrigé, utiliser liste-corriges: () sur maquette(…), pas ce réglage).",
+    mode in (none, "apres", "fin", "apres-question"),
+    message: "reglages-corriges : mode doit valoir none, \"apres\", \"fin\" ou \"apres-question\".",
   )
   etat-reglages-corriges.update((
     mode: mode,
@@ -78,7 +80,10 @@
 //   ou, en tête de fiche : #show: maquette.with(…)
 //
 //   position-corriges      : "apres" (sous chaque énoncé) | "fin"/true (en fin
-//                            de fiche). Règle la position, jamais le nombre :
+//                            de fiche) | "apres-question" (en mode interro
+//                            seulement : chaque corrigé prend la place d'un
+//                            `seyes` de l'exercice ; hors interro, aucun
+//                            corrigé). Règle la position, jamais le nombre :
 //                            pour aucun corrigé, liste-corriges: ()
 //   liste-corriges         : auto (tous), 4, "1-6,9,12", (1, "3-5"), "route",
 //                            "pas-route" ou () (aucun). Les énoncés sont
@@ -164,10 +169,13 @@
     couleur-interne: if couleur-interne == auto { couleurs-defaut.interne } else { couleur-interne },
   )
   assert(
-    position-corriges == true or position-corriges in ("apres", "fin"),
-    message: "maquette : position-corriges doit valoir \"apres\", \"fin\" ou true (jamais none/false : pour n'afficher aucun corrigé, utiliser liste-corriges: () plutôt que ce réglage), pas " + repr(position-corriges) + ".",
+    position-corriges == true or position-corriges in ("apres", "fin", "apres-question"),
+    message: "maquette : position-corriges doit valoir \"apres\", \"fin\", \"apres-question\" ou true (jamais none/false : pour n'afficher aucun corrigé, utiliser liste-corriges: () plutôt que ce réglage), pas " + repr(position-corriges) + ".",
   )
-  let mode = if position-corriges == true { "fin" } else { position-corriges }
+  // "apres-question" n'a de sens qu'en interro (réponses dans les `seyes`).
+  let mode = if position-corriges == true { "fin" }
+    else if position-corriges == "apres-question" and mode-maquette != "interro" { none }
+    else { position-corriges }
   reglages-corriges(
     mode: mode,
     vers-corrige: vers-corrige,
@@ -185,6 +193,8 @@
   etat-corriges.update(())
   etat-blocs-fin.update((entrainements: false, corriges: false))
   etat-corrige-deja-affiche.update(false)
+  etat-nb-seyes.update(0)
+  etat-nb-reponses.update(0)
   etat-profondeur.update(n => n + 1)
   context assert(
     etat-profondeur.get() == 1,

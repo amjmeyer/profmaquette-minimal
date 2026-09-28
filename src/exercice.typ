@@ -51,6 +51,8 @@
     titre: titre,
     entrainement: entrainement,
   ),))
+  etat-nb-seyes.update(0)
+  etat-nb-reponses.update(0)
   protege(rendre => bloc-neutre(width: 100%)[
     #context {
       let infos = infos-exercice()
@@ -60,7 +62,8 @@
       // La mise en page dépend de `cle-possible`, jamais du résultat de la
       // requête : sinon, pas de convergence.
       let reglages = etat-reglages-corriges.get()
-      let cle-possible = reglages.vers-corrige and reglages.mode != none and infos.corrige
+      // En mode "apres-question", le corrigé est dans l'énoncé : pas de clé.
+      let cle-possible = reglages.vers-corrige and reglages.mode not in (none, "apres-question") and infos.corrige
       let cible = query(metadata.where(value: "corrige-" + infos.id))
       let avec-cle = cle-possible and cible.len() > 0
       [#metadata("exercice-" + infos.id)]

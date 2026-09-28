@@ -146,3 +146,20 @@
   })
   #rendre(item.body)
 ]
+
+// Corrigé d'une question (mode "apres-question"), à la place de son `seyes` :
+// filet à gauche et fond pâle dans la couleur interne, sous l'étiquette « Corrigé ».
+#let rendu-reponse(body, rendre: c => c) = {
+  let couleur = couleur-interne()
+  bloc-neutre(
+    width: 100%,
+    above: .8em,
+    below: .8em,
+    fill: if type(couleur) == color { couleur.lighten(93%) } else { none },
+    stroke: (left: 3pt + couleur),
+    inset: (left: 10pt, rest: 8pt),
+  )[
+    #text(fill: couleur, weight: "bold", size: .8em, terme("corrige"))
+    #bloc-neutre(width: 100%, above: .5em, below: 0pt, rendre(body))
+  ]
+}

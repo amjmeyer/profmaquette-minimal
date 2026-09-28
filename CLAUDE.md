@@ -8,12 +8,13 @@ paquet fletcher), pas de build system.
 ## Où est quoi
 
 - [src/lib.typ](src/lib.typ) — point d'entrée du paquet (déclaré dans `typst.toml`).
-  Ne fait qu'exporter les 5 fonctions publiques ; son commentaire d'en-tête
+  Ne fait qu'exporter les 6 fonctions publiques ; son commentaire d'en-tête
   décrit l'organisation de `src/` et les règles de convergence : le lire en
   premier en cas de doute.
 - Un fichier par fonction publique : [src/maquette.typ](src/maquette.typ),
   [src/exercice.typ](src/exercice.typ), [src/corrige.typ](src/corrige.typ),
-  [src/thematique.typ](src/thematique.typ), [src/afficher-fdr.typ](src/afficher-fdr.typ).
+  [src/thematique.typ](src/thematique.typ), [src/afficher-fdr.typ](src/afficher-fdr.typ),
+  [src/seyes.typ](src/seyes.typ).
 - [src/deps.typ](src/deps.typ) — dépendances externes (seul endroit qui importe
   `@preview/tiaoma`).
 - [src/interne/](src/interne/) — code partagé, jamais exporté : `etats.typ`
@@ -38,7 +39,7 @@ paquet fletcher), pas de build system.
 
 ## API publique (exportée par `lib.typ`)
 
-5 fonctions seulement, tout le reste de `src/` est interne :
+6 fonctions seulement, tout le reste de `src/` est interne :
 
 - `maquette(...)[body]` — englobe toute la fiche, un seul appel règle tout
   (couleurs, corrigés, style des cadres, langue, cartouche de titre…). Ajoute
@@ -51,6 +52,13 @@ paquet fletcher), pas de build system.
   ferme le tronçon courant de la feuille de route.
 - `afficher-fdr` — contenu (pas une fonction, s'utilise sans parenthèses) qui
   dessine le schéma de la feuille de route.
+- `seyes(hauteur)` — zone de réponse quadrillée (`seyes(4)` = 4 carreaux de
+  8 mm). Avec `mode-maquette: "interro"` et `position-corriges:
+  "apres-question"`, le k-ième `#corrige` qui suit un exercice remplace le
+  k-ième `seyes` de cet exercice (compteurs `etat-nb-seyes` /
+  `etat-nb-reponses`, remis à zéro par chaque `exercice` ; le corrigé est
+  posé en `metadata` et relu par le `seyes`). Hors interro, "apres-question"
+  vaut « aucun corrigé » (mode interne `none`).
 
 Tous les paramètres de `maquette` sont documentés en commentaire juste avant sa
 définition dans `src/maquette.typ` — c'est la source de

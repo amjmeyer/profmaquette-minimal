@@ -91,8 +91,9 @@ En voici la liste, dans l'ordre alphabétique.
 
 #parametre("position-corriges", ("str", "bool"), `"fin"`)[
   Ce paramètre décide où afficher les corrigés sélectionnés : `"fin"` (bloc
-  Correction en fin de fiche, sur une nouvelle page) ou `"apres"` (sous chaque
-  énoncé). `true` est aussi accepté : il vaut `"fin"`. Il ne règle jamais le
+  Correction en fin de fiche, sur une nouvelle page), `"apres"` (sous chaque
+  énoncé) ou `"apres-question"` (à la place des zones `seyes`, en mode
+  interro seulement : voir plus bas). `true` est aussi accepté : il vaut `"fin"`. Il ne règle jamais le
   *nombre* de corrigés affichés — pour un sujet seul (aucun corrigé), utiliser
   `liste-corriges: ()` (voir plus haut) plutôt que ce paramètre.
 ]
@@ -176,3 +177,70 @@ En voici la liste, dans l'ordre alphabétique.
 ]
 #corrige[$x = 4$.]
 ```)
+
+= Corrigés dans les zones de réponse (interro)
+
+#signature("seyes(
+  hauteur: int | float | length,
+  carreau: length,
+  style: str,
+  vertical: bool,
+) -> content")
+
+`#seyes(…)` dessine une zone de réponse sur papier Seyes, sur toute la
+largeur. On la place dans l'énoncé, sous chaque question.
+
+#parametre("hauteur", ("int", "float", "length"), [obligatoire])[
+  Un nombre de carreaux (`seyes(4)` donne 4 × 8 mm) ou une longueur (`seyes(3cm)`).
+]
+
+#parametre("carreau", ("length",), `8mm`)[
+  Côté d'un carreau.
+]
+
+#parametre("style", ("str",), `"seyes"`)[
+  `"seyes"` (rose et bleu pâle, comme le vrai papier), `"sobre"` (noir et
+  gris) ou `"bleu"`.
+]
+
+#parametre("vertical", ("bool",), `true`)[
+  `false` retire les lignes verticales (réglure Seyes pure).
+]
+
+Avec `mode-maquette: "interro"` et `position-corriges: "apres-question"`, les
+corrigés prennent la place des zones de réponse : le premier `#corrige` qui
+suit un exercice remplace le premier `seyes` de cet exercice, le deuxième le
+deuxième, etc. On peut ainsi distribuer l'interro vierge aux élèves, puis
+mettre en ligne la version corrigée en changeant un seul réglage.
+
+#example(```typ
+// SETUP
+// START
+#show: maquette.with(
+  mode-maquette: "interro",
+  position-corriges: "apres-question",
+)
+#exercice[
+  1. #[
+    a) Développer $(x + 1)^2$.
+    #seyes(2)
+    b) Factoriser $x^2 - 9$.
+    #seyes(3)
+  ]
+  2. Résoudre $2x = 6$.
+  #seyes(2)
+]
+#corrige[$x^2 + 2x + 1$]
+#corrige[$(x - 3)(x + 3)$]
+#corrige[$x = 3$]
+```)
+
+#info(title: "Bon à savoir")[
+  - Un `#corrige` sans `seyes` correspondant s'affiche sous l'exercice ; un
+    `seyes` sans corrigé reste vierge.
+  - `liste-corriges` et `pas-corrige` s'appliquent comme d'habitude : un
+    exercice non corrigé garde ses zones vierges.
+  - Hors mode interro, `"apres-question"` n'affiche aucun corrigé : les zones
+    restent vierges et il n'y a pas de bloc « Correction ».
+  - La couleur du corrigé suit `couleur-interne` (rouge Crimson par défaut).
+]

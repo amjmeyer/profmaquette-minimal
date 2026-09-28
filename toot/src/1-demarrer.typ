@@ -56,7 +56,7 @@ fiche et sur une nouvelle page (par défaut, mais c'est modifiable). La clé de 
 
 Quasiment tout passe par `#maquette(…)[…]` ou par `#exercice(…)[…]`. Les paramètres de la maquette sont mis entre parenthèses. Les réglages de la maquette s'appliquent pour toute la fiche, alors que ceux d'`#exercice(…)[…]` s'appliquent localement (c'est-à-dire uniquement sur l'exercice en question). \
 Les paramètres à régler sont regroupés dans les différentes parties. \
-Le paquet n'expose que ces cinq fonctions.
+Le paquet n'expose que ces six fonctions.
 
 #table(
   columns: 2,
@@ -66,4 +66,5 @@ Le paquet n'expose que ces cinq fonctions.
   `corrige`, [le corrigé de l'exercice qui précède (#i-link("4-corriges.typ")[partie IV])],
   `thematique`, [le titre d'une thématique, qui place une coche sur la feuille de route (#i-link("5-feuille-de-route.typ")[partie V])],
   `afficher-fdr`, [le schéma de la feuille de route (#i-link("5-feuille-de-route.typ")[partie V])],
+  `seyes`, [une zone de réponse quadrillée, remplacée par le corrigé en interro (#i-link("4-corriges.typ")[partie IV])],
 )
