@@ -89,7 +89,7 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 ]
 
 #example(columns: 2, ```typ
-// SETUP
+// SETUP-COTE-A-COTE
 // START
 #maquette[
   #exercice(pas-corrige: true)[Calculer $5 times 6$.]
@@ -183,7 +183,7 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 ]
 
 #example(columns: 2, ```typ
-// SETUP
+// SETUP-COTE-A-COTE
 // START
 #maquette[
   #exercice(

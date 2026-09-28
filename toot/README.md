@@ -4,8 +4,9 @@ Documentation de _profmaquette-minimal_, construite avec
 [toot](https://typst.app/universe/package/toot) (_Typst Opinionated Online Tutorial_).
 
 - `src/SETUP.typ` : réglages communs, encadrés (`info`, `tip`, `warning`,
-  `idea`), fiches de paramètres (`parametre`) et raccourci `// SETUP` des
-  exemples (import du paquet, format de page).
+  `idea`), fiches de paramètres (`parametre`) et raccourcis des exemples
+  (import du paquet, format de page) : `// SETUP` (largeur A4) et
+  `// SETUP-COTE-A-COTE` (page étroite, pour `example(columns: 2, …)`).
 - `src/OUTLINE.typ` : le menu ; seules les pages qui y figurent sont construites.
 - Une page `.typ` par partie de la doc.
 

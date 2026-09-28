@@ -43,7 +43,7 @@ En voici la liste, dans l'ordre alphabétique.
 ]
 
 #example(columns: 2, ```typ
-// SETUP
+// SETUP-COTE-A-COTE
 // START
 #show: maquette.with(
   position-corriges: "fin",
@@ -139,7 +139,7 @@ En voici la liste, dans l'ordre alphabétique.
 ]
 
 #example(columns: 2, ```typ
-// SETUP
+// SETUP-COTE-A-COTE
 // START
 #show: maquette.with(
   position-corriges: "fin",

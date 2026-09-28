@@ -32,15 +32,26 @@ th, td { border-bottom: 1px solid color-mix(in srgb, currentColor 25%, transpare
   outline: include "OUTLINE.typ",
   head-extra: if html-dispo { html.style(css) },
   snippets: (
+    // Exemples de plusieurs pages côte à côte (`example(columns: 2, …)`) : page
+    // étroite, sans quoi chaque page, réduite de moitié, serait illisible.
+    // En premier : « // SETUP » est le début de ce déclencheur.
     (
-      // Page blanche même en thème sombre : les cadres du paquet sont noirs.
-      // Marges latérales de 2em : assez pour que les icônes (haltère, clé)
-      // soient à cheval sur le filet droit, comme sur une vraie fiche.
-      trigger: "// SETUP",
+      trigger: "// SETUP-COTE-A-COTE",
       expansion: ```typ
       #import "@preview/profmaquette-minimal:0.1.0": *
       #set page(width: 13cm, height: auto, margin: (x: 2em, y: 1em), fill: white)
       #set text(lang: "fr", size: 10pt)
+      ```.text,
+    ),
+    (
+      // Page blanche même en thème sombre : les cadres du paquet sont noirs.
+      // Largeur et marges d'une page A4 : icônes (haltère, clé) à cheval sur
+      // le filet droit et proportions d'une vraie fiche.
+      trigger: "// SETUP",
+      expansion: ```typ
+      #import "@preview/profmaquette-minimal:0.1.0": *
+      #set page(width: 21cm, height: auto, margin: (x: 2.5cm, y: 1em), fill: white)
+      #set text(lang: "fr", size: 11pt)
       ```.text,
     ),
   ),
