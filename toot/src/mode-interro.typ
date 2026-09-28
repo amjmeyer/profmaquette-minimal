@@ -177,6 +177,9 @@ affichage (`afficher-brm`).
 ```)
 
 #info(title: "Bon à savoir")[
+  - Une question seule à sous-questions s'écrit avec une virgule finale :
+    `brm: ((1, 2),)`. Sans elle, Typst lit `((1, 2))` comme `(1, 2)`,
+    c'est-à-dire deux questions notées 1 et 2 (même règle qu'en Python).
   - Seules les questions numérotées avec `+` reçoivent leur note ; des
     questions écrites à la main (« a) … ») comptent dans le total, sans note
     affichée.
