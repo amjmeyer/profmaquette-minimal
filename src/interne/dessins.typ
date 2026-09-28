@@ -149,6 +149,9 @@
 
 // Corrigé d'une question (mode "apres-question"), à la place de son `seyes` :
 // filet à gauche et fond pâle dans la couleur interne, sous l'étiquette « Corrigé ».
+// Un seyes du corrigé lui-même n'y est qu'une grille : sans compteur (il
+// décalerait les seyes suivants) ni recherche (il retrouverait ce corrigé).
+// Une règle `show` et non un état : elle vaut aussi dans les `measure`.
 #let rendu-reponse(body, rendre: c => c) = {
   let couleur = couleur-interne()
   bloc-neutre(
@@ -160,6 +163,7 @@
     inset: (left: 10pt, rest: 8pt),
   )[
     #text(fill: couleur, weight: "bold", size: .8em, terme("corrige"))
+    #show repere-seyes: it => it.children.find(c => c.func() == metadata).value
     #bloc-neutre(width: 100%, above: .5em, below: 0pt, rendre(body))
   ]
 }

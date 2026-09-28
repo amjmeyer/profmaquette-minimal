@@ -100,3 +100,6 @@
 
 // Corrigé d'une question (mode "apres-question"), relu par le `seyes` qu'il remplace.
 #let repere-reponse = <profmaquette-minimal-reponse>
+// Un `seyes` entier (sa grille en `metadata`, son compteur, sa recherche de
+// corrigé) : remplacé par la grille seule dans le corps d'un corrigé.
+#let repere-seyes = <profmaquette-minimal-seyes>

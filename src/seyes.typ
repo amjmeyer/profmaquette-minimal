@@ -49,17 +49,29 @@
 // Avec `position-corriges: "apres-question"` (mode interro), le k-ième
 // `#corrige` qui suit un exercice prend la place de son k-ième seyes.
 #let seyes(hauteur, carreau: 8mm, style: "seyes", vertical: true) = {
+  let positive(l) = type(l) == length and l.abs >= 0pt and l.em >= 0 and l != 0pt
   assert(
-    type(hauteur) in (int, float, length) and (type(hauteur) == length or hauteur > 0),
-    message: "seyes : la hauteur est un nombre de carreaux (4) ou une longueur (3cm), pas " + repr(hauteur) + ".",
+    (type(hauteur) in (int, float) and hauteur > 0) or positive(hauteur),
+    message: "seyes : la hauteur est un nombre de carreaux (4) ou une longueur (3cm), strictement positifs, pas " + repr(hauteur) + ".",
+  )
+  assert(
+    positive(carreau),
+    message: "seyes : carreau doit être une longueur strictement positive (8mm, 5mm…), pas " + repr(carreau) + ".",
   )
   assert(
     style in styles-seyes,
     message: "seyes : style doit valoir " + styles-seyes.keys().map(s => "\"" + s + "\"").join(", ", last: " ou ") + ", pas " + repr(style) + ".",
   )
-  // Hors `context`, avec une valeur fixe : sinon, pas de convergence.
-  etat-nb-seyes.update(n => n + 1)
-  protege(rendre => context {
+  let hauteur = if type(hauteur) == length { hauteur } else { hauteur * carreau }
+  // Plus haute que la page : peut se couper (sinon, elle en déborderait).
+  let grille = protege(_ => layout(dispo => bloc-neutre(
+    width: 100%,
+    height: hauteur,
+    breakable: hauteur.to-absolute() > dispo.height,
+    stroke: .5pt + gray,
+    fill: motif-seyes(carreau, style, vertical),
+  )))
+  let recherche = protege(rendre => context {
     if etat-reglages-corriges.get().mode == "apres-question" and etat-historique.get().len() > 0 {
       let infos = infos-exercice()
       if infos.corrige {
@@ -68,12 +80,9 @@
         if reponse.len() > 0 { return rendu-reponse(reponse.first().value.body, rendre: rendre) }
       }
     }
-    bloc-neutre(
-      width: 100%,
-      height: if type(hauteur) == length { hauteur } else { hauteur * carreau },
-      breakable: false,
-      stroke: .5pt + gray,
-      fill: motif-seyes(carreau, style, vertical),
-    )
+    grille
   })
+  // La grille en tête, en `metadata`, pour `rendu-reponse` (cf. repere-seyes).
+  // Compteur hors `context`, avec une valeur fixe : sinon, pas de convergence.
+  [#(metadata(grille) + etat-nb-seyes.update(n => n + 1) + recherche)#repere-seyes]
 }

@@ -208,7 +208,7 @@
     etat-profondeur.get() == 1,
     message: "maquette : une maquette ne peut pas en contenir une autre. Pour plusieurs fiches dans un même document, placer les maquettes l'une après l'autre.",
   )
-  context cartouche-titre(mode-maquette, titre-maquette, style-maquette, if couleur-titre == auto { black } else { couleur-titre }, largeur: largeur-cartouche)
+  protege(_ => cartouche-titre(mode-maquette, titre-maquette, style-maquette, if couleur-titre == auto { black } else { couleur-titre }, largeur: largeur-cartouche))
   [#metadata(none) #repere-borne]
   body
   [#metadata(none) #repere-borne]
