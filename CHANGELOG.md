@@ -12,5 +12,8 @@
   cartouche de titre à côté de la zone Nom / Prénom / Classe, en mode interro.
 - Cartouche de titre et zone Nom / Prénom / Classe protégés des
   `set block(…)` / `set box(…)` de l'utilisateur.
+- Exercice plus haut qu'une page : à chaque changement de page, le cadre
+  n'est plus refermé par un filet plein mais par un filet pâle (et le filet
+  sous le titre du style « bandeau » n'est plus répété).
 
 ## 0.1.0 — version de départ

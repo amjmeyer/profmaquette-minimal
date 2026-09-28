@@ -66,6 +66,42 @@
 
 // ─── Cadres ──────────────────────────────────────────────────────────────────
 
+// Filet arrondi autour d'un cadre. Un bloc coupé entre deux pages est redessiné
+// sur chaque page, filets haut et bas compris : ceux-ci sont donc quasi
+// transparents, pour marquer la coupure. Au tout début et à la toute fin, un
+// bord arrondi plein de même géométrie les recouvre exactement (posé depuis le
+// contenu, donc toujours sur la bonne page) : non coupé, le cadre est un simple
+// cadre arrondi.
+// Même dessin que le cadre soit coupé ou non : la décision « plus haut qu'une
+// page » peut changer d'une passe à l'autre (corrigés qui remplacent les
+// seyes), un dessin qui en dépendrait empêcherait la convergence. De même, une
+// grille d'une cellule (qui ne trace rien à la coupure) ne convergeait pas.
+#let rayon-cadre = 5pt
+#let cadre(filet, contenu) = {
+  let r = rayon-cadre
+  let teinte = filet.paint
+  // Opaque (mêlé au fond) : avec une couleur transparente sur un seul côté,
+  // Typst trace tout le contour avec ce trait.
+  let pale = (
+    thickness: filet.thickness,
+    paint: if type(teinte) == color { color.mix((teinte, 20%), (fond(), 80%)) } else { luma(85%) },
+  )
+  // Bord plein : moitié haute ou basse d'un cadre arrondi au trait uniforme
+  // (deux traits différents laisseraient une jointure visible dans l'arrondi).
+  let e = filet.thickness
+  let bord(haut) = bloc-neutre(width: 100% + e, height: 2 * r + e / 2, clip: true, place(
+    (if haut { top } else { bottom }) + left,
+    dx: e / 2,
+    dy: if haut { e / 2 } else { -e / 2 },
+    bloc-neutre(width: 100% - e, height: 4 * r, stroke: filet, radius: r),
+  ))
+  bloc-neutre(width: 100%, spacing: 0pt, stroke: (x: filet, top: pale, bottom: pale), radius: r, {
+    place(top + left, dx: -e / 2, dy: -e / 2, bord(true))
+    contenu
+    place(bottom + left, dx: -e / 2, dy: e / 2, bord(false))
+  })
+}
+
 // Cadre à titre (exercices, bloc « Automatismes ») dans le style de la fiche :
 //   "fond-blanc"         titre sur le fond de la page, qui coupe le filet haut
 //   "etiquette-encadree" titre dans un petit cadre à cheval sur le filet
@@ -78,15 +114,12 @@
   let filet = .12em + couleur
   let teinte = if couleur-titre == auto { couleur } else { couleur-titre }
   let contenu = if style == "bandeau" {
-    bloc-neutre(width: 100%, spacing: 0pt, stroke: filet, radius: 5pt, {
+    cadre(filet, {
       bloc-neutre(width: 100%, spacing: 0pt, inset: (x: 1em, y: .6em), text(fill: teinte, weight: "bold", titre))
-      bloc-neutre(
-        width: 100%,
-        spacing: 0pt,
-        stroke: (top: filet, x: none, bottom: none),
-        inset: (x: 1.2em, top: .6em, bottom: 1.2em),
-        body,
-      )
+      // Séparateur à part : bord haut de l'énoncé, il serait redessiné en haut
+      // de chaque page si le cadre se coupe.
+      bloc-neutre(width: 100%, height: 0pt, spacing: 0pt, stroke: (top: filet))
+      bloc-neutre(width: 100%, spacing: 0pt, inset: (x: 1.2em, top: .6em, bottom: 1.2em), body)
     })
   } else {
     let etiquette = if style == "fond-blanc" {
@@ -101,7 +134,7 @@
     let demi = measure(etiquette, width: largeur-etiquette).height / 2
     {
       v(demi)
-      bloc-neutre(width: 100%, spacing: 0pt, stroke: filet, radius: 5pt, {
+      cadre(filet, {
         v(demi)
         place(top + left, dx: 1em, dy: -demi, bloc-neutre(width: largeur-etiquette, etiquette))
         bloc-neutre(width: 100%, spacing: 0pt, inset: (x: 1.2em, top: .6em, bottom: 1.2em), body)
