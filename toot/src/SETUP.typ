@@ -34,10 +34,12 @@ th, td { border-bottom: 1px solid color-mix(in srgb, currentColor 25%, transpare
   snippets: (
     (
       // Page blanche même en thème sombre : les cadres du paquet sont noirs.
+      // Marges latérales de 2em : assez pour que les icônes (haltère, clé)
+      // soient à cheval sur le filet droit, comme sur une vraie fiche.
       trigger: "// SETUP",
       expansion: ```typ
       #import "@preview/profmaquette-minimal:0.1.0": *
-      #set page(width: 13cm, height: auto, margin: 1em, fill: white)
+      #set page(width: 13cm, height: auto, margin: (x: 2em, y: 1em), fill: white)
       #set text(lang: "fr", size: 10pt)
       ```.text,
     ),
