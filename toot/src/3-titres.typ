@@ -7,7 +7,7 @@
 Une fiche peut commencer par un cartouche de titre, réglé depuis la maquette.\
 Il est facultatif : sans lui, rien de plus ne s'affiche et on reste libre d'utiliser
 son propre en-tête. \
-Cette partie présente `#titre(…)[…]` en mode `"exercices"` ; en mode
+Cette partie présente le paramètre `titre-maquette` en mode `"exercices"` ; en mode
 `"interro"`, cela varie un peu avec la zone Nom / Prénom / Classe. Voir
 (#i-link("9-mode-interro.typ")[partie IX]).
 
