@@ -31,7 +31,7 @@ Sans `titre-maquette`, la zone s'étend sur toute la largeur :
 ]
 ```)
 
-Avec un titre (#i-link("titres.typ")[partie III]), le cartouche est à gauche
+Avec un titre (#i-link("3-titres.typ")[partie III]), le cartouche est à gauche
 et la zone à droite :
 
 #example(```typ

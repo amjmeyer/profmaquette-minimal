@@ -92,7 +92,7 @@ indépendamment les unes des autres.
 ```)
 
 #parametre("couleur-fdr", ("color",), `black`)[
-  Ce paramètre gère la couleur du schéma de la feuille de route (#i-link("5-feuille-de-route.typ")[partie VI]).
+  Ce paramètre gère la couleur du schéma de la feuille de route (#i-link("6-feuille-de-route.typ")[partie VI]).
 ]
 
 #example(```typ

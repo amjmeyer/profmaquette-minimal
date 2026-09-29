@@ -93,7 +93,7 @@ En voici la liste, dans l'ordre alphabétique.
   Ce paramètre décide où afficher les corrigés sélectionnés : `"fin"` (bloc
   Correction en fin de fiche, sur une nouvelle page), `"apres"` (sous chaque
   énoncé) ou `"apres-question"` (à la place des zones `seyes`, en mode
-  interro seulement : voir #i-link("mode-interro.typ")[partie IX]). `true` est aussi accepté : il vaut `"fin"`. Il ne règle jamais le
+  interro seulement : voir #i-link("9-mode-interro.typ")[partie IX]). `true` est aussi accepté : il vaut `"fin"`. Il ne règle jamais le
   *nombre* de corrigés affichés — pour un sujet seul (aucun corrigé), utiliser
   `liste-corriges: ()` (voir plus haut) plutôt que ce paramètre.
 ]

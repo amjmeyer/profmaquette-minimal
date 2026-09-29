@@ -15,8 +15,8 @@ Pour le moment, il n'y a que deux modes : `"exercices"` et `"interro"`.
 
 #parametre("mode-maquette", ("str",), `"exercices"`)[
   - `"exercices"` : c'est le mode de base : il permet de construire une fiche d'exercices, avec feuille de route, entraînements
-    et corrigés (parties #i-link("3-exercices.typ")[IV] à
-    #i-link("7-couleurs.typ")[VIII]).
+    et corrigés (parties #i-link("4-exercices.typ")[IV] à
+    #i-link("8-couleurs.typ")[VIII]).
   - `"interro"` : ce mode permet de créer une évaluation. \
     Elle
     ajoute (ce n'est pas réglable !) une zone 
@@ -27,7 +27,7 @@ Pour le moment, il n'y a que deux modes : `"exercices"` et `"interro"`.
     - Classe :$dots dots dots$
     
   Ce mode est pensé pour les interrogations courtes où les élèves remplissent sur la copie directement. A ce titre, on peut y créer des zones de réponse
-    quadrillées et y afficher le corrigé à la place. D'autres choses sont possibles, voir (#i-link("mode-interro.typ")[partie IX]).
+    quadrillées et y afficher le corrigé à la place. D'autres choses sont possibles, voir (#i-link("9-mode-interro.typ")[partie IX]).
 ]
 
 #example(```typ
@@ -37,7 +37,7 @@ Pour le moment, il n'y a que deux modes : `"exercices"` et `"interro"`.
 #exercice[
   Soit $(u_n)_(n in NN)$ définie par $u_n = - 3n + 7$. 
 
-  Calculer $u_1$ et $u_7$.
+  Calculer $u_1$ et $u_(74)$.
 ]
 ```)
 
@@ -49,5 +49,5 @@ Pour le moment, il n'y a que deux modes : `"exercices"` et `"interro"`.
   Le même fichier donne alors le sujet de
   l'élève et le corrigé à mettre en ligne. \
   Je conseille tout de même de d'abord se familiariser avec le fonctionnement de `#exercice(…)[…]`, `#corrige(…)[…]` et `show: maquette.with(…)`. \
-  Tout est détaillé en #i-link("mode-interro.typ")[partie IX].
+  Tout est détaillé en #i-link("9-mode-interro.typ")[partie IX].
 ]

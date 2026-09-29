@@ -9,7 +9,7 @@ Il est facultatif : sans lui, rien de plus ne s'affiche et on reste libre d'util
 son propre en-tête. \
 Cette partie présente `#titre(…)[…]` en mode `"exercices"` ; en mode
 `"interro"`, cela varie un peu avec la zone Nom / Prénom / Classe. Voir
-(#i-link("mode-interro.typ")[partie IX]).
+(#i-link("9-mode-interro.typ")[partie IX]).
 
 #signature("maquette(
   …
@@ -22,7 +22,7 @@ Cette partie présente `#titre(…)[…]` en mode `"exercices"` ; en mode
 #parametre("titre-maquette", ("dictionary",), `(:)`)[
   Ce paramètre permet de régler le titre de la maquette. C'est un dictionnaire avec les clés facultatives
   `gauche`, `centre` et `droite`. Rien n'est affiché si aucune des trois n'est
-  donnée, sauf en mode `interro` (#i-link("mode-interro.typ")[partie IX]), où la zone Nom / Prénom /
+  donnée, sauf en mode `interro` (#i-link("9-mode-interro.typ")[partie IX]), où la zone Nom / Prénom /
   Classe reste affichée. \
   Par défaut, rien n'est affiché et cet usage laisse la possibilité à l'utilisateur d'utiliser son propre template.
 ]

@@ -5,7 +5,7 @@
 #title[VII. Les entraînements]
 
 Un exercice avec `entrainement: "https://…"` porte une haltère cliquable sur son
-filet droit (#i-link("3-exercices.typ")[partie IV]). Toutes les adresses de la fiche sont aussi regroupées
+filet droit (#i-link("4-exercices.typ")[partie IV]). Toutes les adresses de la fiche sont aussi regroupées
 en QR codes dans le bloc « Automatismes », ajouté automatiquement par la
 maquette : l'élève qui travaille sur papier y accède avec son téléphone. Chaque
 QR code porte le numéro de son exercice, et il est lui aussi cliquable.
@@ -13,7 +13,7 @@ QR code porte le numéro de son exercice, et il est lui aussi cliquable.
 #info(title: "Où et de quelle couleur ?")[
   Le bloc se place en bas de la dernière page s'il reste de la place, sinon en
   bas de la page suivante. Sa couleur est
-  celle des liens vers l'extérieur, `couleur-externe` (#i-link("7-couleurs.typ")[partie VIII]), comme l'haltère
+  celle des liens vers l'extérieur, `couleur-externe` (#i-link("8-couleurs.typ")[partie VIII]), comme l'haltère
   et la source.
 ]
 

@@ -38,7 +38,7 @@ Les exercices sont alors distingués en deux genres : il y a ceux du haut et ceu
 ]
 
 Le schéma ne montre que les exercices de la maquette qui le contient. Sa
-couleur se règle avec `maquette(couleur-fdr: …)` (#i-link("7-couleurs.typ")[partie VIII]). Si la route est
+couleur se règle avec `maquette(couleur-fdr: …)` (#i-link("8-couleurs.typ")[partie VIII]). Si la route est
 plus large que la page, elle passe à la ligne entre deux thématiques.
 
 #idea(title: "Quels usages de cette feuille de route ?")[
@@ -106,6 +106,6 @@ deux thématiques. Seul le schéma est montré.
 ```)
 
 #tip(title: "Une coche à la main")[
-  Si vous ne souhaitez pas utiliser ces thématiques, vous pouvez utiliser `stop` (voir #i-link("3-exercices.typ")[partie IV]) : `exercice(stop: true)` ajoute une coche juste après cet exercice, sans
+  Si vous ne souhaitez pas utiliser ces thématiques, vous pouvez utiliser `stop` (voir #i-link("4-exercices.typ")[partie IV]) : `exercice(stop: true)` ajoute une coche juste après cet exercice, sans
   thématique.
 ]
