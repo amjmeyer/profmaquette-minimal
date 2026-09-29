@@ -4,16 +4,17 @@
 
 #title[III. Les titres]
 
-Une fiche peut commencer par un cartouche de titre, réglé depuis la maquette.
-Il est facultatif : sans lui, rien n'est affiché, et on reste libre d'utiliser
-son propre en-tête. Cette partie le présente en mode `exercices` ; en mode
-`interro`, il partage la largeur avec la zone Nom / Prénom / Classe
+Une fiche peut commencer par un cartouche de titre, réglé depuis la maquette.\
+Il est facultatif : sans lui, rien de plus ne s'affiche et on reste libre d'utiliser
+son propre en-tête. \
+Cette partie présente `#titre(…)[…]` en mode `"exercices"` ; en mode
+`"interro"`, cela varie un peu avec la zone Nom / Prénom / Classe. Voir
 (#i-link("mode-interro.typ")[partie IX]).
 
 #signature("maquette(
   …
   titre-maquette: dictionary,
-  style-maquette: str,
+  style-cartouche: str,
   couleur-titre: color | auto,
   …
 ) -> content")
@@ -22,7 +23,8 @@ son propre en-tête. Cette partie le présente en mode `exercices` ; en mode
   Ce paramètre permet de régler le titre de la maquette. C'est un dictionnaire avec les clés facultatives
   `gauche`, `centre` et `droite`. Rien n'est affiché si aucune des trois n'est
   donnée, sauf en mode `interro` (#i-link("mode-interro.typ")[partie IX]), où la zone Nom / Prénom /
-  Classe reste affichée. Par défaut, rien n'est affiché et cet usage laisse la possibilité à l'utilisateur d'utiliser son propre template.
+  Classe reste affichée. \
+  Par défaut, rien n'est affiché et cet usage laisse la possibilité à l'utilisateur d'utiliser son propre template.
 ]
 
 #example(```typ
@@ -31,14 +33,12 @@ son propre en-tête. Cette partie le présente en mode `exercices` ; en mode
 //Un exemple avec un titre
 #show: maquette.with(
   titre-maquette: (
-    gauche: "CH 02",
+    gauche: "02 : Exercices",
     centre: "Suites numériques",
     droite: "coucou",
   ),
-)
-#exercice(titre: "Premiers termes")[
-  Calculer $u_1$ et $u_2$.
-]
+) 
+#exercice[Calculer $9 times 9$.]
 ```)
 
 #example(```typ
@@ -46,17 +46,30 @@ son propre en-tête. Cette partie le présente en mode `exercices` ; en mode
 // START
 //Un exemple sans titre
 #show: maquette.with()
-#exercice(titre: "Premiers termes")[
-  Calculer $u_1$ et $u_2$.
-]
+#exercice[Calculer $9 times 9$.]
 ```)
 
-#parametre("style-maquette", ("str",), `"onglet"`)[
-  Présentation du cartouche de titre. `onglet` est le seul style pour
-  l'instant (donc la valeur par défaut). Il est inspiré du thème
+#parametre("style-cartouche", ("str",), `"onglet"`)[
+  Présentation du cartouche de titre. Il n'y a qu'un seul style pour
+  l'instant. Il est inspiré du thème
   « pretty » du paquet Typst bookly (fonction `pretty-part` de son code
   source).
 ]
+
+#example(```typ
+// SETUP
+// START
+//Un exemple avec un titre
+#show: maquette.with(
+  style-cartouche: "onglet",
+  titre-maquette: (
+    gauche: "02 : Exercices",
+    centre: "Suites numériques",
+    droite: "coucou",
+  ),
+) 
+#exercice[Calculer $9 times 9$.]
+```)
 
 #parametre("couleur-titre", ("color", "auto"), `auto`)[
   Couleur d'accent du cartouche de titre.

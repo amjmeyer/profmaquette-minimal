@@ -10,7 +10,7 @@
 
 #link("4-corriges.typ")[V. Les corrigés]
 
-#link("5-feuille-de-route.typ")[VI. La feuille de route]
+#link("5-feuille-de-route.typ")[VI. La FdR]
 
 #link("6-entrainements.typ")[VII. Les entraînements]
 
