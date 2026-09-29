@@ -65,7 +65,10 @@ th, td { border-bottom: 1px solid color-mix(in srgb, currentColor 25%, transpare
 // manuel PDF : #info(title: "…")[…].
 #let encadre(genre, title, body) = en-html(
   () => html.div(class: "encadre " + genre, {
-    html.span(class: "titre", title)
+    // Un bloc, pas un `span` : sinon, dès que le contenu a plusieurs
+    // paragraphes (ou une ligne vide au début), Typst range le titre dans un
+    // <p> et le CSS `.encadre > .titre` ne le trouve plus.
+    html.div(class: "titre", title)
     body
   }),
   block(inset: 8pt, stroke: (left: 2pt), [*#title* \ #body]),

@@ -4,13 +4,38 @@
 
 #title[V. Les corrigés]
 
-Le corrigé d'un exercice s'écrit juste après lui, avec `#corrige[…]`. Cette fonction n'admet pas de paramètre, et c'est un choix voulu : les paramètres sont tous appliqués localement sur `#exercice(…)[…]` ou alors au niveau des réglages de la maquette.
-Ce sont les réglages de la `maquette` qui
+Le corrigé d'un exercice s'écrit juste après lui, avec `#corrige(…)[…]`. Cette fonction admet un seul paramètre, celui de compléter le titre d'un corrigé. \
+Pour le reste, ce sont les réglages de la `maquette` qui
 décident où ils s'affichent, et lesquels s'affichent.
 
-= Paramètres des corrigés
 
-En voici la liste, dans l'ordre alphabétique.
+#parametre("titre-complement", ("content", "none"), `none`)[
+Ce paramètre complète le titre du corrigé, après le « : ». 
+]
+
+#example(```typ
+// SETUP
+// START
+#show: maquette.with(
+  position-corriges: "apres"
+)
+#exercice[
+  Résoudre $2x = 6$.
+]
+#corrige(titre-complement: "méthode")[
+  On divise par 2. Il vient  $x = 3$.
+]
+#exercice(
+  pas-corrige: true
+)[
+  Résoudre $3x = 12$.
+]
+#corrige[$x = 4$.]
+```)
+
+ 
+
+Voici la liste des paramètres de la maquette influant les corrigés, dans l'ordre alphabétique.
 
 #signature("maquette(
   …
@@ -38,8 +63,14 @@ En voici la liste, dans l'ordre alphabétique.
   )
 ]
 
-#idea(title: "Utilisation comme prof !")[
-  L'intérêt de cette combinaison est la suivante : on affiche tous les corrigés lorsqu'on est en train de préparer sa fiche d'exos : on écrit en paramètre de maquette `liste-corriges: auto`. Une fois que tout semble bon, on règle `liste-corriges` sur `()` pour imprimer un sujet seul. Ensuite, au moment de rajouter les exercices, on remet `liste-corriges` sur ce que l'on veut voir apparaître (voir plus haut), en choisissant où avec `position-corriges` (`"fin"` ou `"apres"`).
+#idea(title: "Usages")[
+  L'usage que j'ai de ce paramètre est le suivant : 
+
+  + j'affiche tous les corrigés lorsque je suis en train de préparer ma fiche d'exos (afin de vérifier les typos, la mise en page, etc.) : j'écris en paramètre de la maquette `liste-corriges: auto`.
+
+  + une fois que tout semble bon, je règle `liste-corriges:` sur `()` pour imprimer un sujet seul ; 
+  
+  + enfin, au moment de rajouter les exercices (pour mettre à jour la feuille sur PRONOTE par exemple), je remets `liste-corriges:` sur ce que je veux voir apparaître, en choisissant l'endroit avec `position-corriges:` (systématiquement réglé sur `"fin"`, voir plus bas).
 ]
 
 #example(columns: 2, ```typ
@@ -61,10 +92,9 @@ En voici la liste, dans l'ordre alphabétique.
 #corrige[Corrigé 5.]
 ```)
 
-#warning(title: "Différences fondamentales entre pas-corrige et liste-corriges")[
-  `liste-corriges` s'applique à la numérotation à l'instant _i_ de l'ordre des exercices. Si vous modifiez la position de deux exercices dans la fiche, alors ce ne sont pas les mêmes exercices qui sont corrigés. En comparaison, le paramètre `pas-corrige` est un paramètre de l'exercice, donc ne dépend pas de la localisation de l'exercice dans la fiche. Les usages de ces deux paramètres sont donc très différents.
-
-  `pas-corrige: true`  l'emporte toujours sur  `liste-corriges`.
+#warning(title: "Différences avec ProfMaquette (LaTeX)")[
+  Le paramètre `liste-corriges` s'applique à la numérotation à l'instant _i_ de l'ordre des exercices. Si vous modifiez la position de deux exercices dans la fiche, alors ce ne sont pas les mêmes exercices qui sont corrigés. En comparaison, le paramètre `pas-corrige` est un paramètre intrinsèque à l'exercice, donc ne dépend pas de la localisation de cet exercice dans la fiche. Les usages de ces deux paramètres sont donc très différents. \
+  `pas-corrige: true`  l'emporte toujours sur  `liste-corriges`, comme l'illustre l'exemple ci-dessous.
 ]
 
 #example(```typ
@@ -72,12 +102,12 @@ En voici la liste, dans l'ordre alphabétique.
 // START
 #show: maquette.with(
   position-corriges: "apres",
-  liste-corriges: "1-2",
+  liste-corriges: auto,
 )
-#exercice[Hello]
-#corrige[Corrigé 1.]
-#exercice(pas-corrige: true)[World]
-#corrige[Corrigé 2.]
+#exercice[Traduire : "Hello"]
+#corrige[Bonjour.]
+#exercice(pas-corrige: true)[Traduire : "World"]
+#corrige[Monde.]
 ```)
 
 #parametre("nouvelle-page-corriges", ("bool",), `true`)[
@@ -86,16 +116,16 @@ En voici la liste, dans l'ordre alphabétique.
 ]
 
 #parametre("page-par-corrige", ("bool",), `false`)[
-  Si ce paramètre est réglé sur `true`, chaque corrigé est écrit sur une page. Chaque corrigé démarre en haut d'une page et dispose ainsi de toute la place possible. Pour une utilisation pertinente de ce paramètre, il vaut mieux que `position-corriges` soit réglée sur `fin`.
+  Si ce paramètre est réglé sur `true`, chaque corrigé est écrit sur une page. Chaque corrigé démarre en haut d'une page et dispose ainsi de toute la place possible. Pour une utilisation pertinente de ce paramètre, il vaut mieux que `position-corriges:` soit réglée sur `fin`.
 ]
 
 #parametre("position-corriges", ("str", "bool"), `"fin"`)[
-  Ce paramètre décide où afficher les corrigés sélectionnés : `"fin"` (bloc
-  Correction en fin de fiche, sur une nouvelle page), `"apres"` (sous chaque
-  énoncé) ou `"apres-question"` (à la place des zones `seyes`, en mode
-  interro seulement : voir #i-link("9-mode-interro.typ")[partie IX]). `true` est aussi accepté : il vaut `"fin"`. Il ne règle jamais le
-  *nombre* de corrigés affichés — pour un sujet seul (aucun corrigé), utiliser
-  `liste-corriges: ()` (voir plus haut) plutôt que ce paramètre.
+  Ce paramètre décide où afficher les corrigés sélectionnés : 
+  - `"fin"` place le bloc "Correction" en fin de fiche, sur une nouvelle page ; 
+  
+  - `"apres"` place le bloc "Correction" juste après chaque exercice ;
+  
+  - `"apres-question"` fonctionne uniquement en mode `"interro"` et place le corrigé à la place des zones de quadrillage. Voir #i-link("9-mode-interro.typ")[partie IX]).  
 ]
 
 #example(```typ
@@ -116,12 +146,10 @@ En voici la liste, dans l'ordre alphabétique.
 ]
 ```)
 
-#warning(title: "Attention aux subtilités !")[
-  lorsqu'on écrit `"apres"` (sans accent) ou `"fin"`, il faut mettre des guillemets, mais pas pour `true`.
-]
+  
 
 #parametre("titre-corriges", ("content", "auto"), `auto`)[
-  Ce paramètre permet de modifier le texte automatisé affiché lorsqu'un exercice corrigé est affiché.
+  Ce paramètre permet de modifier le texte affiché lorsqu'un exercice corrigé est affiché. Cela s'applique à *tous* les corrigés.
 ]
 
 #example(```typ
@@ -152,29 +180,4 @@ En voici la liste, dans l'ordre alphabétique.
 #corrige[$5$.]
 ```)
 
-= Compléter un titre
-
-#parametre("titre-complement", ("content", "none"), `none`)[
-  Paramètre de `#corrige` : il complète le titre du corrigé, après le « : ».
-  Sans effet en mode `"apres-question"`, où le corrigé n'a pas de titre.
-]
-
-#example(```typ
-// SETUP
-// START
-#show: maquette.with(
-  position-corriges: "apres"
-)
-#exercice[
-  Résoudre $2x = 6$.
-]
-#corrige(titre-complement: "méthode")[
-  On divise par 2. Il vient  $x = 3$.
-]
-#exercice(
-  pas-corrige: true
-)[
-  Résoudre $3x = 12$.
-]
-#corrige[$x = 4$.]
-```)
+ 

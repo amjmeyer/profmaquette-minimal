@@ -8,11 +8,7 @@ Un exercice s'écrit `#exercice(…)[…]`, avec entre parenthèses les paramèt
 L'énoncé est encadré et
 numéroté automatiquement, à partir de 1 dans chaque maquette. L'énoncé peut
 contenir n'importe quel contenu Typst : formules, listes, figures, tableaux.
-
-= Paramètres des exercices
-
-Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté de son nom.
-
+ 
 #signature("exercice(
   calculatrice: bool,
   entrainement: str | none,
@@ -20,13 +16,13 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
   pas-corrige: bool,
   source: content | none,
   stop: bool,
-  titre: content | none,
-  body,
+  titre: content | none, 
 ) -> content")
 
 #parametre("calculatrice", ("bool",), `true`)[
-  Sur `false`, une icône de calculatrice barrée apparaît dans le titre de
-  l'exercice, pour signaler qu'elle est interdite. Sur `true` (défaut), rien
+  Si ce paramètre est mis sur `false`, une icône de calculatrice barrée apparaît dans le titre de
+  l'exercice, pour signaler qu'elle est interdite. \
+  Placé sur `true` (défaut), rien
   ne s'affiche.
 ]
 
@@ -40,7 +36,8 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 ```)
 
 #parametre("entrainement", ("str", "none"), `none`)[
-  Ce paramètre permet de mettre l'adresse d'un lien en ligne et génère automatiquement un QR-Code à la fin de la page d'exercices (non modifiable). Également, cela ajoute une haltère sur le filet droit de l'exercice. \
+  Ce paramètre permet de mettre l'adresse d'un lien en ligne et génère automatiquement un QR-Code à la fin de la page d'exercices. \
+  Également, cela ajoute une haltère sur le filet droit de l'exercice. \
   Cette haltère est cliquable depuis le pdf, et amène sur ledit site. Pour en savoir plus, se rendre à la #i-link("7-entrainements.typ")[partie VII].
 ]
 
@@ -56,13 +53,20 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
   Réciter la table de 9.
 ]
 
-#exercice(entrainement: "https://typst.app")[
+#exercice(entrainement: "https://CTAN.org")[
   Réciter la table de 5.
 ]
 ```)
 
-#idea(title: "Potentiels usages en classe")[
-  J'utilise cette fonctionnalité pour travailler les automatismes, principalement avec Mathalea en glissant un lien Capytale vers l'activité. On peut l'utiliser pour sans doute mille et une autres choses (et, le cas échéant, on peut modifier le titre "Automatismes" en autre chose : voir la #i-link("7-entrainements.typ")[partie VII]). Pour l'élève/étudiant qui a sa feuille en version papier, cette haltère lui signifie qu'il y a des automatismes associés à cet exercice et il peut scanner le QR-Code en fin de feuille afin d'accéder au site. Si la feuille est donnée également en ligne, cliquer sur l'haltère suffit. Cette haltère a donc un double intérêt !
+#info(title: "Usages")[
+  J'utilise cette fonctionnalité pour travailler les automatismes.
+  + je crée des activites MathALEA sur Capytale par "automatismes associés à l'exo N":
+  
+  + je mets le lien Capytale vers l'activité dans `entrainement:` ;
+  
+  + à partir de leur fiche, les élèves scannent le QR-Code et s'entraînent en autonomie.
+
+ On peut l'utiliser pour sans doute mille et une autres choses (pour y glisser un lien menant vers un Notebook Python depuis Capytale, un lien Codabloc sur Capytale, etc.). Pour plus d'informations sur les paramètres possibles de ces QR-Code, voir #i-link("7-entrainements.typ")[partie VII]). 
 ]
 
 #parametre("route", ("bool",), `true`)[
@@ -91,20 +95,21 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 // SETUP-COTE-A-COTE
 // START
 #maquette[
-  #exercice(pas-corrige: true)[Calculer $5 times 6$.]
-  #corrige[Ce corrigé ne sera jamais affiché.]
+  #exercice[Calculer $5 times 6$.]
+  #corrige[Facile ! $5 times 6 = 30$.]
 
-  #exercice[
+  #exercice(pas-corrige: true)[
     Résoudre les équations de Navier-Stokes
   ]
   #corrige[
-    Facile ! (from OpenAI)
+    Facile ! (Mais vous ne verrez jamais ma preuve !)
   ]
 ]
 ```)
 
-#warning(title: "Ajout utile par rapport à ProfMaquette")[
-  La gestion présentée ici des corrigés est locale, par exercice. Ayant expérimenté beaucoup, j'ai trouvé cela plutôt désagréable lorsque nos fiches sont longues. En conséquence, j'ai rajouté un paramètre global (dans les paramètres de `#maquette`) qui permet de gérer directement l'affichage des corrigés. Voir #i-link("5-corriges.typ")[partie V].
+#warning(title: "Différence avec ProfMaquette (LaTeX)")[
+  La gestion présentée ici est reprise de ProfMaquette, le paquet LaTeX. La gestion des corrigés est locale, par exercice. Ayant beaucoup utilisé cette fonctionnalité,  j'ai trouvé cela plutôt désagréable de devoir désactiver un par un les `pas-corrige: true` lorsque nos fiches sont longues.\
+  En conséquence, j'ai rajouté un paramètre global (dans les paramètres de `#maquette(…)[…]`) qui permet de gérer directement l'affichage des corrigés. Voir #i-link("5-corriges.typ")[partie V].
 ]
 
 #parametre("source", ("content", "none"), `none`)[
@@ -120,8 +125,9 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 ]
 ```)
 
-#idea(title: "Potentiels usages en classe")[
-  On peut très bien utiliser ce `source` pour sourcer la provenance d'un exercice (un type DNB, un type BAC, un examen...). Mon usage est différent : lorsque je mets un automatisme, j'utilise `source` pour ajouter des précisions aux élèves sur ce que j'attends d'eux dans l'automatisme.
+#idea(title: "Usages")[
+  On peut très bien utiliser ce `source:` pour sourcer la provenance d'un exercice (un type DNB, un type BAC, un examen...). \
+  Mon usage est différent : lorsque je mets un automatisme, j'utilise `source:` pour ajouter des précisions aux élèves sur ce que j'attends d'eux dans l'automatisme.
 ]
 
 #parametre("stop", ("bool",), `false`)[
@@ -136,14 +142,13 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 #exercice(
   route: false,
   stop: true
-)[
-]
-#exercice[
-]
+)[hello]
+#exercice[bye]
 ```)
 
-#warning(title: "Ajout utile par rapport à ProfMaquette")[
-  La gestion des `stop` peut se faire manuellement, comme dans l'exemple ci-dessus. C'est le fonctionnement de ProfMaquette. Si vous ajoutez un `#thematique[…]` (dans le but de thématiser par thème les exercices que vous donnez dans votre fiche), alors le `stop` s'appliquera à l'endroit voulu.
+#warning(title: "Différence avec ProfMaquette (LaTeX)")[
+  La gestion des `stop:` peut se faire manuellement, comme dans l'exemple ci-dessus. C'est le fonctionnement de ProfMaquette. Si vous ajoutez un `#thematique[…]` (dans le but de thématiser par thème les exercices que vous donnez dans votre fiche), alors le `stop` s'appliquera à l'endroit voulu.\
+  Ci-dessous, un exemple illustre cela.
 ]
 
 #example(```typ
@@ -161,7 +166,7 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 
 #thematique[Anneaux d'entiers]
 
-#exercice[Calculer $cal(O)_(Q[sqrt(2)])$]
+#exercice[Déterminer l'anneau des entiers de $KK = QQ(sqrt(2))$, noté $cal(O)_(KK)$]
 ```)
 
 #parametre("titre", ("content", "none"), `none`)[
@@ -185,9 +190,10 @@ qu'une page entière se coupe, pour ne rien perdre de l'énoncé.
 
 = Le style des cadres
 
-Le réglage `style-exercice` de la maquette choisit l'allure des cadres, pour
+Le paramètre `style-exercice:` de la maquette choisit l'allure des cadres, pour
 toute la fiche. \
-Ce n'est pas un paramètre de `#exercice`, mais étant donné qu'il impacte le rendu direct des exercices, je préfère le mettre ici en plus. Par défaut, le rendu est celui de `fond-blanc` \
+Ce n'est pas un paramètre de `#exercice(…)[…]` puisqu'il agit sur la fiche entière, mais comme il impacte le rendu direct des exercices, je préfère le mettre ici.\
+Par défaut, le rendu est celui de `"fond-blanc"` \
 Ce réglage s'applique aussi au bloc « Automatismes ». Quatre styles
 existent pour le moment :
 
