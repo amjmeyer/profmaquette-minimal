@@ -155,7 +155,8 @@ En voici la liste, dans l'ordre alphabétique.
 = Compléter un titre
 
 #parametre("titre-complement", ("content", "none"), `none`)[
-  Le paramètre `titre-complement` est un paramètre de `#exercice`, mais puisqu'il impacte le rendu du corrigé, je le mets ici.  Il permet de compléter le titre du corrigé, après le ":"
+  Paramètre de `#corrige` : il complète le titre du corrigé, après le « : ».
+  Sans effet en mode `"apres-question"`, où le corrigé n'a pas de titre.
 ]
 
 #example(```typ
@@ -164,12 +165,12 @@ En voici la liste, dans l'ordre alphabétique.
 #show: maquette.with(
   position-corriges: "apres"
 )
-#exercice(
-  titre-complement: "méthode"
-)[
+#exercice[
   Résoudre $2x = 6$.
 ]
-#corrige[On divise par 2. Il vient  $x = 3$.]
+#corrige(titre-complement: "méthode")[
+  On divise par 2. Il vient  $x = 3$.
+]
 #exercice(
   pas-corrige: true
 )[

@@ -21,7 +21,6 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
   source: content | none,
   stop: bool,
   titre: content | none,
-  titre-complement: content | none,
   body,
 ) -> content")
 
@@ -176,22 +175,6 @@ Pour chaque paramètre, les types de valeurs acceptés sont indiqués à côté 
 #exercice(titre: "Addition de fractions",
   calculatrice: false
 )[Calculer $1/2 + 3/5$]
-```)
-
-#parametre("titre-complement", ("content", "none"), `none`)[
-  Ce titre permet de compléter le titre du corrigé correspondant.
-]
-
-#example(columns: 2, ```typ
-// SETUP-COTE-A-COTE
-// START
-#maquette[
-  #exercice(
-    titre-complement: "méthode",
-    calculatrice: false
-  )[Calculer $2^10$.]
-  #corrige[$1024$]
-]
 ```)
 
 = Le cas des exercices longs

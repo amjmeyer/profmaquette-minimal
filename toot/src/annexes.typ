@@ -22,7 +22,7 @@ Pour qui connaît ProfMaquette, voici l'équivalent de ses clés et commandes.
   [`CorrigeApres` / `CorrigeFin`], [`position-corriges: "apres"` / `"fin"`],
   [`VersSolution`], [`vers-corrige: true`],
   [`PasCorrige`], [`pas-corrige: true`],
-  [`TitreSolution`, `TitreCorrige`], [`titre-complement:`, `titre-corriges:`],
+  [`TitreSolution`, `TitreCorrige`], [`corrige(titre-complement: …)`, `titre-corriges:`],
 )
 
 Les types de documents de ProfMaquette,  les environnements `Reponse` ou `Indice`
