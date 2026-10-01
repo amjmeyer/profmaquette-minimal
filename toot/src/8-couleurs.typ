@@ -4,22 +4,6 @@
 
 #title[VIII. Les couleurs]
 
-Tous les réglages de la fiche se donnent à `maquette`, en un seul endroit. Nous en avons déjà vu une bonne partie. \
-Il y a deux possibilités pour définir les réglages de la maquette. Soit :
-
-```typ
-#maquette(position-corriges: "fin", liste-corriges: "1-6,9,12")[
-  … la fiche …
-]
-```
-
-ou, sans crochets autour de toute la fiche, en tête du fichier :
-
-```typ
-#show: maquette.with(position-corriges: "fin", liste-corriges: "1-6,9,12")
-```
-
-Si vous n'utilisez qu'une seule maquette dans votre document .typ, je conseille d'utiliser la méthode avec `#show:` qui permettra une indentation de moins tout le long du document.
 
 Le paquet utilise quatre couleurs, chacune avec un rôle, modifiables
 indépendamment les unes des autres.
@@ -34,8 +18,15 @@ indépendamment les unes des autres.
 ) -> content")
 
 #parametre("couleur-externe", ("color", "auto"), `auto`)[
-  Couleur de ce qui mène *hors* du document : haltère, QR codes, source.
-  `auto` : `rgb("#0090C8")` (cyan foncé).
+  Ce paramètre permet de modifier la couleur de ce qui mène *hors* du document : 
+  
+    - les haltères ;
+    
+    - les QR-Codes ;
+    
+    - les sources des exercices. 
+
+  La valeur par défaut de ce paramètre est `rgb("#0090C8")` (cyan).
 ]
 
 #example(```typ
@@ -51,8 +42,13 @@ indépendamment les unes des autres.
 ```)
 
 #parametre("couleur-interne", ("color", "auto"), `auto`)[
-  Ce paramètre détermine la couleur des éléments cliquables qui permettent de *naviguer* dans le document : la clé, et les titres « Corrigé de l'exercice N ». La valeur de `auto` est `rgb("#DC143C")`
-  (Crimson, comme dans ProfMaquette).
+  Ce paramètre permet de modifier la couleur des éléments cliquables qui permettent de naviguer *au sein même* du document : 
+  - les clés :
+  
+  - les titres « Corrigé de l'exercice N ». 
+  
+  La valeur par défaut de ce paramètre est `rgb("#DC143C")`.\
+  (Cela correspond au Crimson dans ProfMaquette.)
 ]
 
 #example(columns: 2, ```typ
@@ -80,7 +76,8 @@ indépendamment les unes des autres.
 ```)
 
 #parametre("couleur-route", ("color", "auto"), `auto`)[
-  Ce paramètre gère la couleur des exercices sur la route (filet et titre). La valeur de `auto` est noire. Les
+  Ce paramètre permet de modifier la couleur des exercices sur la route (filet et titre). \
+  La valeur par défaut est noire. Les
   exercices hors route, eux, restent toujours gris.
 ]
 
@@ -88,11 +85,11 @@ indépendamment les unes des autres.
 // SETUP
 // START
 #show: maquette.with(couleur-route: green)
-#exercice[Sur la route.]
+#exercice[Un exercice situé "sur la route".]
 ```)
 
 #parametre("couleur-fdr", ("color",), `black`)[
-  Ce paramètre gère la couleur du schéma de la feuille de route (#i-link("6-feuille-de-route.typ")[partie VI]).
+  Ce paramètre gpermet de modifier la couleur du schéma de la feuille de route (#i-link("6-feuille-de-route.typ")[partie VI]).
 ]
 
 #example(```typ

@@ -5,17 +5,17 @@
 #title[VII. Les entraînements]
 
 Un exercice avec `entrainement: "https://…"` porte une haltère cliquable sur son
-filet droit (#i-link("4-exercices.typ")[partie IV]). Toutes les adresses de la fiche sont aussi regroupées
-en QR codes dans le bloc « Automatismes », ajouté automatiquement par la
-maquette : l'élève qui travaille sur papier y accède avec son téléphone. Chaque
-QR code porte le numéro de son exercice, et il est lui aussi cliquable.
+filet droit (#i-link("4-exercices.typ")[partie IV]). Toutes ces liens sont aussi regroupés
+en QR-Codes dans le bloc « Automatismes ». \
+L'élève qui travaille sur papier peut y accéder avec son téléphone. \
+Chaque QR-Code porte le numéro de son exercice, et il est lui aussi cliquable.
 
 #info(title: "Fonctionnement interne")[
-  Le bloc se place en bas de la dernière page s'il reste de la place, sinon en
+  Le bloc se place en bas de la dernière page de la partie "Exercices" s'il reste de la place, sinon en
   bas de la page suivante.\ 
   Sa couleur est
-  celle des liens vers l'extérieur, `couleur-externe:` (#i-link("8-couleurs.typ")[partie VIII]), comme l'haltère
-  et la source.
+  celle des liens vers l'extérieur, `couleur-externe:` (#i-link("8-couleurs.typ")[partie VIII]). Il est nécessairement de même couleur que l'haltère
+  et la `source:`.
 ]
 
 #signature("maquette(
@@ -44,8 +44,8 @@ QR code porte le numéro de son exercice, et il est lui aussi cliquable.
 ```)
 
 #parametre("taille-qr", ("length",), `2cm`)[
-  Ce paramètre modifie la longueur du côté commun de tous les QR codes. \
-  Une adresse web trop longue pour rester lisible à cette taille donne un QR code agrandi automatiquement.
+  Ce paramètre modifie la longueur du côté commun de tous les QR-Codes. \
+  Une adresse web trop longue pour rester lisible à cette taille donne un QR-Code agrandi automatiquement.
 ]
 
 #example(```typ

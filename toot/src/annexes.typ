@@ -30,22 +30,26 @@ n'ont pas d'équivalent.
 
 = Ce qu'on ne peut pas faire
 
-- *Pas de saut de page forcé dans un conteneur.* Une maquette placée dans
+- *Pas de saut de page forcé dans un conteneur.* \
+  Une maquette placée dans
   `#columns(…)`, un `#block` ou une case de tableau ne peut pas laisser le
   bloc Correction (ni, avec `page-par-corrige: true`, chaque corrigé) sauter
   de page automatiquement : Typst l'interdit (« pagebreaks are not allowed
   inside of containers »). Il faut alors régler `nouvelle-page-corriges: false`
   et `page-par-corrige: false`.
 
-- *Pas de maquette dans une maquette.* `#maquette[#maquette[…]]` arrête la
+- *Pas de maquette dans une maquette.* \
+  `#maquette[#maquette[…]]` arrête la
   compilation avec un message clair, de même que `#show: maquette.with()`
-  utilisé deux fois dans le même document. Pour plusieurs fiches, faire un
+  utilisé deux fois dans le même document (il y a des problèmes de divergence et de compilation).\ 
+  Pour faire plusieurs fiches, faire un
   fichier par fiche.
 
-- *Réglages invalides.* Une couleur qui n'en est pas une, un `style-exercice`
-  ou une `position-corriges` hors des valeurs prévues, une sélection de
+- *Réglages invalides.*\
+  Une couleur qui n'en est pas une, un `style-exercice:`
+  ou une `position-corriges:` hors des valeurs prévues, une sélection de
   corrigés mal écrite (`"3-1"`)… arrêtent la compilation avec un message
-  clair plutôt que de produire un rendu silencieusement faux.
+  clair.
 
 = Remerciements
 
@@ -53,17 +57,20 @@ Un grand merci à *Christophe Poulain*, auteur du package LaTeX
 #link("https://ctan.org/pkg/profmaquette")[ProfMaquette] : profmaquette-minimal en
 reprend la logique (exercices, feuille de route, entraînements, corrigés) et une
 partie du vocabulaire. Les idées sont les siennes, et les limites de cette
-adaptation sont les miennes. Pour un outil complet, utilisez ProfMaquette.
+adaptation sont les miennes. 
 
-profmaquette-minimal utilise le paquet
-#link("https://typst.app/universe/package/tiaoma")[tiaoma] pour les QR codes. Les
-icônes (haltère, clé, coche, calculatrice) sont des dessins de
-#link("https://fontawesome.com")[Font Awesome Free], sous licence CC BY 4.0. Cette
+= Dépendences 
+
+Le paquet profmaquette-minimal utilise le paquet
+#link("https://typst.app/universe/package/tiaoma")[tiaoma] pour les QR codes. \
+Les icônes (haltère, clé, coche, calculatrice) sont des dessins de
+#link("https://fontawesome.com")[Font Awesome Free], sous licence CC BY 4.0. \
+Cette
 documentation est construite avec
 #link("https://typst.app/universe/package/toot")[toot].
 
 = Historique des versions
 
-L'historique des versions se trouve dans le fichier
+Le détail de l'historique des versions se trouve dans le fichier
 #link("https://github.com/amjmeyer/profmaquette-minimal/blob/main/CHANGELOG.md")[`CHANGELOG.md`]
-du dépôt.
+du dépôt. 
