@@ -53,8 +53,9 @@ paquet fletcher), pas de build system.
   ferme le tronçon courant de la feuille de route.
 - `afficher-fdr` — contenu (pas une fonction, s'utilise sans parenthèses) qui
   dessine le schéma de la feuille de route.
-- `seyes(hauteur)` — zone de réponse quadrillée (`seyes(4)` = 4 carreaux de
-  8 mm). Avec `mode-maquette: "interro"` et `position-corriges:
+- `seyes(hauteur)[réponse]` — zone de réponse quadrillée (`seyes(4)` = 4
+  carreaux de 8 mm) ; la réponse, facultative, remplace la grille avec
+  `afficher: true` (cadre d'un corrigé, `rendu-reponse`). Avec `mode-maquette: "interro"` et `position-corriges:
   "apres-question"`, le k-ième `#corrige` qui suit un exercice remplace le
   k-ième `seyes` de cet exercice (compteurs `etat-nb-seyes` /
   `etat-nb-reponses`, remis à zéro par chaque `exercice` ; le corrigé est
@@ -105,6 +106,11 @@ rendu (PDF dans `tests/sortie/`) reste manuel.
   `toot/src/`, `README.md` (démarrage rapide), et plusieurs fichiers de
   `tests/beta/`. Chercher le nom dans tout le dépôt avant de considérer un
   renommage terminé.
+- `seyes` ne lit `etat-profondeur` (dans ou hors maquette ?) que pour une
+  réponse affichée (`afficher: true`) : lu par chaque `seyes`, cet état, qui
+  change en fin de maquette, empêche la convergence d'un exercice plus haut
+  qu'une page (test 226). Même effet pour toute mise à jour, en fin de
+  maquette, d'un état lu par `seyes` (essayé avec `etat-reglages-corriges`).
 - Une seule licence LPPL pour tous les `.typ` de `src/` : même en-tête dans
   chaque fichier (« all the .typ files in the src/ directory »), à recopier tel
   quel dans tout nouveau fichier, sans le faire diverger.

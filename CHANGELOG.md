@@ -1,5 +1,15 @@
 # Historique des versions
 
+## Non publié
+
+- `seyes(hauteur)[réponse]` et la clé `afficher` (`false` par défaut) : avec
+  `afficher: true`, la réponse prend la place de la grille (version
+  « rattrapable » d'une fiche remplie en classe) : dans une `maquette`, dans
+  le cadre d'un corrigé (en mode interro, la zone garde son rang pour
+  l'association avec les `#corrige`) ; hors `maquette`, dans un bandeau vert
+  d'eau « Corrigé (rempli en classe) » (terme traduit dans les 5 langues,
+  icône crayon de Font Awesome Free).
+
 ## 0.1.0 — version de départ
 
 Ajouts avant la première publication :

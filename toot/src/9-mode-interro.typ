@@ -70,9 +70,11 @@ largeur. L'idée est de la placer dans l'énoncé, sous chaque question.
 
 #signature("seyes(
   hauteur: int | float | length,
+  reponse: content,
   carreau: length,
   style: str,
   vertical: bool,
+  afficher: bool,
 ) -> content")
 
 
@@ -96,6 +98,11 @@ largeur. L'idée est de la placer dans l'énoncé, sous chaque question.
     #seyes(1)
 ]
 ```)
+
+#parametre("reponse", ("content",), [facultatif])[
+  La réponse attendue, entre crochets après la hauteur : `#seyes(3)[…]`. Elle
+  reste cachée (on voit la grille), sauf avec `afficher: true`.
+]
 
 #parametre("carreau", ("length",), `8mm`)[
   Ce paramètre permet de modifier la longueur du côté d'un carreau.
@@ -121,6 +128,32 @@ largeur. L'idée est de la placer dans l'énoncé, sous chaque question.
 #warning(title: "Fonctionnalité à améliorer")[
   Je n'ai jamais testé cette fonctionnalité. Je l'ai reprise d'un paquet de Cédric Pierquet, #link("https://ctan.org/pkg/writeongrid")[WriteOnGrid]
 ]
+
+#parametre("afficher", ("bool",), `false`)[
+  Réglé sur `true`, la réponse prend la place de la grille : pratique pour
+  donner aux absents la version « rattrapable » d'une fiche remplie en
+  classe, sans rien réécrire.
+
+  - Dans une `maquette`, la réponse prend le cadre d'un corrigé. En mode
+    interro, la zone compte toujours dans l'ordre des `#corrige` (voir plus
+    bas) : le corrigé qui lui revenait est ignoré.
+
+  - Hors `maquette` (dans un cours, par exemple), elle s'affiche dans un
+    bandeau vert d'eau « Corrigé (rempli en classe) ».
+]
+
+#example(```typ
+// SETUP
+// START
+#show: maquette.with(mode-maquette: "interro")
+#exercice[
+  + Calculer $9 times 4$.
+    #seyes(2)[$9 times 4 = 36$.]
+
+  + Calculer $6-2$.
+    #seyes(1, afficher: true)[$6 - 2 = 4$.]
+]
+```)
 
 = Gestion de la zone de corrigé à la place de `#seyes(…)[…]`
 
