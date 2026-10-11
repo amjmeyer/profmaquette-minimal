@@ -88,10 +88,7 @@ Le code ci-dessous donne exactement les deux pages ci-dessus.
 
 Merci à **Christophe Poulain** : les idées et une partie du vocabulaire viennent
 de [ProfMaquette](https://ctan.org/pkg/profmaquette), les limites de cette
-adaptation sont les miennes. QR codes :
-[tiaoma](https://typst.app/universe/package/tiaoma). Icônes :
-[Font Awesome Free](https://fontawesome.com), fournies avec le paquet (aucune
-police à installer).
+adaptation sont les miennes. 
 
 ## Licence
 
