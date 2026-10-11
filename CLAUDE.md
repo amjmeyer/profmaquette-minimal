@@ -33,8 +33,10 @@ paquet fletcher), pas de build system.
   (noms explicites : `62-selection-hors-limites.typ`…). Compilés par
   `tests/lancer.sh` (option : préfixes de noms à filtrer), sortie dans
   `tests/sortie/*.pdf` (ignoré par git).
-- `docs/exemple-*.png` — les deux captures affichées dans le README (figées :
-  plus de script pour les régénérer).
+- `docs/exemple-*.png` — les deux pages affichées dans le README, produites
+  par `docs/generer-exemples.sh` à partir du code du « Démarrage rapide » du
+  README (image et code ne peuvent pas diverger) : le relancer après toute
+  modification de ce code ou du rendu.
 - `PUBLIER.md` — procédure de publication sur Typst Universe (usage ponctuel).
 - `CHANGELOG.md` — historique des versions.
 
