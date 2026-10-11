@@ -35,7 +35,7 @@ Le code ci-dessous donne exactement les deux pages ci-dessus.
   Factoriser les expressions suivantes :
   #grid(
     columns: (1fr,)*2,
-    columns-gutter: 1em, 
+    column-gutter: 1em, 
     $
       x^2 - 9
     $,
