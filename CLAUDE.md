@@ -103,6 +103,11 @@ rendu (PDF dans `tests/sortie/`) reste manuel.
 
 ## Pièges connus
 
+- Les cours utilisent CE dossier : `@local/profmaquette-minimal:0.2.0` y est
+  lié par `../../installer.sh` et importé dans `preambule-perso/src/deps.typ`.
+  Toute modification de `src/` s'applique aussitôt aux cours : lancer
+  `tests/lancer.sh` avant de les recompiler.
+
 - Changer un paramètre public de `maquette` (nom, valeurs acceptées) impacte
   potentiellement : `src/maquette.typ` (déclaration + usage + commentaire),
   `toot/src/`, `README.md` (démarrage rapide), et plusieurs fichiers de
