@@ -21,7 +21,7 @@ Les exemples importent `@preview/profmaquette-minimal` : tant que le paquet
 n'est pas publié, Typst doit le trouver en local. Depuis la racine du dépôt :
 ```sh
 mkdir -p ~/.local/share/typst/packages/preview/profmaquette-minimal
-ln -s "$PWD" ~/.local/share/typst/packages/preview/profmaquette-minimal/0.1.0
+ln -s "$PWD" ~/.local/share/typst/packages/preview/profmaquette-minimal/0.2.0
 ```
 
 Depuis ce dossier `toot/` :

@@ -1,6 +1,6 @@
 # Historique des versions
 
-## Non publié
+## 0.2.0
 
 - `seyes(hauteur)[réponse]` et la clé `afficher` (`false` par défaut) : avec
   `afficher: true`, la réponse prend la place de la grille (version

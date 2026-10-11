@@ -23,7 +23,7 @@ ProfMaquette. See the [documentation, in French](https://amjmeyer.github.io/prof
 ## Démarrage rapide
 
 ```typ
-#import "@preview/profmaquette-minimal:0.1.0": maquette, exercice, corrige, afficher-fdr, thematique, seyes
+#import "@preview/profmaquette-minimal:0.2.0": maquette, exercice, corrige, afficher-fdr, thematique, seyes
 
 #show: maquette.with(
   position-corriges: "fin",

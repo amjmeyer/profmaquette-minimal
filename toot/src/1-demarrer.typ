@@ -7,7 +7,7 @@
 = Importer le paquet
 
 ```typ
-#import "@preview/profmaquette-minimal:0.1.0": *
+#import "@preview/profmaquette-minimal:0.2.0": *
 ```
 
 *Dans la suite de la documentation, cette ligne est sous-entendue au début de chaque exemple.*

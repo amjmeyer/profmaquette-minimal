@@ -38,7 +38,7 @@ th, td { border-bottom: 1px solid color-mix(in srgb, currentColor 25%, transpare
     (
       trigger: "// SETUP-COTE-A-COTE",
       expansion: ```typ
-      #import "@preview/profmaquette-minimal:0.1.0": *
+      #import "@preview/profmaquette-minimal:0.2.0": *
       #set page(width: 13cm, height: auto, margin: (x: 2em, y: 1em), fill: white)
       #set text(lang: "fr", size: 10pt)
       ```.text,
@@ -49,7 +49,7 @@ th, td { border-bottom: 1px solid color-mix(in srgb, currentColor 25%, transpare
       // le filet droit et proportions d'une vraie fiche.
       trigger: "// SETUP",
       expansion: ```typ
-      #import "@preview/profmaquette-minimal:0.1.0": *
+      #import "@preview/profmaquette-minimal:0.2.0": *
       #set page(width: 21cm, height: auto, margin: (x: 2.5cm, y: 1em), fill: white)
       #set text(lang: "fr", size: 11pt)
       ```.text,
