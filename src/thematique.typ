@@ -24,10 +24,24 @@
 // des matières. Sur la feuille de route, il termine la thématique précédente
 // (coche après son dernier exercice).
 //   alignement : left (défaut), center ou right
-#let thematique(alignement: left, titre) = {
+#let thematique(
+  alignement: left,
+  titre,
+) = {
   [#metadata(none) #repere-thematique]
-  protege(rendre => bloc-neutre(width: 100%, above: 1.4em, below: .9em, sticky: true, align(
-    alignement,
-    text(size: 14pt * echelle(), weight: "bold", rendre(titre)),
-  )))
+  protege(rendre => bloc-neutre(
+    width: 100%,
+    above: 1.4em,
+    below: .9em,
+    sticky: true,
+    align(
+      alignement,
+      text(
+        size: 14pt * echelle(),
+        weight: "bold",
+        rendre(titre),
+      ),
+    ),
+  ))
 }
+

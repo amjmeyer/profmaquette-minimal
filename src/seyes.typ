@@ -18,7 +18,7 @@
 
 #import "interne/etats.typ": *
 #import "interne/utils.typ": *
-#import "interne/dessins.typ": rendu-reponse, icone
+#import "interne/dessins.typ": icone, rendu-reponse
 
 // Réglures (reprises du paquet LaTeX WriteOnGrid de C. Pierquet) : épaisseur et
 // couleur des lignes principales (tous les carreaux) et fines (interlignes).
@@ -75,7 +75,9 @@
   let positive(l) = type(l) == length and l.abs >= 0pt and l.em >= 0 and l != 0pt
   assert(
     (type(hauteur) in (int, float) and hauteur > 0) or positive(hauteur),
-    message: "seyes : la hauteur est un nombre de carreaux (4) ou une longueur (3cm), strictement positifs, pas " + repr(hauteur) + ".",
+    message: "seyes : la hauteur est un nombre de carreaux (4) ou une longueur (3cm), strictement positifs, pas "
+      + repr(hauteur)
+      + ".",
   )
   assert(
     positive(carreau),
@@ -83,7 +85,11 @@
   )
   assert(
     style in styles-seyes,
-    message: "seyes : style doit valoir " + styles-seyes.keys().map(s => "\"" + s + "\"").join(", ", last: " ou ") + ", pas " + repr(style) + ".",
+    message: "seyes : style doit valoir "
+      + styles-seyes.keys().map(s => "\"" + s + "\"").join(", ", last: " ou ")
+      + ", pas "
+      + repr(style)
+      + ".",
   )
   assert(
     reponse.pos().len() <= 1 and reponse.named().len() == 0,
