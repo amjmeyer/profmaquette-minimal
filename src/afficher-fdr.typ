@@ -139,12 +139,15 @@
         place(dx: x(n + 1) - 2.4mm * e - gauche, dy: y-bas - 1.3mm * e, polygon(
           fill: couleur,
           stroke: none,
-          (0mm, 0mm), (2.4mm * e, 1.3mm * e), (0mm, 2.6mm * e),
+          (0mm, 0mm),
+          (2.4mm * e, 1.3mm * e),
+          (0mm, 2.6mm * e),
         ))
       }
       for (j, case) in t.bas.enumerate(start: 1) {
-        if case == "coche" { pastille(X(j), y-bas, icone("check", 9pt * e, couleur)) }
-        else if case != none { disque(X(j), y-bas, case, true) }
+        if case == "coche" { pastille(X(j), y-bas, icone("check", 9pt * e, couleur)) } else if case != none {
+          disque(X(j), y-bas, case, true)
+        }
       }
       for (j, case) in t.haut.enumerate(start: 1) {
         if type(case) == dictionary { disque(X(j), y-haut, case, false) }

@@ -34,7 +34,12 @@
   // « pretty » du paquet bookly).
   onglet: (gauche, centre, droite, couleur, hauteur) => layout(taille => {
     let onglet = if gauche != none {
-      bloc-neutre(fill: couleur, inset: (x: .9em, y: .45em), radius: (top: 8pt), text(fill: white, weight: "bold", size: 12pt * echelle(), gauche))
+      bloc-neutre(fill: couleur, inset: (x: .9em, y: .45em), radius: (top: 8pt), text(
+        fill: white,
+        weight: "bold",
+        size: 12pt * echelle(),
+        gauche,
+      ))
     } else { none }
     let hauteur-onglet = if onglet != none { measure(onglet).height } else { 0pt }
     let corps = grid(
@@ -51,7 +56,14 @@
       dir: ttb,
       spacing: 0pt,
       if onglet != none { pad(left: 1.2em, onglet) } else { [] },
-      bloc-neutre(width: 100%, height: hauteur-cadre, stroke: 1.5pt + couleur, radius: 10pt, inset: (x: 1.2em, y: .9em), align(horizon, corps)),
+      bloc-neutre(
+        width: 100%,
+        height: hauteur-cadre,
+        stroke: 1.5pt + couleur,
+        radius: 10pt,
+        inset: (x: 1.2em, y: .9em),
+        align(horizon, corps),
+      ),
     )
   }),
 )
@@ -82,7 +94,9 @@
     width: 100%,
     height: hauteur,
     inset: (x: .2em, y: .3em),
-    align(horizon, stack(spacing: .9em, ligne(terme("nom") + " :"), ligne(terme("prenom") + " :"), ligne(terme("classe") + " :"))),
+    align(horizon, stack(spacing: .9em, ligne(terme("nom") + " :"), ligne(terme("prenom") + " :"), ligne(
+      terme("classe") + " :",
+    ))),
   )
 }
 
@@ -110,8 +124,7 @@
       grid(
         columns: (largeur-cartouche, largeur-zone),
         column-gutter: 1.5em,
-        dessiner(gauche, centre, droite, couleur, h),
-        zone-nom-prenom-classe-empilee(h),
+        dessiner(gauche, centre, droite, couleur, h), zone-nom-prenom-classe-empilee(h),
       )
     })
   } else {

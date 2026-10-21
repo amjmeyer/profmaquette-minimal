@@ -28,7 +28,9 @@
 #let icone(nom, taille, couleur) = {
   let svg = read("../icones/" + nom + ".svg")
   let hauteur = float(svg.match(regex("viewBox=\"[^\"]* ([\d.]+)\"")).captures.first())
-  let teinte = if type(couleur) == color { couleur } else if type(couleur) == gradient { couleur.sample(50%) } else { black }
+  let teinte = if type(couleur) == color { couleur } else if type(couleur) == gradient { couleur.sample(50%) } else {
+    black
+  }
   image(bytes(svg.replace("currentColor", teinte.to-hex())), format: "svg", height: taille * hauteur / 512)
 }
 
@@ -130,9 +132,17 @@
     let etiquette-de(texte) = if style == "fond-blanc" {
       bloc-neutre(spacing: 0pt, fill: fond(), inset: (x: .4em, y: .5em), text(fill: teinte, weight: "bold", texte))
     } else if style == "etiquette-pleine" {
-      bloc-neutre(spacing: 0pt, fill: teinte, radius: 3pt, inset: (x: .8em, y: .5em), text(fill: fond(), weight: "bold", texte))
+      bloc-neutre(spacing: 0pt, fill: teinte, radius: 3pt, inset: (x: .8em, y: .5em), text(
+        fill: fond(),
+        weight: "bold",
+        texte,
+      ))
     } else {
-      bloc-neutre(spacing: 0pt, fill: fond(), stroke: filet, radius: 3pt, inset: (x: .8em, y: .5em), text(fill: teinte, weight: "bold", texte))
+      bloc-neutre(spacing: 0pt, fill: fond(), stroke: filet, radius: 3pt, inset: (x: .8em, y: .5em), text(
+        fill: teinte,
+        weight: "bold",
+        texte,
+      ))
     }
     let etiquette = etiquette-de(titre)
     let etiquette-droite = if droite != none { etiquette-de(droite) }
@@ -171,7 +181,9 @@
     if route { couleur } else { luma(82%) },
     couleur-titre: couleur-titre,
     droite: total,
-    [#terme("exercice") #numero#if titre != none [ : #titre]#if not calculatrice [#h(4pt)#"-"#h(4pt)#icone-calculatrice-barree(couleur-icone)]],
+    [#terme("exercice") #numero#if titre != none [ : #titre]#if not calculatrice [#h(4pt)#"-"#h(
+          4pt,
+        )#icone-calculatrice-barree(couleur-icone)]],
     body,
   )
 }
@@ -183,7 +195,9 @@
 #let rendu-corrige(item, reglages, rendre: c => c) = bloc-neutre(width: 100%, above: 1.4em, below: 1em)[
   #metadata("corrige-" + item.id)
   #let titre = text(weight: "bold", fill: couleur-interne())[
-    #if reglages.titre-corriges == auto { terme("titre-corriges") } else { reglages.titre-corriges } #item.numero#if item.titre != none [ : #item.titre]
+    #if reglages.titre-corriges == auto { terme("titre-corriges") } else { reglages.titre-corriges } #item.numero#if (
+      item.titre != none
+    ) [ : #item.titre]
   ]
   // Titre dans son propre bloc, jamais laissé seul en bas de page (sticky).
   #bloc-neutre(width: 100%, below: .8em, sticky: true, context {

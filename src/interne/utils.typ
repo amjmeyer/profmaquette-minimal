@@ -38,7 +38,9 @@
   let entier(t) = {
     assert(
       t.trim().match(regex("^\\d+$")) != none,
-      message: "Sélection de corrigés invalide : « " + sel + " ». Formes acceptées : auto, 4, \"1-6,9,12\", \"route\", \"pas-route\".",
+      message: "Sélection de corrigés invalide : « "
+        + sel
+        + " ». Formes acceptées : auto, 4, \"1-6,9,12\", \"route\", \"pas-route\".",
     )
     int(t.trim())
   }
@@ -57,10 +59,9 @@
 }
 
 #let est-selectionne(numero, route, sel) = {
-  if sel == auto { true }
-  else if sel == "route" { route }
-  else if sel == "pas-route" { not route }
-  else { numero in sel }
+  if sel == auto { true } else if sel == "route" { route } else if sel == "pas-route" { not route } else {
+    numero in sel
+  }
 }
 
 // Infos de l'exercice courant (le dernier de l'historique), dans un `context` :
@@ -80,11 +81,96 @@
 // ─── Langues ─────────────────────────────────────────────────────────────────
 
 #let termes = (
-  fr: (exercice: "Exercice", correction: "Correction", automatismes: "Automatismes", exo: "Exo", titre-corriges: "Corrigé de l'exercice", corrige: "Corrigé", corrige-classe: "Corrigé (rempli en classe)", nom: "Nom", prenom: "Prénom", classe: "Classe", point: "pt", points: "pts", separateur-decimal: ",", pluriel-des-deux: true, point-total: "point", points-total: "points"),
-  en: (exercice: "Exercise", correction: "Solutions", automatismes: "Practice", exo: "Ex.", titre-corriges: "Solution to exercise", corrige: "Solution", corrige-classe: "Solution (completed in class)", nom: "Last name", prenom: "First name", classe: "Class", point: "pt", points: "pts", separateur-decimal: ".", pluriel-des-deux: false, point-total: "point", points-total: "points"),
-  de: (exercice: "Aufgabe", correction: "Lösungen", automatismes: "Übungen", exo: "Aufg.", titre-corriges: "Lösung zu Aufgabe", corrige: "Lösung", corrige-classe: "Lösung (im Unterricht ausgefüllt)", nom: "Name", prenom: "Vorname", classe: "Klasse", point: "P.", points: "P.", separateur-decimal: ",", pluriel-des-deux: false, point-total: "Punkt", points-total: "Punkte"),
-  es: (exercice: "Ejercicio", correction: "Soluciones", automatismes: "Práctica", exo: "Ej.", titre-corriges: "Solución del ejercicio", corrige: "Solución", corrige-classe: "Solución (completada en clase)", nom: "Apellido", prenom: "Nombre", classe: "Clase", point: "pto", points: "ptos", separateur-decimal: ",", pluriel-des-deux: false, point-total: "punto", points-total: "puntos"),
-  it: (exercice: "Esercizio", correction: "Soluzioni", automatismes: "Allenamento", exo: "Es.", titre-corriges: "Soluzione dell'esercizio", corrige: "Soluzione", corrige-classe: "Soluzione (completata in classe)", nom: "Cognome", prenom: "Nome", classe: "Classe", point: "pt", points: "pt", separateur-decimal: ",", pluriel-des-deux: false, point-total: "punto", points-total: "punti"),
+  fr: (
+    exercice: "Exercice",
+    correction: "Correction",
+    automatismes: "Automatismes",
+    exo: "Exo",
+    titre-corriges: "Corrigé de l'exercice",
+    corrige: "Corrigé",
+    corrige-classe: "Corrigé (rempli en classe)",
+    nom: "Nom",
+    prenom: "Prénom",
+    classe: "Classe",
+    point: "pt",
+    points: "pts",
+    separateur-decimal: ",",
+    pluriel-des-deux: true,
+    point-total: "point",
+    points-total: "points",
+  ),
+  en: (
+    exercice: "Exercise",
+    correction: "Solutions",
+    automatismes: "Practice",
+    exo: "Ex.",
+    titre-corriges: "Solution to exercise",
+    corrige: "Solution",
+    corrige-classe: "Solution (completed in class)",
+    nom: "Last name",
+    prenom: "First name",
+    classe: "Class",
+    point: "pt",
+    points: "pts",
+    separateur-decimal: ".",
+    pluriel-des-deux: false,
+    point-total: "point",
+    points-total: "points",
+  ),
+  de: (
+    exercice: "Aufgabe",
+    correction: "Lösungen",
+    automatismes: "Übungen",
+    exo: "Aufg.",
+    titre-corriges: "Lösung zu Aufgabe",
+    corrige: "Lösung",
+    corrige-classe: "Lösung (im Unterricht ausgefüllt)",
+    nom: "Name",
+    prenom: "Vorname",
+    classe: "Klasse",
+    point: "P.",
+    points: "P.",
+    separateur-decimal: ",",
+    pluriel-des-deux: false,
+    point-total: "Punkt",
+    points-total: "Punkte",
+  ),
+  es: (
+    exercice: "Ejercicio",
+    correction: "Soluciones",
+    automatismes: "Práctica",
+    exo: "Ej.",
+    titre-corriges: "Solución del ejercicio",
+    corrige: "Solución",
+    corrige-classe: "Solución (completada en clase)",
+    nom: "Apellido",
+    prenom: "Nombre",
+    classe: "Clase",
+    point: "pto",
+    points: "ptos",
+    separateur-decimal: ",",
+    pluriel-des-deux: false,
+    point-total: "punto",
+    points-total: "puntos",
+  ),
+  it: (
+    exercice: "Esercizio",
+    correction: "Soluzioni",
+    automatismes: "Allenamento",
+    exo: "Es.",
+    titre-corriges: "Soluzione dell'esercizio",
+    corrige: "Soluzione",
+    corrige-classe: "Soluzione (completata in classe)",
+    nom: "Cognome",
+    prenom: "Nome",
+    classe: "Classe",
+    point: "pt",
+    points: "pt",
+    separateur-decimal: ",",
+    pluriel-des-deux: false,
+    point-total: "punto",
+    points-total: "punti",
+  ),
 )
 
 // Mot du paquet dans la langue choisie, dans un `context`. Avec `auto`, suit la
@@ -119,12 +205,20 @@
 //   protege(rendre => … rendre(body) …)
 #let protege(construire) = context {
   let du-bloc = (
-    stroke: block.stroke, inset: block.inset, outset: block.outset,
-    fill: block.fill, radius: block.radius, clip: block.clip,
+    stroke: block.stroke,
+    inset: block.inset,
+    outset: block.outset,
+    fill: block.fill,
+    radius: block.radius,
+    clip: block.clip,
   )
   let de-la-boite = (
-    stroke: box.stroke, inset: box.inset, outset: box.outset,
-    fill: box.fill, radius: box.radius, clip: box.clip,
+    stroke: box.stroke,
+    inset: box.inset,
+    outset: box.outset,
+    fill: box.fill,
+    radius: box.radius,
+    clip: box.clip,
   )
   let rendre(contenu) = {
     set block(..du-bloc)

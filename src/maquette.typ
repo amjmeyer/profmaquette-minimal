@@ -66,7 +66,11 @@
 #let style-exercices(style) = {
   assert(
     style in styles-exercice,
-    message: "style-exercice doit valoir " + styles-exercice.map(s => "\"" + s + "\"").join(", ", last: " ou ") + ", pas " + repr(style) + ".",
+    message: "style-exercice doit valoir "
+      + styles-exercice.map(s => "\"" + s + "\"").join(", ", last: " ou ")
+      + ", pas "
+      + repr(style)
+      + ".",
   )
   etat-style.update(style)
 }
@@ -161,19 +165,33 @@
   assert(type(taille-qr) == length, message: "maquette : taille-qr doit être une longueur (2cm, 15mm…).")
   assert(
     mode-maquette in modes-maquette,
-    message: "maquette : mode-maquette doit valoir " + modes-maquette.map(m => "\"" + m + "\"").join(", ", last: " ou ") + ", pas " + repr(mode-maquette) + ".",
+    message: "maquette : mode-maquette doit valoir "
+      + modes-maquette.map(m => "\"" + m + "\"").join(", ", last: " ou ")
+      + ", pas "
+      + repr(mode-maquette)
+      + ".",
   )
   assert(
     style-cartouche in styles-cartouche,
-    message: "maquette : style-cartouche doit valoir " + styles-cartouche.map(s => "\"" + s + "\"").join(", ", last: " ou ") + ", pas " + repr(style-cartouche) + ".",
+    message: "maquette : style-cartouche doit valoir "
+      + styles-cartouche.map(s => "\"" + s + "\"").join(", ", last: " ou ")
+      + ", pas "
+      + repr(style-cartouche)
+      + ".",
   )
   assert(
     afficher-brm == none or afficher-brm in modes-bareme,
-    message: "maquette : afficher-brm doit valoir none, " + modes-bareme.map(m => "\"" + m + "\"").join(" ou ") + ", pas " + repr(afficher-brm) + ".",
+    message: "maquette : afficher-brm doit valoir none, "
+      + modes-bareme.map(m => "\"" + m + "\"").join(" ou ")
+      + ", pas "
+      + repr(afficher-brm)
+      + ".",
   )
   assert(
     type(largeur-cartouche) == ratio and largeur-cartouche > 0% and largeur-cartouche < 100%,
-    message: "maquette : largeur-cartouche doit être un pourcentage strictement entre 0% et 100% (65%, 70%…), pas " + repr(largeur-cartouche) + ".",
+    message: "maquette : largeur-cartouche doit être un pourcentage strictement entre 0% et 100% (65%, 70%…), pas "
+      + repr(largeur-cartouche)
+      + ".",
   )
   for cle in titre-maquette.keys() {
     assert(
@@ -188,12 +206,14 @@
   )
   assert(
     position-corriges == true or position-corriges in ("apres", "fin", "apres-question"),
-    message: "maquette : position-corriges doit valoir \"apres\", \"fin\", \"apres-question\" ou true (jamais none/false : pour n'afficher aucun corrigé, utiliser liste-corriges: () plutôt que ce réglage), pas " + repr(position-corriges) + ".",
+    message: "maquette : position-corriges doit valoir \"apres\", \"fin\", \"apres-question\" ou true (jamais none/false : pour n'afficher aucun corrigé, utiliser liste-corriges: () plutôt que ce réglage), pas "
+      + repr(position-corriges)
+      + ".",
   )
   // "apres-question" n'a de sens qu'en interro (réponses dans les `seyes`).
-  let mode = if position-corriges == true { "fin" }
-    else if position-corriges == "apres-question" and mode-maquette != "interro" { none }
-    else { position-corriges }
+  let mode = if position-corriges == true { "fin" } else if (
+    position-corriges == "apres-question" and mode-maquette != "interro"
+  ) { none } else { position-corriges }
   reglages-corriges(
     mode: mode,
     vers-corrige: vers-corrige,
@@ -219,7 +239,13 @@
     etat-profondeur.get() == 1,
     message: "maquette : une maquette ne peut pas en contenir une autre. Pour plusieurs fiches dans un même document, placer les maquettes l'une après l'autre.",
   )
-  protege(_ => cartouche-titre(mode-maquette, titre-maquette, style-cartouche, if couleur-titre == auto { black } else { couleur-titre }, largeur: largeur-cartouche))
+  protege(_ => cartouche-titre(
+    mode-maquette,
+    titre-maquette,
+    style-cartouche,
+    if couleur-titre == auto { black } else { couleur-titre },
+    largeur: largeur-cartouche,
+  ))
   [#metadata(none) #repere-borne]
   body
   [#metadata(none) #repere-borne]
