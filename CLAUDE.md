@@ -47,7 +47,8 @@ paquet fletcher), pas de build system.
 - `maquette(...)[body]` — englobe toute la fiche, un seul appel règle tout
   (couleurs, corrigés, style des cadres, langue, cartouche de titre…). Ajoute
   automatiquement en fin de fiche le bloc « Automatismes » (QR codes) puis
-  « Correction ». Chaque `maquette` repart de zéro (pas d'héritage entre deux
+  « Correction » ; avec `position-qr: "thematique"`, un bloc « Automatismes »
+  par thématique, posé par `thematique` (état `etat-qr-attente`). Chaque `maquette` repart de zéro (pas d'héritage entre deux
   maquettes d'un même document) et ne peut pas en contenir une autre.
 - `exercice(...)[body]` — un énoncé, numéroté automatiquement.
 - `corrige[body]` — le corrigé de l'exercice qui précède immédiatement.

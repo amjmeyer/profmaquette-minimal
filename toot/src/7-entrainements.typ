@@ -23,6 +23,7 @@ Chaque QR-Code porte le numéro de son exercice, et il est lui aussi cliquable.
   nombre-qr: int,
   taille-qr: length,
   titre-qr: content | auto,
+  position-qr: str,
   …
 ) -> content")
 
@@ -84,5 +85,29 @@ Chaque QR-Code porte le numéro de son exercice, et il est lui aussi cliquable.
 )
 #exercice(entrainement: "https://typst.app")[
   Tables de multiplication.
+]
+```)
+
+#parametre("position-qr", ("str",), `"fin"`)[
+  Ce paramètre choisit où s'affichent les QR-Codes :
+  - `"fin"` : un seul bloc « Automatismes » en fin de fiche, qui regroupe tous les QR-Codes ;
+  - `"thematique"` : un bloc à la fin de chaque `#thematique`, juste avant le titre de la suivante (et en fin de fiche pour la dernière). Son titre reprend celui de la thématique : « Automatismes — Suites ». \
+    Les exercices placés avant la première `#thematique` ont leur propre bloc, sans nom de thématique ; une thématique sans entraînement n'a pas de bloc.
+]
+
+#example(```typ
+// SETUP
+// START
+#show: maquette.with(
+  position-qr: "thematique",
+  taille-qr: 1cm,
+)
+#thematique[Calcul mental]
+#exercice(entrainement: "https://typst.app")[
+  Tables de multiplication.
+]
+#thematique[Fractions]
+#exercice(entrainement: "https://CTAN.org")[
+  Simplifier une fraction.
 ]
 ```)
