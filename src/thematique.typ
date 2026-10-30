@@ -18,17 +18,23 @@
 
 #import "interne/etats.typ": *
 #import "interne/utils.typ": *
+#import "interne/blocs-fin.typ": entrainements-thematique
 
 // Titre d'une thématique de la fiche, en gras, jamais numéroté. Ce n'est pas un
 // `heading` : insensible aux réglages de titres du document, absent de la table
 // des matières. Sur la feuille de route, il termine la thématique précédente
 // (coche après son dernier exercice). Présentation (titre seul ou bandeau
-// coloré) : `maquette(style-thematique: …, couleur-thematique: …)`.
+// coloré) : `maquette(style-thematique: …, couleur-thematique: …)`. Avec
+// `maquette(position-qr: "thematique")`, les QR codes de la thématique
+// précédente s'affichent juste avant ce titre.
 //   alignement : left (défaut), center ou right
 #let thematique(
   alignement: left,
   titre,
 ) = {
+  entrainements-thematique()
+  // Hors `context`, avec une fonction fixe : sinon, pas de convergence.
+  etat-qr-attente.update(q => (..q, items: (), titre: titre))
   [#metadata(none) #repere-thematique]
   protege(rendre => {
     let (style, couleur) = etat-thematique.get()

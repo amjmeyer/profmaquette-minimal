@@ -65,6 +65,14 @@
         ),
       )
   ))
+  etat-qr-attente.update(q => (
+    ..q,
+    compte: q.compte + 1,
+    items: q.items
+      + if entrainement != none {
+        ((numero: q.compte + 1, titre: titre, url: entrainement),)
+      } else { () },
+  ))
   etat-nb-seyes.update(0)
   etat-nb-reponses.update(0)
   protege(rendre => bloc-neutre(width: 100%)[

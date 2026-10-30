@@ -65,6 +65,12 @@
 #let styles-thematique = ("titre", "bandeau")
 #let etat-thematique = state("etat-thematique", (style: "titre", couleur: auto))
 
+// Réglages du bloc « Automatismes » (cf. `maquette(position-qr: …)`) :
+// position "fin" (un seul bloc en fin de fiche) ou "thematique" (un bloc à la
+// fin de chaque thématique).
+#let positions-qr = ("fin", "thematique")
+#let etat-qr = state("etat-qr", (position: "fin", colonnes: 3, taille: 2cm, titre: auto))
+
 // Réglages du schéma `afficher-fdr`.
 #let etat-fdr = state("etat-fdr", (couleur: black))
 
@@ -76,6 +82,12 @@
 // Un dictionnaire par exercice rencontré (route, pas-corrige, titre,
 // entrainement) : sa longueur donne le numéro de l'exercice courant.
 #let etat-historique = state("etat-historique-exercices", ())
+
+// QR codes pas encore affichés (position-qr: "thematique") : `compte` suit le
+// numéro des exercices, `items` les entraînements depuis la dernière
+// `thematique`, `titre` celui de la thématique en cours (none avant la première).
+// Rempli par `exercice`, vidé par `thematique`, avec des fonctions fixes.
+#let etat-qr-attente = state("etat-qr-attente", (compte: 0, items: (), titre: none))
 
 // Numéro de la maquette en cours : distingue les « exercice 1 » de deux fiches
 // d'un même document dans les liens exercice ↔ corrigé.

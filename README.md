@@ -24,7 +24,7 @@ Ce paquet permet la création de fiches d'exercices à la manière du package La
 Le code ci-dessous donne exactement les deux pages ci-dessus.
 
 ```typ
-#import "@preview/profmaquette-minimal:0.2.0": *
+#import "@preview/profmaquette-minimal:0.3.0": *
 
 #show: maquette.with(
   position-corriges: "fin",

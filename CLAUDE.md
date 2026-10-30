@@ -47,7 +47,8 @@ paquet fletcher), pas de build system.
 - `maquette(...)[body]` — englobe toute la fiche, un seul appel règle tout
   (couleurs, corrigés, style des cadres, langue, cartouche de titre…). Ajoute
   automatiquement en fin de fiche le bloc « Automatismes » (QR codes) puis
-  « Correction ». Chaque `maquette` repart de zéro (pas d'héritage entre deux
+  « Correction » ; avec `position-qr: "thematique"`, un bloc « Automatismes »
+  par thématique, posé par `thematique` (état `etat-qr-attente`). Chaque `maquette` repart de zéro (pas d'héritage entre deux
   maquettes d'un même document) et ne peut pas en contenir une autre.
 - `exercice(...)[body]` — un énoncé, numéroté automatiquement.
 - `corrige[body]` — le corrigé de l'exercice qui précède immédiatement.
@@ -103,7 +104,7 @@ rendu (PDF dans `tests/sortie/`) reste manuel.
 
 ## Pièges connus
 
-- Les cours utilisent CE dossier : `@local/profmaquette-minimal:0.2.0` y est
+- Les cours utilisent CE dossier : `@local/profmaquette-minimal:0.3.0` y est
   lié par `../../installer.sh` et importé dans `preambule-perso/src/deps.typ`.
   Toute modification de `src/` s'applique aussitôt aux cours : lancer
   `tests/lancer.sh` avant de les recompiler.

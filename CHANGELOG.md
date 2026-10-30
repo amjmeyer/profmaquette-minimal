@@ -6,6 +6,9 @@
   est écrite dans un bandeau coloré sur toute la largeur (`"titre"`, texte
   seul, reste le défaut). La couleur se règle avec `couleur-thematique`
   (couleur du fond pour le bandeau, du texte sinon).
+- `position-qr: "thematique"` (paramètre de `maquette`) : les QR-Codes
+  s'affichent à la fin de chaque `#thematique`, dans un bloc « Automatismes —
+  <thématique> », au lieu d'un seul bloc en fin de fiche (`"fin"`, défaut).
 - Les numéros des disques de la FdR sont plus lisibles (9 pt au lieu de 7 pt).
 - Par défaut, les titres des exercices optionnels sont écrits en noir pour
   ressortir, quelle que soit `couleur-route` (seul le filet prend la couleur).
