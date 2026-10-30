@@ -104,7 +104,7 @@ rendu (PDF dans `tests/sortie/`) reste manuel.
 
 ## Pièges connus
 
-- Les cours utilisent CE dossier : `@local/profmaquette-minimal:0.2.0` y est
+- Les cours utilisent CE dossier : `@local/profmaquette-minimal:0.3.0` y est
   lié par `../../installer.sh` et importé dans `preambule-perso/src/deps.typ`.
   Toute modification de `src/` s'applique aussitôt aux cours : lancer
   `tests/lancer.sh` avant de les recompiler.
