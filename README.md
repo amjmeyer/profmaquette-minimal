@@ -8,11 +8,11 @@ documentation and this README are in French.
 
 Ce paquet permet la création de fiches d'exercices à la manière du package LaTeX
 [ProfMaquette](https://ctan.org/pkg/profmaquette) de **Christophe Poulain**, ainsi que la création d'interrogations écrites sur laquelle l'élève répond directement aux questions. Le paquet est pensé, pour le moment, pour ces deux usages.
- 
+
 📖 **[Documentation complète](https://amjmeyer.github.io/profmaquette-minimal/)**
 
-> **Note :** une petite partie seulement de ProfMaquette (version LaTeX) est implémentée. Écrit d'abord pour mon usage personnel, le paquet pourra évoluer
-> de façon incompatible entre deux versions `0.x`. 
+> **Note :** une petite partie seulement de ProfMaquette (version LaTeX) est implémentée. Pour le moment, seule la feuille de route et "le mode interrogation écrite" sont implémentés. Écrit d'abord pour mon usage personnel, le paquet pourra évoluer
+> de façon incompatible jusqu'à une version 1.x.x
 
 <p align="center">
   <img src="docs/exemple-1.png" width="45%" alt="Page 1 du démarrage rapide ci-dessous : cartouche CH 02 Second degré 1 C, feuille de route centrée, exercices encadrés avec clé, haltère, source et calculatrice barrée, bloc Automatismes">
@@ -95,6 +95,4 @@ adaptation sont les miennes.
 
 ## Licence
 
-[LPPL 1.3c](LICENSE) ou ultérieure, comme ProfMaquette. Icônes de `src/icones/` :
-*Font Awesome Free by @fontawesome — https://fontawesome.com*, sous licence
-[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+[LPPL 1.3c](LICENSE) ou ultérieure, comme ProfMaquette.

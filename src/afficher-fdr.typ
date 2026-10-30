@@ -107,7 +107,8 @@
       inset: 0pt,
       outset: 0pt,
       align(center + horizon, text(
-        size: 7pt * e,
+        // Plus petit à partir de 100, pour tenir dans le disque.
+        size: (if ex.numero < 100 { 9pt } else { 7pt }) * e,
         weight: "bold",
         fill: if plein { fond() } else { couleur },
         str(ex.numero),

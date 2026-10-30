@@ -60,6 +60,11 @@
 // Corrigés à afficher (auto = tous), sous la forme rendue par `parser-plage`.
 #let etat-selection = state("etat-selection", (corriges: auto))
 
+// Présentation des `thematique` : "titre" (texte seul) ou "bandeau" (fond
+// coloré) ; couleur : auto = celle du texte pour "titre", gris clair pour "bandeau".
+#let styles-thematique = ("titre", "bandeau")
+#let etat-thematique = state("etat-thematique", (style: "titre", couleur: auto))
+
 // Réglages du schéma `afficher-fdr`.
 #let etat-fdr = state("etat-fdr", (couleur: black))
 

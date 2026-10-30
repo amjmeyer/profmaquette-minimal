@@ -1,5 +1,15 @@
 # Historique des versions
 
+## 0.3.0
+
+- `style-thematique: "bandeau"` (paramètre de `maquette`) : la `#thematique`
+  est écrite dans un bandeau coloré sur toute la largeur (`"titre"`, texte
+  seul, reste le défaut). La couleur se règle avec `couleur-thematique`
+  (couleur du fond pour le bandeau, du texte sinon).
+- Les numéros des disques de la FdR sont plus lisibles (9 pt au lieu de 7 pt).
+- Par défaut, les titres des exercices optionnels sont écrits en noir pour
+  ressortir, quelle que soit `couleur-route` (seul le filet prend la couleur).
+
 ## 0.2.0
 
 - `seyes(hauteur)[réponse]` et la clé `afficher` (`false` par défaut) : avec

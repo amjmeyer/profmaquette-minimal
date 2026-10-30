@@ -1,6 +1,6 @@
 # profmaquette-minimal — repères pour Claude
 
-Paquet **Typst** (pas LaTeX) qui génère des fiches d'exercices : portage minimaliste
+Paquet **Typst** qui génère des fiches d'exercices : portage minimaliste
 du paquet LaTeX [ProfMaquette](https://ctan.org/pkg/profmaquette) de Christophe
 Poulain. Code dans `src/` (un fichier par fonction publique, à la manière du
 paquet fletcher), pas de build system.

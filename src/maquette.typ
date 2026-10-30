@@ -108,6 +108,12 @@
 //   taille-qr              : côté des QR codes
 //   titre-qr               : titre du bloc « Automatismes » (auto = traduit)
 //   couleur-fdr            : couleur du schéma `afficher-fdr` (noir par défaut)
+//   style-thematique       : "titre" (défaut, texte seul) ou "bandeau" (titre
+//                            sur un fond coloré, sur toute la largeur)
+//   couleur-thematique     : "titre" : couleur du texte (auto = celle du
+//                            document) ;
+//                            "bandeau" : couleur du fond (auto = gris clair),
+//                            texte noir ou blanc selon ce qui se lit le mieux
 //   langue                 : "fr", "en", "de", "es", "it" ; auto = celle du
 //                            document, sauf l'anglais (défaut de Typst) → "fr"
 //   mode-maquette          : "exercices" (défaut) ou "interro" (zone Nom /
@@ -139,6 +145,8 @@
   taille-qr: 2cm,
   titre-qr: auto,
   couleur-fdr: black,
+  style-thematique: "titre",
+  couleur-thematique: auto,
   langue: auto,
   mode-maquette: "exercices",
   titre-maquette: (:),
@@ -162,6 +170,20 @@
       message: "maquette : " + nom + " doit être une couleur (blue, rgb(\"#0090C8\")…), pas " + repr(valeur) + ".",
     )
   }
+  assert(
+    couleur-thematique == auto or type(couleur-thematique) == color,
+    message: "maquette : couleur-thematique doit être une couleur (blue, rgb(\"#c9c5c5\")…), pas "
+      + repr(couleur-thematique)
+      + ".",
+  )
+  assert(
+    style-thematique in styles-thematique,
+    message: "maquette : style-thematique doit valoir "
+      + styles-thematique.map(s => "\"" + s + "\"").join(" ou ")
+      + ", pas "
+      + repr(style-thematique)
+      + ".",
+  )
   assert(type(taille-qr) == length, message: "maquette : taille-qr doit être une longueur (2cm, 15mm…).")
   assert(
     mode-maquette in modes-maquette,
@@ -225,6 +247,7 @@
   style-exercices(style-exercice)
   etat-selection.update((corriges: parser-plage(liste-corriges)))
   etat-fdr.update((couleur: couleur-fdr))
+  etat-thematique.update((style: style-thematique, couleur: couleur-thematique))
   etat-afficher-brm.update(if mode-maquette == "interro" { afficher-brm } else { none })
   etat-langue.update(langue)
   etat-historique.update(())

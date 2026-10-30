@@ -169,12 +169,13 @@
 
 // Cadre d'un exercice. Sur la route : couleur de la route. Hors route : filet
 // gris clair, titre gris foncé (gris moyen sur une étiquette pleine, pour ne
-// pas ressortir plus qu'un exercice sur la route).
+// pas ressortir plus qu'un exercice sur la route). En "fond-blanc" (style de
+// base), titre toujours noir, quelle que soit la couleur du filet.
 #let boite-exercice(numero: none, titre: none, route: true, calculatrice: true, total: none, body) = {
   let couleur = etat-couleur-route.get()
   let etiquette-pleine = etat-style.get() == "etiquette-pleine"
   let gris-titre = if etiquette-pleine { luma(60%) } else { luma(35%) }
-  let couleur-titre = if route { couleur } else { gris-titre }
+  let couleur-titre = if etat-style.get() == "fond-blanc" { black } else if route { couleur } else { gris-titre }
   // Sur une étiquette pleine, le titre est écrit dans la couleur du fond.
   let couleur-icone = if etiquette-pleine { fond() } else { couleur-titre }
   boite-etiquette(

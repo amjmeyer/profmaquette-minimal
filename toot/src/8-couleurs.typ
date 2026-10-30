@@ -78,7 +78,9 @@ indépendamment les unes des autres.
 #parametre("couleur-route", ("color", "auto"), `auto`)[
   Ce paramètre permet de modifier la couleur des exercices sur la route (filet et titre). \
   La valeur par défaut est noire. Les
-  exercices hors route, eux, restent toujours gris.
+  exercices hors route, eux, restent toujours gris. Avec le style de cadre de
+  base (`style-exercice: "fond-blanc"`), le titre reste noir dans tous les cas :
+  seul le filet prend la couleur.
 ]
 
 #example(```typ
