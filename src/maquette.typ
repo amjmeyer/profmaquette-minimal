@@ -107,6 +107,10 @@
 //   nombre-qr              : QR codes par ligne dans « Automatismes »
 //   taille-qr              : côté des QR codes
 //   titre-qr               : titre du bloc « Automatismes » (auto = traduit)
+//   position-qr            : "fin" (défaut : un seul bloc « Automatismes » en
+//                            fin de fiche) ou "thematique" (un bloc à la fin
+//                            de chaque `thematique`, juste avant la suivante,
+//                            titré « Automatismes — <thématique> »)
 //   couleur-fdr            : couleur du schéma `afficher-fdr` (noir par défaut)
 //   style-thematique       : "titre" (défaut, texte seul) ou "bandeau" (titre
 //                            sur un fond coloré, sur toute la largeur)
@@ -144,6 +148,7 @@
   nombre-qr: 3,
   taille-qr: 2cm,
   titre-qr: auto,
+  position-qr: "fin",
   couleur-fdr: black,
   style-thematique: "titre",
   couleur-thematique: auto,
@@ -185,6 +190,14 @@
       + ".",
   )
   assert(type(taille-qr) == length, message: "maquette : taille-qr doit être une longueur (2cm, 15mm…).")
+  assert(
+    position-qr in positions-qr,
+    message: "maquette : position-qr doit valoir "
+      + positions-qr.map(p => "\"" + p + "\"").join(" ou ")
+      + ", pas "
+      + repr(position-qr)
+      + ".",
+  )
   assert(
     mode-maquette in modes-maquette,
     message: "maquette : mode-maquette doit valoir "
@@ -247,10 +260,12 @@
   style-exercices(style-exercice)
   etat-selection.update((corriges: parser-plage(liste-corriges)))
   etat-fdr.update((couleur: couleur-fdr))
+  etat-qr.update((position: position-qr, colonnes: nombre-qr, taille: taille-qr, titre: titre-qr))
   etat-thematique.update((style: style-thematique, couleur: couleur-thematique))
   etat-afficher-brm.update(if mode-maquette == "interro" { afficher-brm } else { none })
   etat-langue.update(langue)
   etat-historique.update(())
+  etat-qr-attente.update((compte: 0, items: (), titre: none))
   etat-serie.update(n => n + 1)
   etat-corriges.update(())
   etat-blocs-fin.update((entrainements: false, corriges: false))
@@ -272,7 +287,7 @@
   [#metadata(none) #repere-borne]
   body
   [#metadata(none) #repere-borne]
-  liste-entrainements(colonnes: nombre-qr, taille-qr: taille-qr, titre-qr: titre-qr)
+  liste-entrainements()
   bloc-corriges()
   etat-profondeur.update(n => n - 1)
 }
