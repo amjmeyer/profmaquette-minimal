@@ -16,57 +16,15 @@
 
 // Cartouche de titre de la fiche.
 // Réglé par `maquette(titre-maquette: …)`, avec la zone Nom / Prénom / Classe
-// du mode "interro". Tout est à appeler dans un `context`.
+// du mode "interro" ; son dessin dépend du style (`styles.typ`). Tout est à
+// appeler dans un `context`.
 
 #import "utils.typ": *
+#import "styles.typ": styles-maquette
 
 // "exercices" : fiche d'exercices ; "interro" : ajoute une zone Nom / Prénom /
 // Classe à remplir à la main (clé IE de ProfMaquette).
 #let modes-maquette = ("exercices", "interro")
-
-#let styles-cartouche = ("onglet",)
-
-// Un dessin par style : (gauche, centre, droite, couleur, hauteur) → contenu.
-// `hauteur` : auto, ou la hauteur à atteindre pour égaler la zone Nom / Prénom
-// / Classe posée à droite (mode "interro").
-#let dessins-maquette = (
-  // Onglet coloré posé sur un cadre arrondi (d'après `pretty-part`, thème
-  // « pretty » du paquet bookly).
-  onglet: (gauche, centre, droite, couleur, hauteur) => layout(taille => {
-    let onglet = if gauche != none {
-      bloc-neutre(fill: couleur, inset: (x: .9em, y: .45em), radius: (top: 8pt), text(
-        fill: white,
-        weight: "bold",
-        size: 12pt * echelle(),
-        gauche,
-      ))
-    } else { none }
-    let hauteur-onglet = if onglet != none { measure(onglet).height } else { 0pt }
-    let corps = grid(
-      columns: (1fr, auto),
-      column-gutter: .8em,
-      align: (center + horizon, right + horizon),
-      text(weight: "bold", size: 17pt * echelle(), if centre != none { centre } else { " " }),
-      if droite != none { text(size: 10pt * echelle(), weight: "bold", droite) } else { [] },
-    )
-    let hauteur-cadre = if hauteur == auto {
-      measure(corps, width: taille.width - 2.4em).height + 1.8em
-    } else { hauteur - hauteur-onglet }
-    stack(
-      dir: ttb,
-      spacing: 0pt,
-      if onglet != none { pad(left: 1.2em, onglet) } else { [] },
-      bloc-neutre(
-        width: 100%,
-        height: hauteur-cadre,
-        stroke: 1.5pt + couleur,
-        radius: 10pt,
-        inset: (x: 1.2em, y: .9em),
-        align(horizon, corps),
-      ),
-    )
-  }),
-)
 
 // Zone Nom / Prénom / Classe sur une ligne, pleine largeur (mode "interro"
 // sans cartouche).
@@ -109,7 +67,7 @@
   let centre = titre.at("centre", default: none)
   let droite = titre.at("droite", default: none)
   let vide = gauche == none and centre == none and droite == none
-  let dessiner = dessins-maquette.at(style)
+  let dessiner = styles-maquette.at(style).cartouche
   if vide and mode != "interro" { return }
   if vide {
     zone-nom-prenom-classe-pleine-largeur()
@@ -130,5 +88,5 @@
   } else {
     dessiner(gauche, centre, droite, couleur, auto)
   }
-  v(1.2em)
+  if mode == "interro" or not styles-maquette.at(style).espace-propre { v(1.2em) }
 }

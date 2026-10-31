@@ -67,21 +67,20 @@ Une coche finale termine toujours la route.
 
 = Présentation des thématiques
 
-Une thématique est présentée comme un filet : une petite barre noire, le titre
-en gras, puis un trait gris jusqu'à la marge. Le paramètre `alignement` de
-`thematique` (`left` par défaut, `center` ou `right`) fait glisser le titre le
-long du trait ; la barre reste à gauche. Un paramètre de `maquette` change la
-couleur du trait pour toute la fiche :
-
-#parametre("couleur-thematique", ("color", "auto"), `auto`)[
-  Couleur du trait (`auto` : gris).
-]
+Une thématique est dessinée selon le style de la fiche, choisi avec
+`style-maquette` et `couleur-titre`, comme le cartouche de titre
+(#i-link("3-titres.typ")[partie III]) : un petit onglet posé sur un trait en
+`"arrondi-1"` (par défaut), une étiquette arrondie suivie d'un trait fin en
+`"arrondi-2"`, un filet à barre noire en `"carre"`. Le paramètre `alignement`
+de `thematique` (`left` par défaut, `center` ou `right`) place le titre le
+long du trait.
 
 #example(```typ
 // SETUP
 // START
 #show: maquette.with(
-  couleur-thematique: rgb("#1f6fb2"),
+  style-maquette: "arrondi-2",
+  couleur-titre: rgb("#1f6fb2"),
 )
 
 #align(center, afficher-fdr)
