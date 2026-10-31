@@ -18,7 +18,8 @@
 
 #import "interne/etats.typ": *
 #import "interne/utils.typ": *
-#import "interne/cartouche.typ": cartouche-titre, modes-maquette, styles-cartouche
+#import "interne/cartouche.typ": cartouche-titre, modes-maquette
+#import "interne/styles.typ": styles-maquette
 #import "interne/blocs-fin.typ": bloc-corriges, liste-entrainements
 #import "interne/bareme.typ": modes-bareme
 
@@ -112,16 +113,23 @@
 //                            de chaque `thematique`, juste avant la suivante,
 //                            titré « Automatismes — <thématique> »)
 //   couleur-fdr            : couleur du schéma `afficher-fdr` (noir par défaut)
-//   couleur-thematique     : couleur du trait des `thematique` (auto = gris)
 //   langue                 : "fr", "en", "de", "es", "it" ; auto = celle du
 //                            document, sauf l'anglais (défaut de Typst) → "fr"
 //   mode-maquette          : "exercices" (défaut) ou "interro" (zone Nom /
 //                            Prénom / Classe)
 //   titre-maquette         : cartouche de titre, dictionnaire aux clés
 //                            facultatives gauche / centre / droite
-//   style-cartouche        : présentation du cartouche : "onglet" (seul style)
-//   couleur-titre          : accent du cartouche (onglet, contour) ; le niveau
-//                            (à droite) reste noir. Noir par défaut
+//   style-maquette         : style du cartouche de titre et des `thematique`,
+//                            qui vont ensemble : "arrondi-1" (défaut : cadre
+//                            arrondi à onglet, thématique en onglet posé sur
+//                            un trait), "arrondi-2" (même cadre, thématique en
+//                            étiquette suivie d'un trait) ou "carre" (en-tête
+//                            de leçon : gauche = numéro en gris, trait
+//                            vertical, centre = titre, droite = niveau en
+//                            italique ; thématique en filet à barre noire)
+//   couleur-titre          : couleur du style (noire par défaut) : onglet,
+//                            cadre et thématiques en "arrondi-…", titre et
+//                            niveau en "carre" (son filet reste noir et gris)
 //   afficher-brm           : barème, en mode "interro" seulement (sans effet
 //                            sinon) : none (défaut), "partiel" (total de chaque
 //                            exercice sur son filet) ou "complet" (et note de
@@ -145,12 +153,11 @@
   titre-qr: auto,
   position-qr: "fin",
   couleur-fdr: black,
-  couleur-thematique: auto,
   langue: auto,
   mode-maquette: "exercices",
   titre-maquette: (:),
-  style-cartouche: "onglet",
-  couleur-titre: auto,
+  style-maquette: "arrondi-1",
+  couleur-titre: black,
   largeur-cartouche: 65%,
   afficher-brm: none,
   body,
@@ -169,12 +176,6 @@
       message: "maquette : " + nom + " doit être une couleur (blue, rgb(\"#0090C8\")…), pas " + repr(valeur) + ".",
     )
   }
-  assert(
-    couleur-thematique == auto or type(couleur-thematique) == color,
-    message: "maquette : couleur-thematique doit être une couleur (blue, rgb(\"#8a8a8a\")…), pas "
-      + repr(couleur-thematique)
-      + ".",
-  )
   assert(type(taille-qr) == length, message: "maquette : taille-qr doit être une longueur (2cm, 15mm…).")
   assert(
     position-qr in positions-qr,
@@ -193,11 +194,11 @@
       + ".",
   )
   assert(
-    style-cartouche in styles-cartouche,
-    message: "maquette : style-cartouche doit valoir "
-      + styles-cartouche.map(s => "\"" + s + "\"").join(", ", last: " ou ")
+    style-maquette in styles-maquette,
+    message: "maquette : style-maquette doit valoir "
+      + styles-maquette.keys().map(s => "\"" + s + "\"").join(", ", last: " ou ")
       + ", pas "
-      + repr(style-cartouche)
+      + repr(style-maquette)
       + ".",
   )
   assert(
@@ -247,7 +248,7 @@
   etat-selection.update((corriges: parser-plage(liste-corriges)))
   etat-fdr.update((couleur: couleur-fdr))
   etat-qr.update((position: position-qr, colonnes: nombre-qr, taille: taille-qr, titre: titre-qr))
-  etat-thematique.update(couleur-thematique)
+  etat-style-maquette.update((style: style-maquette, couleur: if couleur-titre == auto { black } else { couleur-titre }))
   etat-afficher-brm.update(if mode-maquette == "interro" { afficher-brm } else { none })
   etat-langue.update(langue)
   etat-historique.update(())
@@ -266,7 +267,7 @@
   protege(_ => cartouche-titre(
     mode-maquette,
     titre-maquette,
-    style-cartouche,
+    style-maquette,
     if couleur-titre == auto { black } else { couleur-titre },
     largeur: largeur-cartouche,
   ))

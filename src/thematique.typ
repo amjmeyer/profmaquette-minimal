@@ -19,17 +19,16 @@
 #import "interne/etats.typ": *
 #import "interne/utils.typ": *
 #import "interne/blocs-fin.typ": entrainements-thematique
+#import "interne/styles.typ": styles-maquette
 
-// Titre d'une thématique de la fiche, jamais numéroté, présenté comme le
-// `filet-horizontal` des cours : petite barre noire, titre en gras, trait gris
-// jusqu'à la marge. Ce n'est pas un `heading` : insensible aux réglages de
+// Titre d'une thématique de la fiche, jamais numéroté, dessiné selon le style de
+// la fiche (`maquette(style-maquette: …, couleur-titre: …)`, voir
+// `interne/styles.typ`). Ce n'est pas un `heading` : insensible aux réglages de
 // titres du document, absent de la table des matières. Sur la feuille de route,
-// il termine la thématique précédente (coche après son dernier exercice).
-// Couleur du trait : `maquette(couleur-thematique: …)`. Avec
+// il termine la thématique précédente (coche après son dernier exercice). Avec
 // `maquette(position-qr: "thematique")`, les QR codes de la thématique
 // précédente s'affichent juste avant ce titre.
-//   alignement : left (défaut), center ou right ; le titre glisse le long du
-//                trait, la barre reste à gauche
+//   alignement : left (défaut), center ou right ; place le titre le long du trait
 #let thematique(
   alignement: left,
   titre,
@@ -39,21 +38,7 @@
   etat-qr-attente.update(q => (..q, items: (), titre: titre))
   [#metadata(none) #repere-thematique]
   protege(rendre => {
-    let couleur = etat-thematique.get()
-    let trait = boite-neutre(
-      width: 1fr,
-      baseline: -.3em,
-      line(length: 100%, stroke: .8pt + if couleur == auto { rgb("#8a8a8a") } else { couleur }),
-    )
-    let texte = strong(rendre(titre))
-    let barre = boite-neutre(width: .45cm, height: 1em, baseline: .2em, fill: black)
-    // Espaces comprises autour des `h`, comme dans le balisage du filet.
-    bloc-neutre(width: 100%, above: 2.2em, below: 1.1em, sticky: true, if alignement == left {
-      [#barre #h(.4em) #texte #h(.4em) #trait]
-    } else if alignement == center {
-      [#barre #h(.4em) #trait #h(.4em) #texte #h(.4em) #trait]
-    } else {
-      [#barre #h(.4em) #trait #h(.4em) #texte]
-    })
+    let (style, couleur) = etat-style-maquette.get()
+    (styles-maquette.at(style).thematique)(rendre(titre), alignement, couleur)
   })
 }

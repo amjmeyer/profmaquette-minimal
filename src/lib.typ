@@ -34,6 +34,7 @@
 //     utils.typ              sélection des corrigés, langues, `protege`…
 //     dessins.typ            icônes, cadres, rendu d'un corrigé
 //     cartouche.typ          cartouche de titre de la fiche
+//     styles.typ             styles de la fiche : cartouche et thématiques
 //     blocs-fin.typ          blocs « Automatismes » et « Correction »
 //     bareme.typ             barème des interros (total, note des questions)
 //   icones/                  SVG Font Awesome Free (CC BY 4.0)
