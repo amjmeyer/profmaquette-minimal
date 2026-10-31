@@ -2,7 +2,7 @@
 *.pdf
 # Sorties des beta-tests
 tests/sortie/
-# Aide-mémoire personnel (pas sur GitHub)
-PUBLIER.md
+# Notes pour Claude (pas sur GitHub)
+CLAUDE.md
 # Site de la doc construit par toot-builder
 toot/build/
