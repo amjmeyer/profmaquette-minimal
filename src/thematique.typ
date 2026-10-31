@@ -20,14 +20,16 @@
 #import "interne/utils.typ": *
 #import "interne/blocs-fin.typ": entrainements-thematique
 
-// Titre d'une thématique de la fiche, en gras, jamais numéroté. Ce n'est pas un
-// `heading` : insensible aux réglages de titres du document, absent de la table
-// des matières. Sur la feuille de route, il termine la thématique précédente
-// (coche après son dernier exercice). Présentation (titre seul ou bandeau
-// coloré) : `maquette(style-thematique: …, couleur-thematique: …)`. Avec
+// Titre d'une thématique de la fiche, jamais numéroté, présenté comme le
+// `filet-horizontal` des cours : petite barre noire, titre en gras, trait gris
+// jusqu'à la marge. Ce n'est pas un `heading` : insensible aux réglages de
+// titres du document, absent de la table des matières. Sur la feuille de route,
+// il termine la thématique précédente (coche après son dernier exercice).
+// Couleur du trait : `maquette(couleur-thematique: …)`. Avec
 // `maquette(position-qr: "thematique")`, les QR codes de la thématique
 // précédente s'affichent juste avant ce titre.
-//   alignement : left (défaut), center ou right
+//   alignement : left (défaut), center ou right ; le titre glisse le long du
+//                trait, la barre reste à gauche
 #let thematique(
   alignement: left,
   titre,
@@ -37,39 +39,21 @@
   etat-qr-attente.update(q => (..q, items: (), titre: titre))
   [#metadata(none) #repere-thematique]
   protege(rendre => {
-    let (style, couleur) = etat-thematique.get()
-    if style == "bandeau" {
-      // Comme le `filet-horizontal` des fiches d'origine : fond coloré, texte
-      // du corps en gras, noir ou blanc selon la clarté du fond.
-      let fond = if couleur == auto { rgb("#c9c5c5") } else { couleur }
-      let e = echelle()
-      bloc-neutre(
-        width: 100%,
-        above: 1.4em,
-        below: .9em,
-        sticky: true,
-        fill: fond,
-        radius: 4pt * e,
-        inset: (x: 6pt * e, y: 7pt * e),
-        align(alignement, text(
-          weight: "bold",
-          fill: if luma(fond).components().first() < 55% { white } else { black },
-          rendre(titre),
-        )),
-      )
+    let couleur = etat-thematique.get()
+    let trait = boite-neutre(
+      width: 1fr,
+      baseline: -.3em,
+      line(length: 100%, stroke: .8pt + if couleur == auto { rgb("#8a8a8a") } else { couleur }),
+    )
+    let texte = strong(rendre(titre))
+    let barre = boite-neutre(width: .45cm, height: 1em, baseline: .2em, fill: black)
+    // Espaces comprises autour des `h`, comme dans le balisage du filet.
+    bloc-neutre(width: 100%, above: 2.2em, below: 1.1em, sticky: true, if alignement == left {
+      [#barre #h(.4em) #texte #h(.4em) #trait]
+    } else if alignement == center {
+      [#barre #h(.4em) #trait #h(.4em) #texte #h(.4em) #trait]
     } else {
-      bloc-neutre(
-        width: 100%,
-        above: 1.4em,
-        below: .9em,
-        sticky: true,
-        align(alignement, text(
-          size: 14pt * echelle(),
-          weight: "bold",
-          ..if couleur != auto { (fill: couleur) },
-          rendre(titre),
-        )),
-      )
-    }
+      [#barre #h(.4em) #trait #h(.4em) #texte]
+    })
   })
 }

@@ -2,10 +2,10 @@
 
 ## 0.3.0
 
-- `style-thematique: "bandeau"` (paramètre de `maquette`) : la `#thematique`
-  est écrite dans un bandeau coloré sur toute la largeur (`"titre"`, texte
-  seul, reste le défaut). La couleur se règle avec `couleur-thematique`
-  (couleur du fond pour le bandeau, du texte sinon).
+- `#thematique` est présentée comme un filet : petite barre noire, titre en
+  gras à la taille du texte, trait gris jusqu'à la marge (auparavant, titre
+  seul en 14 pt). `couleur-thematique` (paramètre de `maquette`) règle la
+  couleur du trait ; `alignement` fait glisser le titre le long du trait.
 - `position-qr: "thematique"` (paramètre de `maquette`) : les QR-Codes
   s'affichent à la fin de chaque `#thematique`, dans un bloc « Automatismes —
   <thématique> », au lieu d'un seul bloc en fin de fiche (`"fin"`, défaut).

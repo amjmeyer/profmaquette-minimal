@@ -112,12 +112,7 @@
 //                            de chaque `thematique`, juste avant la suivante,
 //                            titré « Automatismes — <thématique> »)
 //   couleur-fdr            : couleur du schéma `afficher-fdr` (noir par défaut)
-//   style-thematique       : "titre" (défaut, texte seul) ou "bandeau" (titre
-//                            sur un fond coloré, sur toute la largeur)
-//   couleur-thematique     : "titre" : couleur du texte (auto = celle du
-//                            document) ;
-//                            "bandeau" : couleur du fond (auto = gris clair),
-//                            texte noir ou blanc selon ce qui se lit le mieux
+//   couleur-thematique     : couleur du trait des `thematique` (auto = gris)
 //   langue                 : "fr", "en", "de", "es", "it" ; auto = celle du
 //                            document, sauf l'anglais (défaut de Typst) → "fr"
 //   mode-maquette          : "exercices" (défaut) ou "interro" (zone Nom /
@@ -150,7 +145,6 @@
   titre-qr: auto,
   position-qr: "fin",
   couleur-fdr: black,
-  style-thematique: "titre",
   couleur-thematique: auto,
   langue: auto,
   mode-maquette: "exercices",
@@ -177,16 +171,8 @@
   }
   assert(
     couleur-thematique == auto or type(couleur-thematique) == color,
-    message: "maquette : couleur-thematique doit être une couleur (blue, rgb(\"#c9c5c5\")…), pas "
+    message: "maquette : couleur-thematique doit être une couleur (blue, rgb(\"#8a8a8a\")…), pas "
       + repr(couleur-thematique)
-      + ".",
-  )
-  assert(
-    style-thematique in styles-thematique,
-    message: "maquette : style-thematique doit valoir "
-      + styles-thematique.map(s => "\"" + s + "\"").join(" ou ")
-      + ", pas "
-      + repr(style-thematique)
       + ".",
   )
   assert(type(taille-qr) == length, message: "maquette : taille-qr doit être une longueur (2cm, 15mm…).")
@@ -261,7 +247,7 @@
   etat-selection.update((corriges: parser-plage(liste-corriges)))
   etat-fdr.update((couleur: couleur-fdr))
   etat-qr.update((position: position-qr, colonnes: nombre-qr, taille: taille-qr, titre: titre-qr))
-  etat-thematique.update((style: style-thematique, couleur: couleur-thematique))
+  etat-thematique.update(couleur-thematique)
   etat-afficher-brm.update(if mode-maquette == "interro" { afficher-brm } else { none })
   etat-langue.update(langue)
   etat-historique.update(())
