@@ -42,19 +42,21 @@
 }
 
 // Réponse affichée hors maquette : bandeau vert d'eau, crayon et « Corrigé
-// (rempli en classe) », sur 99 % de la largeur. À appeler dans un `context`.
+// (rempli en classe) », sur 99 % de la largeur. Mêmes espacements que le
+// corrigé d'une interro (`rendu-reponse`). À appeler dans un `context`.
 #let couleur-corrige-classe = rgb("#0a7d6b")
-#let rendu-reponse-classe(reponse) = block(
+#let rendu-reponse-classe(reponse) = bloc-neutre(
   width: 99%,
+  above: .8em,
+  below: .8em,
   fill: couleur-corrige-classe.lighten(92%),
   stroke: (left: 3pt + couleur-corrige-classe),
-  inset: 10pt,
+  inset: (left: 10pt, rest: 8pt),
 )[
   #text(fill: couleur-corrige-classe.darken(20%), weight: "bold", size: 9pt)[
     #box(icone("pencil", 1em, couleur-corrige-classe.darken(20%))) #h(0.4em) #terme("corrige-classe")
   ]
-  #v(0.4em)
-  #reponse
+  #bloc-neutre(width: 100%, above: .5em, below: 0pt, reponse)
 ]
 
 // Zone de réponse sur papier Seyes, pleine largeur.
