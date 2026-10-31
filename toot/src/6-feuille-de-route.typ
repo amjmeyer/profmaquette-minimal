@@ -67,25 +67,20 @@ Une coche finale termine toujours la route.
 
 = Présentation des thématiques
 
-Par défaut, une thématique est un simple titre en gras. Deux paramètres de
-`maquette` changent sa présentation pour toute la fiche :
-
-#parametre("style-thematique", ("str",), `"titre"`)[
-  `"titre"` : texte seul, en gras ; `"bandeau"` : titre en gras sur un fond
-  coloré, sur toute la largeur de la page.
-]
+Une thématique est présentée comme un filet : une petite barre noire, le titre
+en gras, puis un trait gris jusqu'à la marge. Le paramètre `alignement` de
+`thematique` (`left` par défaut, `center` ou `right`) fait glisser le titre le
+long du trait ; la barre reste à gauche. Un paramètre de `maquette` change la
+couleur du trait pour toute la fiche :
 
 #parametre("couleur-thematique", ("color", "auto"), `auto`)[
-  En `"titre"`, couleur du texte (`auto` : celle du document). En
-  `"bandeau"`, couleur du fond (`auto` : gris clair) ; le texte se met
-  automatiquement en noir sur un fond clair, en blanc sur un fond foncé.
+  Couleur du trait (`auto` : gris).
 ]
 
 #example(```typ
 // SETUP
 // START
 #show: maquette.with(
-  style-thematique: "bandeau",
   couleur-thematique: rgb("#1f6fb2"),
 )
 
@@ -93,12 +88,9 @@ Par défaut, une thématique est un simple titre en gras. Deux paramètres de
 
 #thematique[Factoriser]
 #exercice[Factoriser $9x -12$.]
-#thematique[Résoudre]
+#thematique(alignement: center)[Résoudre]
 #exercice[Résoudre $3x^2 - 4x + 6$.]
 ```)
-
-Les coches de la feuille de route se placent de la même façon dans les deux
-styles.
 
 #info(title: "Indépendances avec les titres")[
   `#thematique[…]` n'est pas un `heading` : les réglages de titres du document ne la modifient pas.\

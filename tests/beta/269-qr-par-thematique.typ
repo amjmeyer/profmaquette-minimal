@@ -3,7 +3,7 @@
 // les exercices d'avant la première, rien pour une thématique sans entraînement ;
 // puis une maquette "fin" (défaut) inchangée, qui ne doit rien hériter.
 #import "../../src/lib.typ": *
-#maquette(position-qr: "thematique", style-thematique: "bandeau", nombre-qr: 4)[
+#maquette(position-qr: "thematique", nombre-qr: 4)[
   #align(center, afficher-fdr)
   #exercice(entrainement: "https://example.org/avant")[Avant toute thématique.]
   #thematique[Suites]
