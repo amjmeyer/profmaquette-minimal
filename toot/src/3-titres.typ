@@ -14,8 +14,8 @@ Cette partie présente le paramètre `titre-maquette` en mode `"exercices"` ; en
 #signature("maquette(
   …
   titre-maquette: dictionary,
-  style-cartouche: str,
-  couleur-titre: color | auto,
+  style-maquette: str,
+  couleur-titre: color,
   …
 ) -> content")
 
@@ -49,32 +49,44 @@ Cette partie présente le paramètre `titre-maquette` en mode `"exercices"` ; en
 #exercice[Calculer $9 times 9$.]
 ```)
 
-#parametre("style-cartouche", ("str",), `"onglet"`)[
-  Ce paramètre influe sur la mise en forme du cartouche de titre. \
-  Puisqu'il n'y a qu'un seul style pour
-  l'instant, ce paramètre est inutile.  
-  - Le mode `"onglet"` (celui par défaut) est inspiré du thème
-    « pretty » du paquet Typst bookly (fonction `#pretty-part` de son code
-    source).
+#parametre("style-maquette", ("str",), `"arrondi-1"`)[
+  Ce paramètre choisit le style de la fiche : il règle ensemble le cartouche de
+  titre et les thématiques (#i-link("6-feuille-de-route.typ")[partie VI]),
+  pour qu'ils aillent ensemble.
+  - `"arrondi-1"` (par défaut) : `gauche` dans un onglet posé sur un cadre
+    arrondi, `centre` au milieu du cadre, `droite` à droite (d'après le thème
+    « pretty » du paquet Typst bookly, fonction `#pretty-part`). Chaque
+    thématique est un petit onglet posé sur un trait.
+  - `"arrondi-2"` : le même cartouche ; chaque thématique est une étiquette
+    arrondie suivie d'un trait fin.
+  - `"carre"` : la présentation d'un en-tête de chapitre de leçon, pour que
+    fiches d'exercices et leçons se ressemblent. `gauche` est un numéro, en
+    gris, séparé du titre (`centre`) par un trait vertical ; `droite` (le
+    niveau) s'écrit en italique, à droite, sous le titre. Chaque thématique
+    est un filet : petite barre noire, titre en gras, trait gris.
 ]
 
 #example(```typ
 // SETUP
 // START
-//Exemple n'illustrant rien pour le moment !! 
 #show: maquette.with(
-  style-cartouche: "onglet",
-  titre-maquette: ( 
-    centre: "bjr",
-    droite: "hello",
+  style-maquette: "carre",
+  titre-maquette: (
+    gauche: "05",
+    centre: "EXERCICES : Second degré",
+    droite: "1C SPE",
   ),
-)  
+)
+#thematique[Équations]
+#exercice[Résoudre $x^2 - 5x + 6 = 0$.]
 ```)
 
-
-
-#parametre("couleur-titre", ("color", "auto"), `auto`)[
-  Ce paramètre met en couleur le cartouche de titre.
+#parametre("couleur-titre", ("color",), `black`)[
+  Ce paramètre donne sa couleur au style de la fiche. En `"arrondi-1"` et
+  `"arrondi-2"`, il colore l'onglet, le cadre et les thématiques ; le texte
+  posé sur la couleur s'écrit en blanc, ou en noir si elle est claire. En
+  `"carre"`, il colore le titre et le niveau ; les filets des thématiques
+  restent noirs et gris.
 ]
 
 #example(```typ

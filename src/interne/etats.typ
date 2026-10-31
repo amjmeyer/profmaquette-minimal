@@ -60,8 +60,8 @@
 // Corrigés à afficher (auto = tous), sous la forme rendue par `parser-plage`.
 #let etat-selection = state("etat-selection", (corriges: auto))
 
-// Couleur du trait des `thematique` (auto = gris).
-#let etat-thematique = state("etat-thematique", auto)
+// Style de la fiche (`styles.typ`) et sa couleur, lus par `thematique`.
+#let etat-style-maquette = state("etat-style-maquette", (style: "arrondi-1", couleur: black))
 
 // Réglages du bloc « Automatismes » (cf. `maquette(position-qr: …)`) :
 // position "fin" (un seul bloc en fin de fiche) ou "thematique" (un bloc à la

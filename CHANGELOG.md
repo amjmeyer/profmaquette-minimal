@@ -2,6 +2,16 @@
 
 ## Non publié
 
+- `style-maquette` (paramètre de `maquette`) remplace `style-cartouche` : il
+  règle ensemble le cartouche de titre et les `#thematique`.
+  `"arrondi-1"` (défaut) : cartouche à onglet, thématiques en onglet posé sur
+  un trait ; `"arrondi-2"` : même cartouche, thématiques en étiquette arrondie
+  suivie d'un trait ; `"carre"` : cartouche en en-tête de chapitre de leçon
+  (numéro en gris, trait vertical, titre, niveau en italique), thématiques en
+  filet à barre noire (la présentation de la 0.3.0).
+- `couleur-titre` colore tout le style (noir par défaut) ; `couleur-thematique`
+  est supprimé. Sur un onglet ou une étiquette de couleur claire, le texte
+  s'écrit en noir.
 - Le bandeau « Corrigé (rempli en classe) » (`seyes(…, afficher: true)` hors
   `maquette`) prend les espacements du corrigé d'une interro : moins de marge
   intérieure, moins d'espace sous le titre et en dessous du bandeau.
