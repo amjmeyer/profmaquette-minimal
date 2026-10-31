@@ -1,5 +1,11 @@
 # Historique des versions
 
+## Non publié
+
+- Le bandeau « Corrigé (rempli en classe) » (`seyes(…, afficher: true)` hors
+  `maquette`) prend les espacements du corrigé d'une interro : moins de marge
+  intérieure, moins d'espace sous le titre et en dessous du bandeau.
+
 ## 0.3.0
 
 - `#thematique` est présentée comme un filet : petite barre noire, titre en
