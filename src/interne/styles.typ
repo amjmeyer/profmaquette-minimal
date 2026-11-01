@@ -15,7 +15,8 @@
 // and its subdirectories.
 
 // Styles de la fiche, réglés par `maquette(style-maquette: …)` : chacun dessine
-// le cartouche de titre et les `thematique`, pour qu'ils aillent ensemble.
+// le cartouche de titre et les `thematique`, pour qu'ils aillent ensemble. Le
+// cartouche n'a pas de réglage propre : il découle toujours du style.
 // Tout est à appeler dans un `context`.
 
 #import "utils.typ": *

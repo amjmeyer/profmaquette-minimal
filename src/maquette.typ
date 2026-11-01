@@ -120,7 +120,8 @@
 //   titre-maquette         : cartouche de titre, dictionnaire aux clés
 //                            facultatives gauche / centre / droite
 //   style-maquette         : style du cartouche de titre et des `thematique`,
-//                            qui vont ensemble : "arrondi-1" (défaut : cadre
+//                            qui vont ensemble (le cartouche n'a pas de
+//                            réglage séparé) : "arrondi-1" (défaut : cadre
 //                            arrondi à onglet, thématique en onglet posé sur
 //                            un trait), "arrondi-2" (même cadre, thématique en
 //                            étiquette suivie d'un trait) ou "carre" (en-tête

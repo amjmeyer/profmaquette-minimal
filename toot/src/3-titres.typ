@@ -7,6 +7,8 @@
 Une fiche peut commencer par un cartouche de titre, réglé depuis la maquette.\
 Il est facultatif : sans lui, rien de plus ne s'affiche et on reste libre d'utiliser
 son propre en-tête. \
+Son contenu se donne avec `titre-maquette` ; sa présentation n'a pas de
+réglage propre : elle découle du style de la fiche, `style-maquette`. \
 Cette partie présente le paramètre `titre-maquette` en mode `"exercices"` ; en mode
 `"interro"`, cela varie un peu avec la zone Nom / Prénom / Classe. Voir
 (#i-link("9-mode-interro.typ")[partie IX]).
@@ -64,6 +66,14 @@ Cette partie présente le paramètre `titre-maquette` en mode `"exercices"` ; en
     gris, séparé du titre (`centre`) par un trait vertical ; `droite` (le
     niveau) s'écrit en italique, à droite, sous le titre. Chaque thématique
     est un filet : petite barre noire, titre en gras, trait gris.
+]
+
+#info(title: "Le style de la fiche décide du cartouche")[
+  Le cartouche se choisit uniquement par `style-maquette` : `"arrondi-1"` et
+  `"arrondi-2"` donnent le cartouche à onglet, `"carre"` l'en-tête de
+  chapitre. Aucun paramètre ne permet de prendre le cartouche d'un style et
+  les thématiques d'un autre : fiche, titre et thématiques restent assortis.
+  (L'ancien paramètre `style-cartouche` n'existe plus.)
 ]
 
 #example(```typ
