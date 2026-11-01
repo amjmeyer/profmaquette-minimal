@@ -4,7 +4,7 @@
 
 #title[VI. La feuille de route]
 
-La feuille de route montre à l'élève le classement des exercices de la fiche d'exercices en deux catégories distinctes.  
+La feuille de route montre à l'élève le classement des exercices de la fiche d'exercices en deux catégories distinctes.
 
 = Afficher le schéma
 
@@ -12,7 +12,7 @@ La feuille de route montre à l'élève le classement des exercices de la fiche 
 On le place en général avant le premier exercice, centré avec
 `#align(center, afficher-fdr)`.
 
-Les exercices sont alors distingués en deux genres : il y a ceux du haut et ceux du bas. 
+Les exercices sont alors distingués en deux genres : il y a ceux du haut et ceux du bas.
 
 - Les exercices sur la route (`route: true`) forment la *route du bas* ;
 
@@ -43,9 +43,10 @@ plus large que la page, elle passe à la ligne entre deux thématiques.
 
 = Thématiques et coches
 
-Une fiche se découpe souvent en thématiques : « Factoriser », « Résoudre »…
+Une fiche d'exercices se découpe souvent en thématiques d'exercices.
+
 `#thematique[…]` écrit le titre d'une thématique, et *ferme la thématique
-précédente* : sur la feuille de route, une coche suit son dernier exercice.\ 
+précédente* : sur la feuille de route, une coche permet de séparer les exercices par thématique.\
 Une coche finale termine toujours la route.
 
 #example(```typ
@@ -66,14 +67,6 @@ Une coche finale termine toujours la route.
 
 
 = Présentation des thématiques
-
-Une thématique est dessinée selon le style de la fiche, choisi avec
-`style-maquette` et `couleur-titre`, comme le cartouche de titre
-(#i-link("3-titres.typ")[partie III]) : un petit onglet posé sur un trait en
-`"arrondi-1"` (par défaut), une étiquette arrondie suivie d'un trait fin en
-`"arrondi-2"`, un filet à barre noire en `"carre"`. Le paramètre `alignement`
-de `thematique` (`left` par défaut, `center` ou `right`) place le titre le
-long du trait.
 
 #example(```typ
 // SETUP

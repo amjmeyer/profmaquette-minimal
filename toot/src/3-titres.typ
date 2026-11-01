@@ -13,13 +13,15 @@ Cette partie présente le paramètre `titre-maquette` en mode `"exercices"` ; en
 `"interro"`, cela varie un peu avec la zone Nom / Prénom / Classe. Voir
 (#i-link("9-mode-interro.typ")[partie IX]).
 
-#signature("maquette(
+#signature(
+  "maquette(
   …
   titre-maquette: dictionary,
   style-maquette: str,
   couleur-titre: color,
   …
-) -> content")
+) -> content",
+)
 
 #parametre("titre-maquette", ("dictionary",), `(:)`)[
   Ce paramètre permet de régler le titre de la maquette. C'est un dictionnaire avec les clés facultatives
@@ -55,25 +57,13 @@ Cette partie présente le paramètre `titre-maquette` en mode `"exercices"` ; en
   Ce paramètre choisit le style de la fiche : il règle ensemble le cartouche de
   titre et les thématiques (#i-link("6-feuille-de-route.typ")[partie VI]),
   pour qu'ils aillent ensemble.
-  - `"arrondi-1"` (par défaut) : `gauche` dans un onglet posé sur un cadre
-    arrondi, `centre` au milieu du cadre, `droite` à droite (d'après le thème
-    « pretty » du paquet Typst bookly, fonction `#pretty-part`). Chaque
-    thématique est un petit onglet posé sur un trait.
-  - `"arrondi-2"` : le même cartouche ; chaque thématique est une étiquette
-    arrondie suivie d'un trait fin.
-  - `"carre"` : la présentation d'un en-tête de chapitre de leçon, pour que
-    fiches d'exercices et leçons se ressemblent. `gauche` est un numéro, en
-    gris, séparé du titre (`centre`) par un trait vertical ; `droite` (le
-    niveau) s'écrit en italique, à droite, sous le titre. Chaque thématique
-    est un filet : petite barre noire, titre en gras, trait gris.
+  - `"arrondi-1"` (par défaut)
+  - `"arrondi-2"`
+  - `"carre"`
 ]
 
 #info(title: "Le style de la fiche décide du cartouche")[
-  Le cartouche se choisit uniquement par `style-maquette` : `"arrondi-1"` et
-  `"arrondi-2"` donnent le cartouche à onglet, `"carre"` l'en-tête de
-  chapitre. Aucun paramètre ne permet de prendre le cartouche d'un style et
-  les thématiques d'un autre : fiche, titre et thématiques restent assortis.
-  (L'ancien paramètre `style-cartouche` n'existe plus.)
+  L'ancien paramètre `style-cartouche` n'existe plus.
 ]
 
 #example(```typ
@@ -91,12 +81,45 @@ Cette partie présente le paramètre `titre-maquette` en mode `"exercices"` ; en
 #exercice[Résoudre $x^2 - 5x + 6 = 0$.]
 ```)
 
+
+#example(```typ
+// SETUP
+// START
+#show: maquette.with(
+  style-maquette: "arrondi-1",
+  titre-maquette: (
+    gauche: "05",
+    centre: "EXERCICES : Second degré",
+    droite: "1C SPE",
+  ),
+)
+#thematique[Équations]
+#exercice[Résoudre $x^2 - 5x + 6 = 0$.]
+```)
+
+
+#example(```typ
+// SETUP
+// START
+#show: maquette.with(
+  style-maquette: "arrondi-2",
+  titre-maquette: (
+    gauche: "05",
+    centre: "EXERCICES : Second degré",
+    droite: "1C SPE",
+  ),
+)
+#thematique[Équations]
+#exercice[Résoudre $x^2 - 5x + 6 = 0$.]
+```)
+
+
 #parametre("couleur-titre", ("color",), `black`)[
   Ce paramètre donne sa couleur au style de la fiche. En `"arrondi-1"` et
   `"arrondi-2"`, il colore l'onglet, le cadre et les thématiques ; le texte
   posé sur la couleur s'écrit en blanc, ou en noir si elle est claire. En
-  `"carre"`, il colore le titre et le niveau ; les filets des thématiques
-  restent noirs et gris.
+  `"carre"`, il colore le titre, le niveau, ainsi que la barre et le trait des
+  thématiques ; en noir (par défaut), le trait reste gris.
 ]
 
 #example(```typ
@@ -109,6 +132,9 @@ Cette partie présente le paramètre `titre-maquette` en mode `"exercices"` ; en
   ),
   couleur-titre: rgb("#1B3A6B"),
 )
+
+#thematique[Structure des espaces $L_p$]
+
 #exercice[
   Montrer que $L^(p)(X, cal(T), mu)$ est réflexif sans hypothèse sur $mu$ pour $1 < p < + oo$.
 ]

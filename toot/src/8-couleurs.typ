@@ -5,26 +5,29 @@
 #title[VIII. Les couleurs]
 
 
-Le paquet utilise quatre couleurs, chacune avec un rôle, modifiables
+Le paquet utilise cinq couleurs, chacune avec un rôle, modifiables
 indépendamment les unes des autres.
 
-#signature("maquette(
+#signature(
+  "maquette(
   …
   couleur-externe: color | auto,
   couleur-interne: color | auto,
   couleur-route: color | auto,
   couleur-fdr: color,
+  couleur-titre: color,
   …
-) -> content")
+) -> content",
+)
 
 #parametre("couleur-externe", ("color", "auto"), `auto`)[
-  Ce paramètre permet de modifier la couleur de ce qui mène *hors* du document : 
-  
-    - les haltères ;
-    
-    - les QR-Codes ;
-    
-    - les sources des exercices. 
+  Ce paramètre permet de modifier la couleur de ce qui mène *hors* du document :
+
+  - les haltères ;
+
+  - les QR-Codes ;
+
+  - les sources des exercices.
 
   La valeur par défaut de ce paramètre est `rgb("#0090C8")` (cyan).
 ]
@@ -42,11 +45,11 @@ indépendamment les unes des autres.
 ```)
 
 #parametre("couleur-interne", ("color", "auto"), `auto`)[
-  Ce paramètre permet de modifier la couleur des éléments cliquables qui permettent de naviguer *au sein même* du document : 
+  Ce paramètre permet de modifier la couleur des éléments cliquables qui permettent de naviguer *au sein même* du document :
   - les clés :
-  
-  - les titres « Corrigé de l'exercice N ». 
-  
+
+  - les titres « Corrigé de l'exercice N ».
+
   La valeur par défaut de ce paramètre est `rgb("#DC143C")`.\
   (Cela correspond au Crimson dans ProfMaquette.)
 ]
@@ -101,6 +104,24 @@ indépendamment les unes des autres.
 #align(center, afficher-fdr)
 #exercice[Énoncé 1.]
 #exercice(route: false)[Hors route.]
+```)
+
+#parametre("couleur-titre", ("color",), `black`)[
+  Ce paramètre donne sa couleur au style de la fiche (#i-link("3-titres.typ")[partie III]) :
+  en `"arrondi-1"` et `"arrondi-2"`, l'onglet, le cadre du titre et les
+  thématiques ; en `"carre"`, le titre, le niveau, la barre et le trait des
+  thématiques (le trait reste gris si la couleur est noire).
+]
+
+#example(```typ
+// SETUP
+// START
+#show: maquette.with(
+  titre-maquette: (gauche: "CH 03", centre: "Calcul littéral"),
+  couleur-titre: rgb("#2E8B57"), 
+)
+#thematique[Développer]
+#exercice[Développer $(x+1)^2$.]
 ```)
 
 Toute couleur Typst convient : `blue`, `rgb("#1E90FF")`, `luma(40%)`,

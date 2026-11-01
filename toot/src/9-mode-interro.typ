@@ -7,16 +7,18 @@
 Avec `mode-maquette: "interro"`, la fiche devient une évaluation : une zone
 Nom / Prénom / Classe est ajoutée en tête et les questions peuvent recevoir des
 zones de réponse quadrillées (`#seyes[…]`). On peut également afficher un barème (précis ou pas).\
- Le même document permet donc de mettre en forme le sujet que l'on va distribuer à l'élève, ainsi que le corrigé à mettre en ligne. Il n'y a plus besoin de faire des allers-retours entre la version élève et la version corrigée.
+Le même document permet donc de mettre en forme le sujet que l'on va distribuer à l'élève, ainsi que le corrigé à mettre en ligne. Il n'y a plus besoin de faire des allers-retours entre la version élève et la version corrigée.
 
-#signature("maquette(
+#signature(
+  "maquette(
   …
   mode-maquette: \"interro\",
   largeur-cartouche: ratio,
   position-corriges: \"apres-question\",
   afficher-brm: none | str,
   …
-) -> content")
+) -> content",
+)
 
 = Gestion de l'affichage Nom / Prénom / Classe
 
@@ -57,39 +59,47 @@ et la zone à droite :
 // START
 #show: maquette.with(
   mode-maquette: "interro",
-  titre-maquette: (gauche: "IE 01", centre: "Suites"),
+  titre-maquette: (
+    gauche: "IE 01", 
+    centre: "Suites"
+    ),
   largeur-cartouche: 35%,
+  style-maquette: "carre",
 )
+
 #exercice[Calculer $u_1$.]
 ```)
- 
+
 = Gestion de la zone de réponse : `#seyes(…)[…]`
 
 La fonction `#seyes(…)[…]` dessine une zone de réponse sur papier Seyes, sur toute la
 largeur. L'idée est de la placer dans l'énoncé, sous chaque question.
 
-#signature("seyes(
+#signature(
+  "seyes(
   hauteur: int | float | length,
   reponse: content,
   carreau: length,
   style: str,
   vertical: bool,
   afficher: bool,
-) -> content")
+) -> content",
+)
 
-
-#parametre("hauteur", ("int", "float", "length"), [obligatoire])[
-  Ce paramètre permet de régler la hauteur de la zone de quadrillage en donnant : 
-  
-    - un nombre de carreaux (`seyes(4)` donne 4 carreaux de $8$ mm de haut) ; 
-    
-    - une longueur (`seyes(3cm)`).
-]
 
 #example(```typ
 // SETUP
 // START
-#show: maquette.with(mode-maquette: "interro")
+#show: maquette.with(
+  mode-maquette: "interro",
+  titre-maquette: (
+    gauche: "IE 01", 
+    centre: "Suites",
+    droite: "6 A"
+    ),
+  style-maquette: "arrondi-2",
+)
+
 #exercice[
   + Calculer $9 times 4$.
     #seyes(2)
@@ -98,6 +108,16 @@ largeur. L'idée est de la placer dans l'énoncé, sous chaque question.
     #seyes(1)
 ]
 ```)
+
+
+#parametre("hauteur", ("int", "float", "length"), [obligatoire])[
+  Ce paramètre permet de régler la hauteur de la zone de quadrillage en donnant :
+
+  - un nombre de carreaux (`seyes(4)` donne 4 carreaux de $8$ mm de haut) ;
+
+  - une longueur (`seyes(3cm)`).
+]
+
 
 #parametre("reponse", ("content",), [facultatif])[
   La réponse attendue, entre crochets après la hauteur : `#seyes(3)[…]`. Elle
@@ -109,10 +129,10 @@ largeur. L'idée est de la placer dans l'énoncé, sous chaque question.
 ]
 
 #parametre("style", ("str",), `"seyes"`)[
-  Ce paramètre permet de modifier le rendu des carreaux : 
-  
+  Ce paramètre permet de modifier le rendu des carreaux :
+
   - réglé sur `"sobre"`, le résultat est noir et gris ;
-  
+
   - réglé sur `"bleu"`, le résultat est... bleu !
 ]
 
@@ -129,37 +149,11 @@ largeur. L'idée est de la placer dans l'énoncé, sous chaque question.
   Je n'ai jamais testé cette fonctionnalité. Je l'ai reprise d'un paquet de Cédric Pierquet, #link("https://ctan.org/pkg/writeongrid")[WriteOnGrid]
 ]
 
-#parametre("afficher", ("bool",), `false`)[
-  Réglé sur `true`, la réponse prend la place de la grille : pratique pour
-  donner aux absents la version « rattrapable » d'une fiche remplie en
-  classe, sans rien réécrire.
-
-  - Dans une `maquette`, la réponse prend le cadre d'un corrigé. En mode
-    interro, la zone compte toujours dans l'ordre des `#corrige` (voir plus
-    bas) : le corrigé qui lui revenait est ignoré.
-
-  - Hors `maquette` (dans un cours, par exemple), elle s'affiche dans un
-    bandeau vert d'eau « Corrigé (rempli en classe) ».
-]
-
-#example(```typ
-// SETUP
-// START
-#show: maquette.with(mode-maquette: "interro")
-#exercice[
-  + Calculer $9 times 4$.
-    #seyes(2)[$9 times 4 = 36$.]
-
-  + Calculer $6-2$.
-    #seyes(1, afficher: true)[$6 - 2 = 4$.]
-]
-```)
-
 = Gestion de la zone de corrigé à la place de `#seyes(…)[…]`
 
 Si l'on règle le paramètre `position-corriges:` sur `position-corriges: "apres-question"`, les
 corrigés prennent la place des zones de réponse. \
-En revanche, la manière de faire afficher les réponses diffèrent. Voici un exemple :  
+En revanche, la manière de faire afficher les réponses diffèrent. Voici un exemple :
 
 #example(```typ
 // SETUP
@@ -183,7 +177,7 @@ En revanche, la manière de faire afficher les réponses diffèrent. Voici un ex
 #corrige[$x^2 + 2x + 1$]
 #corrige[$(x - 3)(x + 3)$] 
 ```)
- 
+
 #warning(title: "Un fonctionnement très différent de #corrige")[
   Lorsque l'on a activé `position-corriges: "apres-question"`, un `#corrige[…]` ne s'affiche pas là où on l'écrit :
   il remplace un `seyes[…]` de l'exercice qui précède. L'association se fait par
@@ -193,7 +187,7 @@ En revanche, la manière de faire afficher les réponses diffèrent. Voici un ex
 ]
 
 
-#info(title: "Bon à savoir")[ 
+#info(title: "Bon à savoir")[
   - `liste-corriges:()` permet de cacher tous les corrigés, et donc d'imprimer le sujet pour les élèves.\
     En mettant `liste-corriges: auto`, tous les corrigés apparaîssent et le document est prêt à être partagé.
 
@@ -223,12 +217,31 @@ affichage (`afficher-brm`).
   mode-maquette: "interro",
   afficher-brm: "complet",
 )
-#exercice(titre: "Suites", brm: (2, (1, 1.5), 3))[
-  + Calculer $u_0$ et $u_1$.
-  + Étude de la suite.
-    + Montrer qu'elle est arithmétique.
-    + En déduire sa raison.
-  + Calculer $u_(10)$.
+// Questions : 1. 2. 3. en gras, sous-questions a) b) c).
+#set enum(full: true, numbering: (..n) => {
+  let n = n.pos()
+  if n.len() == 1 { strong(numbering("1.", ..n)) } else { numbering("a)", n.last()) }
+})
+#exercice(
+  titre: "Suites", 
+  brm: (2, (1.5, 1.5, 1), 2)
+  )
+  [
+  Soit $(u_n)$ la suite définie par $u_0 = 5$ et, pour tout entier
+  naturel $n$, $u_(n+1) = 2u_n - 3$.
+
+  + Calculer $u_1$ et $u_2$.
+
+  + On pose, pour tout entier naturel $n$, $v_n = u_n - 3$.
+
+    + Montrer que $(v_n)$ est géométrique ; préciser sa raison et son
+      premier terme. Voici ce qui se passe lorsque la question fait plus d'une ligne.
+
+    + Exprimer $v_n$, puis $u_n$, en fonction de $n$.
+
+    + Déterminer la limite de la suite $(u_n)$.
+
+  + Déterminer le plus petit entier $n$ tel que $u_n > 1000$.
 ]
 ```)
 
@@ -240,7 +253,4 @@ affichage (`afficher-brm`).
   - Seules les questions numérotées avec `+` reçoivent leur note ; des
     questions écrites à la main (« a) … ») comptent dans le total, sans note
     affichée.
-  - En `"complet"`, le texte d'une question notée s'arrête avant la note,
-    pour ne jamais passer dessous ; ses zones de réponse (`seyes`, ou le
-    corrigé qui les remplace) gardent toute la largeur du cadre.
 ]
