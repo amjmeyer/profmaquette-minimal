@@ -225,8 +225,7 @@ affichage (`afficher-brm`).
 #exercice(
   titre: "Suites", 
   brm: (2, (1.5, 1.5, 1), 2)
-  )
-  [
+)[
   Soit $(u_n)$ la suite définie par $u_0 = 5$ et, pour tout entier
   naturel $n$, $u_(n+1) = 2u_n - 3$.
 
