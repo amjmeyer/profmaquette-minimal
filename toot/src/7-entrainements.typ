@@ -11,21 +11,21 @@ L'élève qui travaille sur papier peut y accéder avec son téléphone. \
 Chaque QR-Code porte le numéro de son exercice, et il est lui aussi cliquable.
 
 #info(title: "Fonctionnement interne")[
-  Le bloc se place en bas de la dernière page de la partie "Exercices" s'il reste de la place, sinon en
-  bas de la page suivante.\ 
-  Sa couleur est
+  La couleur des QR-Code est
   celle des liens vers l'extérieur, `couleur-externe:` (#i-link("8-couleurs.typ")[partie VIII]). Il est nécessairement de même couleur que l'haltère
   et la `source:`.
 ]
 
-#signature("maquette(
+#signature(
+  "maquette(
   …
   nombre-qr: int,
   taille-qr: length,
   titre-qr: content | auto,
   position-qr: str,
   …
-) -> content")
+) -> content",
+)
 
 #parametre("nombre-qr", ("int",), `3`)[
   Ce paramètre modifie le nombre de QR-Codes par ligne dans le bloc « Automatismes ».
@@ -91,8 +91,10 @@ Chaque QR-Code porte le numéro de son exercice, et il est lui aussi cliquable.
 #parametre("position-qr", ("str",), `"fin"`)[
   Ce paramètre choisit où s'affichent les QR-Codes :
   - `"fin"` : un seul bloc « Automatismes » en fin de fiche, qui regroupe tous les QR-Codes ;
-  - `"thematique"` : un bloc à la fin de chaque `#thematique`, juste avant le titre de la suivante (et en fin de fiche pour la dernière). Son titre reprend celui de la thématique : « Automatismes — Suites ». \
-    Les exercices placés avant la première `#thematique` ont leur propre bloc, sans nom de thématique ; une thématique sans entraînement n'a pas de bloc.
+  - `"thematique"` : un bloc à la fin de chaque `#thematique`. Son titre reprend celui de la thématique.\
+    - Les exercices placés avant la première `#thematique` ont leur propre bloc.
+
+    - Sans nom de thématique,  une  thématique sans entraînement n'a pas de bloc.
 ]
 
 #example(```typ
@@ -103,7 +105,7 @@ Chaque QR-Code porte le numéro de son exercice, et il est lui aussi cliquable.
   taille-qr: 1cm,
 )
 #thematique[Calcul mental]
-#exercice(entrainement: "https://typst.app")[
+#exercice[
   Tables de multiplication.
 ]
 #thematique[Fractions]
