@@ -3,7 +3,8 @@
 ## Non publié
 
 - `style-maquette` (paramètre de `maquette`) remplace `style-cartouche` : il
-  règle ensemble le cartouche de titre et les `#thematique`.
+  règle ensemble le cartouche de titre et les `#thematique`, et le cartouche
+  ne se choisit plus séparément.
   `"arrondi-1"` (défaut) : cartouche à onglet, thématiques en onglet posé sur
   un trait ; `"arrondi-2"` : même cartouche, thématiques en étiquette arrondie
   suivie d'un trait ; `"carre"` : cartouche en en-tête de chapitre de leçon
