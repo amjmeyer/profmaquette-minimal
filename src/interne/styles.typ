@@ -128,12 +128,14 @@
 }
 
 // Filet des cours (`filet-horizontal` du préambule de l'auteur) : petite barre
-// noire, titre en gras, trait gris jusqu'à la marge, quelle que soit la couleur
-// du style. La barre reste à gauche, le titre glisse le long du trait.
+// de la couleur du style, titre en gras, trait jusqu'à la marge, de la couleur
+// du style aussi, sauf en noir où il reste gris comme dans les cours. La barre
+// reste à gauche, le titre glisse le long du trait.
 #let thematique-filet(titre, alignement, couleur) = {
-  let trait = boite-neutre(width: 1fr, baseline: -.3em, line(length: 100%, stroke: .8pt + rgb("#8a8a8a")))
+  let couleur-trait = if couleur == black { rgb("#8a8a8a") } else { couleur }
+  let trait = boite-neutre(width: 1fr, baseline: -.3em, line(length: 100%, stroke: .8pt + couleur-trait))
   let texte = strong(titre)
-  let barre = boite-neutre(width: .45cm, height: 1em, baseline: .2em, fill: black)
+  let barre = boite-neutre(width: .45cm, height: 1em, baseline: .2em, fill: couleur)
   // Espaces comprises autour des `h`, comme dans le balisage du filet.
   bloc-neutre(width: 100%, above: 2.2em, below: 1.1em, sticky: true, if alignement == left {
     [#barre #h(.4em) #texte #h(.4em) #trait]

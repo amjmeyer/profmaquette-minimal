@@ -127,10 +127,11 @@
 //                            étiquette suivie d'un trait) ou "carre" (en-tête
 //                            de leçon : gauche = numéro en gris, trait
 //                            vertical, centre = titre, droite = niveau en
-//                            italique ; thématique en filet à barre noire)
+//                            italique ; thématique en filet à barre colorée)
 //   couleur-titre          : couleur du style (noire par défaut) : onglet,
-//                            cadre et thématiques en "arrondi-…", titre et
-//                            niveau en "carre" (son filet reste noir et gris)
+//                            cadre et thématiques en "arrondi-…", titre,
+//                            niveau, barre et trait des thématiques en "carre"
+//                            (trait gris quand la couleur est noire)
 //   afficher-brm           : barème, en mode "interro" seulement (sans effet
 //                            sinon) : none (défaut), "partiel" (total de chaque
 //                            exercice sur son filet) ou "complet" (et note de

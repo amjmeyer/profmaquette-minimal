@@ -13,6 +13,8 @@
 - `couleur-titre` colore tout le style (noir par défaut) ; `couleur-thematique`
   est supprimé. Sur un onglet ou une étiquette de couleur claire, le texte
   s'écrit en noir.
+- En `"carre"`, la barre et le trait des `#thematique` prennent aussi
+  `couleur-titre` (le trait reste gris quand elle est noire, le défaut).
 - Le bandeau « Corrigé (rempli en classe) » (`seyes(…, afficher: true)` hors
   `maquette`) prend les espacements du corrigé d'une interro : moins de marge
   intérieure, moins d'espace sous le titre et en dessous du bandeau.
